@@ -13,34 +13,35 @@ class TournamentsController < ApplicationController
             return
         end
 
-        if params[:refresh].present?
-            url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
-                    "v1/tournaments.json"
-            response = RestClient.get(url)
-            tournaments_array = JSON.parse(response.body)
-
-            @tournaments = tournaments_array.map do |t|
-                OpenStruct.new(t["tournament"])
-            end.select do |t|
-                t.state == "underway"
-            end.map do |t|
-                tournament_record = user.tournaments.find_by(challonge_id: t.id)
-
-                if tournament_record.present?
-                    tournament_record.update(description: t.description,
-                                             name: t.name,
-                                             state: t.state,
-                                             challonge_url: t.full_challonge_url)
-
-                    tournament_record
-                else
-                    user.tournaments.create!(
-                      description: t.description, challonge_id: t.id, name: t.name,
-                      state: t.state, challonge_url: t.full_challonge_url)
-                end
-            end
-        else
+        if params[:refresh].blank?
             @tournaments = user.tournaments.where(state: "underway")
+            return
+        end
+
+        url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
+                "v1/tournaments.json"
+        response = RestClient.get(url)
+        tournaments_array = JSON.parse(response.body)
+
+        @tournaments = tournaments_array.map do |t|
+            OpenStruct.new(t["tournament"])
+        end.select do |t|
+            t.state == "underway"
+        end.map do |t|
+            tournament_record = user.tournaments.find_by(challonge_id: t.id)
+
+            if tournament_record.present?
+                tournament_record.update(description: t.description,
+                                         name: t.name,
+                                         state: t.state,
+                                         challonge_url: t.full_challonge_url)
+
+                tournament_record
+            else
+                user.tournaments.create!(
+                  description: t.description, challonge_id: t.id, name: t.name,
+                  state: t.state, challonge_url: t.full_challonge_url)
+            end
         end
     end
 
