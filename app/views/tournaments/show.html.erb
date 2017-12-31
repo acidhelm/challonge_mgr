@@ -30,4 +30,12 @@
   <%= @tournament.user.user_name %>
 </p>
 
+<p><strong>Teams:</strong>
+<ul>
+  <% @tournament.teams.each do |t| %>
+    <li>(<%= t.seed %>) <%= t.name %></li>
+  <% end %>
+</ul>
+</p>
+
 <%= link_to 'Back', tournament_index_path(user: @tournament.user.id) %>
