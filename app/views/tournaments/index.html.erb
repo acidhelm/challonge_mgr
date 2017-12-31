@@ -1,12 +1,11 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Challonge tournaments</h1>
+<h1>Challonge tournaments owned by <%= @tournaments.first.user.user_name %></h1>
 
 <table>
   <thead>
     <tr>
       <th>Name</th>
-      <th>Description</th>
       <th>State</th>
       <th colspan="3"></th>
     </tr>
@@ -16,11 +15,8 @@
     <% @tournaments.each do |tournament| %>
       <tr>
         <td><%= tournament.name %></td>
-        <td><%= tournament.description %></td>
         <td><%= tournament.state %></td>
         <td><%= link_to "Show", tournament %></td>
-        <td><%= link_to "Edit", edit_tournament_path(tournament) %></td>
-        <td><%= link_to "Delete", tournament, method: :delete, data: { confirm: "Are you sure that you want to delete this tournament?" } %></td>
       </tr>
     <% end %>
   </tbody>
