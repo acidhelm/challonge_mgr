@@ -16,7 +16,6 @@ class TournamentsController < ApplicationController
             end.select { |t| t.state == "underway" }.map do |t|
                 if (tourney = user.tournaments.find_by(challonge_id: t.id)).present?
                     tourney.update(description: t.description,
-                                   challonge_id: t.id,
                                    name: t.name,
                                    state: t.state,
                                    challonge_url: t.full_challonge_url)
@@ -35,6 +34,29 @@ class TournamentsController < ApplicationController
 
     # GET /tournaments/1
     def show
+        if params[:refresh].present?
+            # Re-read the info, matches, and teams for this tournament.
+            url = "https://#{@tournament.user.user_name}:#{@tournament.user.api_key}@api.challonge.com/" \
+                    "v1/tournaments/#{@tournament.challonge_id}.json?"\
+                    "include_participants=1&include_matches=1"
+            response = RestClient.get(url)
+            tournament_hash = JSON.parse(response.body)
+            t = OpenStruct.new(tournament_hash["tournament"].with_indifferent_access)
+
+            if (tourney = Tournament.find_by(challonge_id: t.id)).present?
+                tourney.update(description: t.description,
+                               name: t.name,
+                               state: t.state,
+                               challonge_url: t.full_challonge_url)
+
+            else
+                user.tournaments.create!(
+                  description: t.description, challonge_id: t.id, name: t.name,
+                  state: t.state, challonge_url: t.full_challonge_url)
+            end
+        else
+            # @tournaments = user.tournaments.where(state: "underway")
+        end
     end
 
     # GET /tournaments/new
