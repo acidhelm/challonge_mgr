@@ -16,7 +16,7 @@
       <tr>
         <td><%= user.user_name %></td>
         <td><%= user.api_key.truncate 10 %></td>
-        <td><%= link_to "Manage this user's tournaments", tournaments_path(user: user.id, refresh: 1) %></td>
+        <td><%= link_to "Manage this user's tournaments", tournament_index_path(user: user.id, refresh: 1) %></td>
         <td><%= link_to "Show", user %></td>
         <td><%= link_to "Edit", edit_user_path(user) %></td>
         <td><%= link_to "Delete", user, method: :delete, data: { confirm: "Are you sure that you want to delete \"#{user.user_name}\"?" } %></td>

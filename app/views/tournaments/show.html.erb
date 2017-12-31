@@ -6,7 +6,7 @@
 </p>
 
 <p>
-  <strong>Challonge:</strong>
+  <strong>Challonge ID:</strong>
   <%= @tournament.challonge_id %>
 </p>
 
@@ -21,14 +21,13 @@
 </p>
 
 <p>
-  <strong>Challonge url:</strong>
+  <strong>Challonge URL:</strong>
   <%= @tournament.challonge_url %>
 </p>
 
 <p>
   <strong>User:</strong>
-  <%= @tournament.user %>
+  <%= @tournament.user.user_name %>
 </p>
 
-<%= link_to 'Edit', edit_tournament_path(@tournament) %> |
-<%= link_to 'Back', tournaments_path %>
+<%= link_to 'Back', tournament_index_path(user: @tournament.user.id) %>

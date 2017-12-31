@@ -1,6 +1,4 @@
 class TournamentsController < ApplicationController
-    before_action :set_tournament, only: [:show, :edit, :update, :destroy]
-
     # GET /tournaments
     def index
         user = User.find(params[:user])
@@ -38,6 +36,8 @@ class TournamentsController < ApplicationController
 
     # GET /tournaments/1
     def show
+        @tournament = Tournament.find(params[:id])
+
         return if params[:refresh].blank?
 
         # Re-read the info, matches, and teams for this tournament.
@@ -59,7 +59,6 @@ class TournamentsController < ApplicationController
                                      name: tournament_obj.name,
                                      state: tournament_obj.state,
                                      challonge_url: tournament_obj.full_challonge_url)
-
         else
             user.tournaments.create!(
               description: tournament_obj.description, challonge_id: tournament_obj.id,
@@ -82,58 +81,5 @@ class TournamentsController < ApplicationController
                                           challonge_id: participant_obj.id)
             end
         end
-    end
-
-    # GET /tournaments/new
-    def new
-        @tournament = Tournament.new
-    end
-
-    # GET /tournaments/1/edit
-    def edit
-    end
-
-    # POST /tournaments
-    def create
-        @tournament = Tournament.new(tournament_params)
-
-        respond_to do |format|
-            if @tournament.save
-                format.html { redirect_to @tournament, notice: "The tournament was created." }
-            else
-                format.html { render :new }
-            end
-        end
-    end
-
-    # PATCH/PUT /tournaments/1
-    def update
-        respond_to do |format|
-            if @tournament.update(tournament_params)
-                format.html { redirect_to @tournament, notice: "The tournament was updated." }
-            else
-                format.html { render :edit }
-            end
-        end
-    end
-
-    # DELETE /tournaments/1
-    def destroy
-        @tournament.destroy
-
-        respond_to do |format|
-            format.html { redirect_to tournaments_url, notice: "The tournament was deleted." }
-        end
-    end
-
-    private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_tournament
-        @tournament = Tournament.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def tournament_params
-        params.require(:tournament).permit(:description, :challonge_id, :name, :state, :challonge_url, :user_id)
     end
 end
