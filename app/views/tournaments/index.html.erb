@@ -7,7 +7,7 @@
     <tr>
       <th>Name</th>
       <th>State</th>
-      <th colspan="3"></th>
+      <th></th>
     </tr>
   </thead>
 
@@ -16,7 +16,7 @@
       <tr>
         <td><%= tournament.name %></td>
         <td><%= tournament.state %></td>
-        <td><%= link_to "Show", tournament %></td>
+        <td><%= link_to "Manage this tournament", tournament_path(tournament, refresh: 1) %></td>
       </tr>
     <% end %>
   </tbody>
