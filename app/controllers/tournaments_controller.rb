@@ -1,7 +1,17 @@
 class TournamentsController < ApplicationController
     # GET /tournaments
     def index
-        user = User.find(params[:user])
+        if params[:user].blank?
+            redirect_to "/users", notice: "You must pass a \"user\" parameter in the URL."
+            return
+        end
+
+        begin
+            user = User.find(params[:user])
+        rescue ActiveRecord::RecordNotFound
+            redirect_to "/users", notice: "That user was not found."
+            return
+        end
 
         if params[:refresh].present?
             url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
