@@ -12,15 +12,19 @@ class TournamentsController < ApplicationController
             tournaments_array = JSON.parse(response.body)
 
             @tournaments = tournaments_array.map do |t|
-                OpenStruct.new(t["tournament"].with_indifferent_access)
-            end.select { |t| t.state == "underway" }.map do |t|
-                if (tourney = user.tournaments.find_by(challonge_id: t.id)).present?
-                    tourney.update(description: t.description,
-                                   name: t.name,
-                                   state: t.state,
-                                   challonge_url: t.full_challonge_url)
+                OpenStruct.new(t["tournament"])
+            end.select do |t|
+                t.state == "underway"
+            end.map do |t|
+                tournament_record = user.tournaments.find_by(challonge_id: t.id)
 
-                    tourney
+                if tournament_record.present?
+                    tournament_record.update(description: t.description,
+                                             name: t.name,
+                                             state: t.state,
+                                             challonge_url: t.full_challonge_url)
+
+                    tournament_record
                 else
                     user.tournaments.create!(
                       description: t.description, challonge_id: t.id, name: t.name,
@@ -34,28 +38,49 @@ class TournamentsController < ApplicationController
 
     # GET /tournaments/1
     def show
-        if params[:refresh].present?
-            # Re-read the info, matches, and teams for this tournament.
-            url = "https://#{@tournament.user.user_name}:#{@tournament.user.api_key}@api.challonge.com/" \
-                    "v1/tournaments/#{@tournament.challonge_id}.json?"\
-                    "include_participants=1&include_matches=1"
-            response = RestClient.get(url)
-            tournament_hash = JSON.parse(response.body)
-            t = OpenStruct.new(tournament_hash["tournament"].with_indifferent_access)
+        return if params[:refresh].blank?
 
-            if (tourney = Tournament.find_by(challonge_id: t.id)).present?
-                tourney.update(description: t.description,
-                               name: t.name,
-                               state: t.state,
-                               challonge_url: t.full_challonge_url)
+        # Re-read the info, matches, and teams for this tournament.
+        user = @tournament.user
+        url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
+                "v1/tournaments/#{@tournament.challonge_id}.json?"\
+                "include_participants=1&include_matches=1"
+        response = RestClient.get(url)
+        tournament_hash = JSON.parse(response.body)
+        tournament_obj = OpenStruct.new(tournament_hash["tournament"])
 
-            else
-                user.tournaments.create!(
-                  description: t.description, challonge_id: t.id, name: t.name,
-                  state: t.state, challonge_url: t.full_challonge_url)
-            end
+        # Read the properties that we care about from the top level of the JSON,
+        # then create a new Tournament object, or update the Tournament if it's
+        # already in the database.
+        tournament_record = Tournament.find_by(challonge_id: tournament_obj.id)
+
+        if tournament_record.present?
+            tournament_record.update(description: tournament_obj.description,
+                                     name: tournament_obj.name,
+                                     state: tournament_obj.state,
+                                     challonge_url: tournament_obj.full_challonge_url)
+
         else
-            # @tournaments = user.tournaments.where(state: "underway")
+            user.tournaments.create!(
+              description: tournament_obj.description, challonge_id: tournament_obj.id,
+              name: tournament_obj.name, state: tournament_obj.state,
+              challonge_url: tournament_obj.full_challonge_url)
+        end
+
+        # Read the "participants" array and create a Team object for each one,
+        # or update the Team if it's already in the database.
+        tournament_obj.participants.map do |participant|
+            OpenStruct.new(participant["participant"])
+        end.each do |participant_obj|
+            team_record = Team.find_by(challonge_id: participant_obj.id)
+
+            if team_record.present?
+                team_record.update(name: participant_obj.name, seed: participant_obj.seed)
+            else
+                @tournament.teams.create!(name: participant_obj.name,
+                                          seed: participant_obj.seed,
+                                          challonge_id: participant_obj.id)
+            end
         end
     end
 
