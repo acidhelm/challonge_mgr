@@ -98,6 +98,10 @@ class TournamentsController < ApplicationController
             match_record.suggested_play_order = match_obj.suggested_play_order
             match_record.scores_csv = match_obj.scores_csv
             match_record.underway_at = match_obj.underway_at
+            match_record.team1_prereq_match_id = match_obj.player1_prereq_match_id
+            match_record.team2_prereq_match_id = match_obj.player2_prereq_match_id
+            match_record.team1_is_prereq_match_loser = match_obj.player1_is_prereq_match_loser
+            match_record.team2_is_prereq_match_loser = match_obj.player2_is_prereq_match_loser
 
             match_record.save
         end
