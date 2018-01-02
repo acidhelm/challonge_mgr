@@ -27,14 +27,15 @@ class TournamentsController < ApplicationController
             OpenStruct.new(t["tournament"])
         end.select do |t|
             t.state == "underway"
-        end.map do |t|
-            tournament_record = user.tournaments.find_or_create_by!(challonge_id: t.id)
+        end.map do |tournament_obj|
+            tournament_record = user.tournaments.find_or_create_by!(
+                                    challonge_id: tournament_obj.id)
 
-            tournament_record.description = t.description
-            tournament_record.name = t.name
-            tournament_record.state = t.state
-            tournament_record.challonge_url = t.full_challonge_url
-            tournament_record.tournament_type = t.tournament_type
+            tournament_record.description = tournament_obj.description
+            tournament_record.name = tournament_obj.name
+            tournament_record.state = tournament_obj.state
+            tournament_record.challonge_url = tournament_obj.full_challonge_url
+            tournament_record.tournament_type = tournament_obj.tournament_type
 
             tournament_record.save
             tournament_record
