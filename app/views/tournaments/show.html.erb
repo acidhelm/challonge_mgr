@@ -38,7 +38,12 @@
 <p><strong>Teams:</strong>
 <ul>
   <% @tournament.teams.order(seed: :asc).each do |t| %>
-    <li>(<%= t.seed %>) <%= t.name %></li>
+    <% num_wins = @tournament.matches.where(winner_id: t.challonge_id).count
+       num_losses = @tournament.matches.where(state: "complete").
+                      where("team1_id = ? OR team2_id = ?", t.challonge_id, t.challonge_id).
+                      where.not(winner_id: t.challonge_id).count
+    %>
+    <li><%= "(#{t.seed}) #{t.name} (#{num_wins} - #{num_losses})" %></li>
   <% end %>
 </ul>
 </p>
