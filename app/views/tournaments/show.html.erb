@@ -41,10 +41,24 @@
 <p><strong>Matches:</strong>
 <ul>
   <% @tournament.matches.order(suggested_play_order: :asc).each.with_index(1) do |m, i| %>
-    <% t1 = m.team1_id ? @tournament.teams.find_by(challonge_id: m.team1_id) : nil %>
-    <% t2 = m.team2_id ? @tournament.teams.find_by(challonge_id: m.team2_id) : nil %>
+    <% if m.team1_id
+           team1_name = @tournament.teams.find_by(challonge_id: m.team1_id).name
+       else
+           winner_or_loser = m.team1_is_prereq_match_loser ? "Loser" : "Winner"
+           match_num = Match.find_by(challonge_id: m.team1_prereq_match_id).suggested_play_order
+           team1_name = "#{winner_or_loser} of match #{match_num}"
+       end
+    %>
+    <% if m.team2_id
+           team2_name = @tournament.teams.find_by(challonge_id: m.team2_id).name
+       else
+           winner_or_loser = m.team2_is_prereq_match_loser ? "Loser" : "Winner"
+           match_num = Match.find_by(challonge_id: m.team2_prereq_match_id).suggested_play_order
+           team2_name = "#{winner_or_loser} of match #{match_num}"
+       end
+    %>
     <li>
-        #<%= i %> - <%= t1&.name || "TBD" %> vs. <%= t2&.name || "TBD" %> -
+        #<%= i %> - <%= team1_name %> vs. <%= team2_name %> -
         <%= m.round < 0 ? "Losers' bracket round" : "Round" %> <%= m.round.abs %>
     </li>
   <% end %>
