@@ -21,6 +21,11 @@
 </p>
 
 <p>
+  <strong>Type:</strong>
+  <%= @tournament.tournament_type %>
+</p>
+
+<p>
   <strong>Challonge URL:</strong>
   <%= @tournament.challonge_url %>
 </p>
@@ -40,7 +45,7 @@
 
 <p><strong>Matches:</strong>
 <ul>
-  <% @tournament.matches.order(suggested_play_order: :asc).each.with_index(1) do |m, i| %>
+  <% @tournament.matches.order(suggested_play_order: :asc).each do |m| %>
     <% if m.team1_id
            team1_name = @tournament.teams.find_by(challonge_id: m.team1_id).name
        else
@@ -57,9 +62,15 @@
            team2_name = "#{winner_or_loser} of match #{match_num}"
        end
     %>
+    <% if @tournament.tournament_type == "double elimination"
+           winners_or_losers = m.round > 0 ? "Winners'" : "Losers'"
+           round = "#{winners_or_losers} round #{m.round.abs}"
+      else
+           round = "Round #{m.round.abs}"
+      end
+    %>
     <li>
-        #<%= i %> - <%= team1_name %> vs. <%= team2_name %> -
-        <%= m.round < 0 ? "Losers' bracket round" : "Round" %> <%= m.round.abs %>
+        <%= "##{m.suggested_play_order} - #{team1_name} vs. #{team2_name} - #{round}" %>
     </li>
   <% end %>
 </ul>
