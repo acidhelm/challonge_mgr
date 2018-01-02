@@ -28,20 +28,15 @@ class TournamentsController < ApplicationController
         end.select do |t|
             t.state == "underway"
         end.map do |t|
-            tournament_record = user.tournaments.find_by(challonge_id: t.id)
+            tournament_record = user.tournaments.find_or_create_by!(challonge_id: t.id)
 
-            if tournament_record.present?
-                tournament_record.update(description: t.description,
-                                         name: t.name,
-                                         state: t.state,
-                                         challonge_url: t.full_challonge_url)
+            tournament_record.description = t.description
+            tournament_record.name = t.name
+            tournament_record.state = t.state
+            tournament_record.challonge_url = t.full_challonge_url
 
-                tournament_record
-            else
-                user.tournaments.create!(
-                  description: t.description, challonge_id: t.id, name: t.name,
-                  state: t.state, challonge_url: t.full_challonge_url)
-            end
+            tournament_record.save
+            tournament_record
         end
     end
 
@@ -63,34 +58,28 @@ class TournamentsController < ApplicationController
         # Read the properties that we care about from the top level of the JSON,
         # then create a new Tournament object, or update the Tournament if it's
         # already in the database.
-        tournament_record = Tournament.find_by(challonge_id: tournament_obj.id)
+        tournament_record = user.tournaments.find_or_create_by!(
+                                challonge_id: tournament_obj.id)
 
-        if tournament_record.present?
-            tournament_record.update(description: tournament_obj.description,
-                                     name: tournament_obj.name,
-                                     state: tournament_obj.state,
-                                     challonge_url: tournament_obj.full_challonge_url)
-        else
-            user.tournaments.create!(
-              description: tournament_obj.description, challonge_id: tournament_obj.id,
-              name: tournament_obj.name, state: tournament_obj.state,
-              challonge_url: tournament_obj.full_challonge_url)
-        end
+        tournament_record.description = tournament_obj.description
+        tournament_record.name = tournament_obj.name
+        tournament_record.state = tournament_obj.state
+        tournament_record.challonge_url = tournament_obj.full_challonge_url
+
+        tournament_record.save
 
         # Read the "participants" array and create a Team object for each one,
         # or update the Team if it's already in the database.
         tournament_obj.participants.map do |participant|
             OpenStruct.new(participant["participant"])
         end.each do |participant_obj|
-            team_record = Team.find_by(challonge_id: participant_obj.id)
+            team_record = @tournament.teams.find_or_create_by!(
+                              challonge_id: participant_obj.id)
 
-            if team_record.present?
-                team_record.update(name: participant_obj.name, seed: participant_obj.seed)
-            else
-                @tournament.teams.create!(name: participant_obj.name,
-                                          seed: participant_obj.seed,
-                                          challonge_id: participant_obj.id)
-            end
+            team_record.name = participant_obj.name
+            team_record.seed = participant_obj.seed
+
+            team_record.save
         end
 
         # Read the "matches" array and create a Match object for each one, or
@@ -98,7 +87,8 @@ class TournamentsController < ApplicationController
         tournament_obj.matches.map do |match|
             OpenStruct.new(match["match"])
         end.each do |match_obj|
-            match_record = @tournament.matches.find_or_create_by!(challonge_id: match_obj.id)
+            match_record = @tournament.matches.find_or_create_by!(
+                               challonge_id: match_obj.id)
 
             match_record.state = match_obj.state
             match_record.team1_id = match_obj.player1_id
