@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  tournament: one
+  challonge_id: 1
+  state: MyString
+  team1_id: 1
+  team2_id: 1
+  winner_id: 1
+  round: 1
+  suggested_play_order: 1
+  scores_csv: MyString
+  underway_at: 2018-01-01
+
+two:
+  tournament: two
+  challonge_id: 1
+  state: MyString
+  team1_id: 1
+  team2_id: 1
+  winner_id: 1
+  round: 1
+  suggested_play_order: 1
+  scores_csv: MyString
+  underway_at: 2018-01-01

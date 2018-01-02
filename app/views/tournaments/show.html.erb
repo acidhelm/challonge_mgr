@@ -32,8 +32,22 @@
 
 <p><strong>Teams:</strong>
 <ul>
-  <% @tournament.teams.each do |t| %>
+  <% @tournament.teams.order(seed: :asc).each do |t| %>
     <li>(<%= t.seed %>) <%= t.name %></li>
+  <% end %>
+</ul>
+</p>
+
+<p><strong>Matches:</strong>
+<ul>
+  <% @tournament.matches.order(suggested_play_order: :asc).each.with_index(1) do |m, i| %>
+    <% t1 = @tournament.teams.find_by(challonge_id: m.team1_id) %>
+    <% t2 = @tournament.teams.find_by(challonge_id: m.team2_id) %>
+    <li>
+        #<%= i %> - <%= "(#{t1.seed})" if t1 %> <%= t1&.name || "TBD" %> vs.
+        <%= "(#{t2.seed})" if t2 %> <%= t2&.name || "TBD" %> -
+        round <%= m.round %>
+    </li>
   <% end %>
 </ul>
 </p>

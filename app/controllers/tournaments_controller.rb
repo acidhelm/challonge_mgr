@@ -92,5 +92,24 @@ class TournamentsController < ApplicationController
                                           challonge_id: participant_obj.id)
             end
         end
+
+        # Read the "matches" array and create a Match object for each one, or
+        # update the Match if it's already in the database.
+        tournament_obj.matches.map do |match|
+            OpenStruct.new(match["match"])
+        end.each do |match_obj|
+            match_record = @tournament.matches.find_or_create_by!(challonge_id: match_obj.id)
+
+            match_record.state = match_obj.state
+            match_record.team1_id = match_obj.player1_id
+            match_record.team2_id = match_obj.player2_id
+            match_record.winner_id = match_obj.winner_id
+            match_record.round = match_obj.round
+            match_record.suggested_play_order = match_obj.suggested_play_order
+            match_record.scores_csv = match_obj.scores_csv
+            match_record.underway_at = match_obj.underway_at
+
+            match_record.save
+        end
     end
 end
