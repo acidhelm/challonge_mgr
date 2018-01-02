@@ -1,3 +1,23 @@
 // Place all the styles related to the Tournaments controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.winning_team
+{
+    font-weight: bold
+}
+
+.losing_team
+{
+}
+
+.upcoming_team
+{
+    color: green
+}
+
+.tbd_team
+{
+    font-style: italic
+}
+
