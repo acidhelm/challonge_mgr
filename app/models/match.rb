@@ -9,4 +9,20 @@ class Match < ApplicationRecord
     def complete?
         return state == "complete"
     end
+
+    def team1_won?
+        return complete? && team1_id == winner_id
+    end
+
+    def team2_won?
+        return complete? && team2_id == winner_id
+    end
+
+    def team1_score
+        return scores_csv.blank? ? 0 : scores_csv.partition(",")[0].split("-")[0]
+    end
+
+    def team2_score
+        return scores_csv.blank? ? 0 : scores_csv.partition(",")[0].split("-")[1]
+    end
 end
