@@ -1,0 +1,46 @@
+<p><ul>
+  <% matches.each do |m| %>
+  <% if m.team1_id
+         team1_name = m.tournament.teams.find_by_challonge_id(m.team1_id).name
+         team1_class = "upcoming_team"
+     else
+         winner_or_loser = m.team1_is_prereq_match_loser ? "Loser" : "Winner"
+         match_num = m.tournament.matches.find_by_challonge_id(m.team1_prereq_match_id).number
+         team1_name = "#{winner_or_loser} of match #{match_num}"
+         team1_class = "tbd_team"
+     end
+  %>
+  <% if m.team2_id
+         team2_name = m.tournament.teams.find_by_challonge_id(m.team2_id).name
+         team2_class = "upcoming_team"
+     else
+         winner_or_loser = m.team2_is_prereq_match_loser ? "Loser" : "Winner"
+         match_num = m.tournament.matches.find_by_challonge_id(m.team2_prereq_match_id).number
+         team2_name = "#{winner_or_loser} of match #{match_num}"
+         team2_class = "tbd_team"
+     end
+  %>
+  <% if m.tournament.tournament_type == "double elimination"
+         winners_or_losers = m.round > 0 ? "Winners'" : "Losers'"
+         round = "#{winners_or_losers} round #{m.round.abs}"
+    else
+         round = "Round #{m.round.abs}"
+    end
+  %>
+  <li>
+    <%= "##{m.number} - " %>
+    <% if m.complete? %>
+        <% team1_class = m.team1_won? ? "winning_team" : "losing_team"
+           team2_class = m.team2_won? ? "winning_team" : "losing_team"
+        %>
+        <span class="<%= team1_class %>"><%= "#{team1_name} #{m.team1_score}" %></span> -
+        <span class="<%= team2_class %>"><%= "#{m.team2_score} #{team2_name}" %></span> -
+        <%= round %>
+    <% else %>
+        <span class="<%= team1_class %>"><%= team1_name %></span> -
+        <span class="<%= team2_class %>"><%= team2_name %></span> -
+        <%= round %>
+    <% end %>
+  </li>
+<% end %>
+</ul></p>
