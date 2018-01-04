@@ -1,17 +1,6 @@
 <h1><%= @tournament.name %><h1>
 <h3><%= link_to @tournament.challonge_url, @tournament.challonge_url, target: :_blank %></h3>
 
-<p><strong>Teams:</strong>
-<ul>
-  <% @tournament.teams.order(seed: :asc).each do |t| %>
-    <% num_wins = @tournament.matches.winner?(t.challonge_id).count
-       num_losses = @tournament.matches.loser?(t.challonge_id).count
-    %>
-    <li><%= "(#{t.seed}) #{t.name} (#{num_wins} - #{num_losses})" %></li>
-  <% end %>
-</ul>
-</p>
-
 <p><strong>Upcoming matches:</strong>
 <ul>
   <% @tournament.matches.upcoming.each do |m| %>
@@ -77,4 +66,15 @@
 </ul>
 </p>
 
-<%= link_to 'Back', tournament_index_path(user: @tournament.user.id) %>
+<p><strong>Team standings:</strong>
+<ul>
+  <% @tournament.teams.order(seed: :asc).each do |t| %>
+    <% num_wins = @tournament.matches.winner?(t.challonge_id).count
+       num_losses = @tournament.matches.loser?(t.challonge_id).count
+    %>
+    <li><%= "(#{t.seed}) #{t.name} (#{num_wins} - #{num_losses})" %></li>
+  <% end %>
+</ul>
+</p>
+
+<%= link_to "Back to the tournament list", tournament_index_path(user: @tournament.user.id) %>
