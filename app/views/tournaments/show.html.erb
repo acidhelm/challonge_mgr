@@ -1,39 +1,5 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @tournament.description %>
-</p>
-
-<p>
-  <strong>Challonge ID:</strong>
-  <%= @tournament.challonge_id %>
-</p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @tournament.name %>
-</p>
-
-<p>
-  <strong>State:</strong>
-  <%= @tournament.state %>
-</p>
-
-<p>
-  <strong>Type:</strong>
-  <%= @tournament.tournament_type %>
-</p>
-
-<p>
-  <strong>Challonge URL:</strong>
-  <%= link_to @tournament.challonge_url, @tournament.challonge_url, target: :_blank %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @tournament.user.user_name %>
-</p>
+<h1><%= @tournament.name %><h1>
+<h3><%= link_to @tournament.challonge_url, @tournament.challonge_url, target: :_blank %></h3>
 
 <p><strong>Teams:</strong>
 <ul>
@@ -46,9 +12,9 @@
 </ul>
 </p>
 
-<p><strong>Matches:</strong>
+<p><strong>Upcoming matches:</strong>
 <ul>
-  <% @tournament.matches.order(suggested_play_order: :asc).each do |m| %>
+  <% @tournament.matches.upcoming.each do |m| %>
     <% if m.team1_id
            team1_name = @tournament.teams.find_by_challonge_id(m.team1_id).name
            team1_class = "upcoming_team"
@@ -72,24 +38,40 @@
     <% if @tournament.tournament_type == "double elimination"
            winners_or_losers = m.round > 0 ? "Winners'" : "Losers'"
            round = "#{winners_or_losers} round #{m.round.abs}"
+       else
+           round = "Round #{m.round}"
+       end
+    %>
+    <li>
+      <%= "##{m.number} - " %>
+      <span class="<%= team1_class %>"><%= team1_name %></span> -
+      <span class="<%= team2_class %>"><%= team2_name %></span> -
+      <%= round %>
+    </li>
+  <% end %>
+</ul>
+</p>
+
+<p><strong>Completed matches:</strong>
+<ul>
+  <% @tournament.matches.completed.each do |m| %>
+    <% if @tournament.tournament_type == "double elimination"
+           winners_or_losers = m.round > 0 ? "Winners'" : "Losers'"
+           round = "#{winners_or_losers} round #{m.round.abs}"
       else
            round = "Round #{m.round.abs}"
       end
     %>
     <li>
       <%= "##{m.number} - " %>
-      <% if m.complete? %>
-          <% team1_class = m.team1_won? ? "winning_team" : "losing_team"
-             team2_class = m.team2_won? ? "winning_team" : "losing_team"
-          %>
-          <span class="<%= team1_class %>"><%= "#{team1_name} #{m.team1_score}" %></span> -
-          <span class="<%= team2_class %>"><%= "#{m.team2_score} #{team2_name}" %></span> -
-          <%= round %>
-      <% else %>
-          <span class="<%= team1_class %>"><%= team1_name %></span> -
-          <span class="<%= team2_class %>"><%= team2_name %></span> -
-          <%= round %>
-      <% end %>
+        <% team1_class = m.team1_won? ? "winning_team" : "losing_team"
+           team2_class = m.team2_won? ? "winning_team" : "losing_team"
+           team1_name = @tournament.teams.find_by_challonge_id(m.team1_id).name
+           team2_name = @tournament.teams.find_by_challonge_id(m.team2_id).name
+        %>
+        <span class="<%= team1_class %>"><%= "#{team1_name} #{m.team1_score}" %></span> -
+        <span class="<%= team2_class %>"><%= "#{m.team2_score} #{team2_name}" %></span> -
+        <%= round %>
     </li>
   <% end %>
 </ul>
