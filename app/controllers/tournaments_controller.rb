@@ -28,7 +28,7 @@ class TournamentsController < ApplicationController
         end.select do |t|
             t.state == "underway"
         end.map do |tournament_obj|
-            tournament_record = user.tournaments.find_or_create_by!(
+            tournament_record = user.tournaments.find_or_initialize_by(
                                     challonge_id: tournament_obj.id)
 
             tournament_record.description = tournament_obj.description
@@ -60,7 +60,7 @@ class TournamentsController < ApplicationController
         # Read the properties that we care about from the top level of the JSON,
         # then create a new Tournament object, or update the Tournament if it's
         # already in the database.
-        tournament_record = user.tournaments.find_or_create_by!(
+        tournament_record = user.tournaments.find_or_initialize_by(
                                 challonge_id: tournament_obj.id)
 
         tournament_record.description = tournament_obj.description
@@ -76,7 +76,7 @@ class TournamentsController < ApplicationController
         tournament_obj.participants.map do |participant|
             OpenStruct.new(participant["participant"])
         end.each do |participant_obj|
-            team_record = @tournament.teams.find_or_create_by!(
+            team_record = @tournament.teams.find_or_initialize_by(
                               challonge_id: participant_obj.id)
 
             team_record.name = participant_obj.name
@@ -90,7 +90,7 @@ class TournamentsController < ApplicationController
         tournament_obj.matches.map do |match|
             OpenStruct.new(match["match"])
         end.each do |match_obj|
-            match_record = @tournament.matches.find_or_create_by!(
+            match_record = @tournament.matches.find_or_initialize_by(
                                challonge_id: match_obj.id)
 
             match_record.state = match_obj.state
