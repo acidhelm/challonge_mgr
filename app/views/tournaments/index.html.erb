@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th>Name</th>
+      <th>Challonge URL</th>
       <th>State</th>
       <th></th>
     </tr>
@@ -15,6 +16,7 @@
     <% @tournaments.each do |tournament| %>
       <tr>
         <td><%= tournament.name %></td>
+        <td><%= link_to tournament.challonge_url, tournament.challonge_url, target: :_blank %></td>
         <td><%= tournament.state %></td>
         <td><%= link_to "Manage this tournament", tournament_path(tournament, refresh: 1) %></td>
       </tr>
