@@ -1,4 +1,4 @@
-<p><ul>
+<ul>
   <% matches.each do |m| %>
   <% if m.team1_id
          team1_name = m.tournament.teams.find_by_challonge_id(m.team1_id).name
@@ -43,4 +43,4 @@
     <% end %>
   </li>
 <% end %>
-</ul></p>
+</ul>
