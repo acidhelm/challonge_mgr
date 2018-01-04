@@ -25,4 +25,11 @@ class Match < ApplicationRecord
     def team2_score
         return scores_csv.blank? ? 0 : scores_csv.partition(",")[0].split("-")[1]
     end
+
+    # The `suggested_play_order` field ranges from 1 to N, which is useful for
+    # identifying matches in the UI.  I don't want to refer to `suggested_play_order`
+    # in views, though, even it is (currently) equal to the match number.
+    def number
+        return suggested_play_order
+    end
 end
