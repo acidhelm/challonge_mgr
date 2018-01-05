@@ -1,9 +1,10 @@
+<% show_actions = !(matches.all?(&:complete?) || matches.all?(&:teams_are_tbd?) || matches.any?(&:current_match?)) %>
 <table>
   <tr>
     <th>Match #</th>
     <th>Round</th>
     <th>Teams</th>
-    <% if show_start_links %>
+    <% if show_actions %>
       <th>Actions</th>
     <% end %>
   </tr>
@@ -52,7 +53,7 @@
       <% end %>
     </td>
     <td>
-      <% if show_start_links && !m.teams_are_tbd? %>
+      <% if !(m.complete? || m.teams_are_tbd? || m.current_match?) %>
         <%= link_to "Start this match", tournament_start_match_path(m.tournament, match_id: m.challonge_id), method: :post %>
       <% end %>
     </td>

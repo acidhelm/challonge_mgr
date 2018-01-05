@@ -5,20 +5,18 @@
 <% if current_match.present? %>
 <hr>
 <p><h2>Current match: #<%= current_match.first.number %></h2>
-<%= render "match_list", matches: current_match, show_start_links: false %>
+<%= render "match_list", matches: current_match %>
 </p>
 <% end %>
 
 <hr>
 <p><h2>Upcoming matches:</h2>
-<%= render "match_list", matches: @tournament.matches.upcoming.reject(&:current_match?),
-                         show_start_links: true %>
+<%= render "match_list", matches: @tournament.matches.upcoming.reject(&:current_match?) %>
 </p>
 
 <hr>
 <p><h2>Completed matches:</h2>
-<%= render "match_list", matches: @tournament.matches.completed,
-                         show_start_links: false %>
+<%= render "match_list", matches: @tournament.matches.completed %>
 </p>
 
 <hr>
