@@ -1,15 +1,26 @@
 <h1><%= @tournament.name %><h1>
 <h3><%= link_to @tournament.challonge_url, @tournament.challonge_url, target: :_blank %></h3>
 
-<p><strong>Upcoming matches:</strong>
-<%= render "match_list", matches: @tournament.matches.upcoming %>
+<hr>
+<p><h2>Current match:</h2>
+<%= render "match_list", matches: @tournament.matches.upcoming.select(&:current_match?),
+                         show_start_links: false %>
 </p>
 
-<p><strong>Completed matches:</strong>
-<%= render "match_list", matches: @tournament.matches.completed %>
+<hr>
+<p><h2>Upcoming matches:</h2>
+<%= render "match_list", matches: @tournament.matches.upcoming.reject(&:current_match?),
+                         show_start_links: true %>
 </p>
 
-<p><strong>Team records:</strong>
+<hr>
+<p><h2>Completed matches:</h2>
+<%= render "match_list", matches: @tournament.matches.completed,
+                         show_start_links: false %>
+</p>
+
+<hr>
+<p><h2>Team records:</h2>
 <ul>
   <% @tournament.teams.order(seed: :asc).each do |t| %>
     <% num_wins = @tournament.matches.winner?(t.challonge_id).count
@@ -20,4 +31,5 @@
 </ul>
 </p>
 
+<hr>
 <%= link_to "Back to the tournament list", tournament_index_path(user: @tournament.user.id) %>

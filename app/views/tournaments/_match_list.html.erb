@@ -1,4 +1,12 @@
-<ul>
+<table>
+  <tr>
+    <th>Match #</th>
+    <th>Round</th>
+    <th>Teams</th>
+    <% if show_start_links %>
+      <th>Actions</th>
+    <% end %>
+  </tr>
   <% matches.each do |m| %>
   <% if m.team1_id
          team1_name = m.tournament.teams.find_by_challonge_id(m.team1_id).name
@@ -20,27 +28,34 @@
          team2_class = "tbd_team"
      end
   %>
-  <% if m.tournament.tournament_type == "double elimination"
-         winners_or_losers = m.round > 0 ? "Winners'" : "Losers'"
-         round = "#{winners_or_losers} round #{m.round.abs}"
-    else
-         round = "Round #{m.round.abs}"
-    end
-  %>
-  <li>
-    <%= "##{m.number} - " %>
-    <% if m.complete? %>
+  <tr>
+    <td><%= m.number %></td>
+    <td>
+      <%= if m.tournament.tournament_type == "double elimination"
+              winners_or_losers = m.round > 0 ? "Winners'" : "Losers'"
+              "#{winners_or_losers} round #{m.round.abs}"
+          else
+              "Round #{m.round.abs}"
+          end
+      %>
+    </td>
+    <td>
+      <% if m.complete? %>
         <% team1_class = m.team1_won? ? "winning_team" : "losing_team"
            team2_class = m.team2_won? ? "winning_team" : "losing_team"
         %>
         <span class="<%= team1_class %>"><%= "#{team1_name} #{m.team1_score}" %></span> -
-        <span class="<%= team2_class %>"><%= "#{m.team2_score} #{team2_name}" %></span> -
-        <%= round %>
-    <% else %>
+        <span class="<%= team2_class %>"><%= "#{m.team2_score} #{team2_name}" %></span>
+      <% else %>
         <span class="<%= team1_class %>"><%= team1_name %></span> -
-        <span class="<%= team2_class %>"><%= team2_name %></span> -
-        <%= round %>
-    <% end %>
-  </li>
-<% end %>
-</ul>
+        <span class="<%= team2_class %>"><%= team2_name %></span>
+      <% end %>
+    </td>
+    <td>
+      <% if show_start_links %>
+        <%= link_to "Start this match", m.tournament %>
+      <% end %>
+    </td>
+  </tr>
+  <% end %>
+</table>
