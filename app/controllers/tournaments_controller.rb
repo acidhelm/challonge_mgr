@@ -109,4 +109,11 @@ class TournamentsController < ApplicationController
             match_record.save
         end
     end
+
+    def start_match
+        @tournament = Tournament.find(params[:id])
+
+        @tournament.update(current_match: params[:match_id])
+        redirect_to @tournament
+    end
 end
