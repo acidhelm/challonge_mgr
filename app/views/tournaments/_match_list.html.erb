@@ -52,8 +52,8 @@
       <% end %>
     </td>
     <td>
-      <% if show_start_links %>
-        <%= link_to "Start this match", m.tournament %>
+      <% if show_start_links && !m.teams_are_tbd? %>
+        <%= link_to "Start this match", tournament_start_match_path(m.tournament, match_id: m.challonge_id), method: :post %>
       <% end %>
     </td>
   </tr>

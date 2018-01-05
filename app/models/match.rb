@@ -31,6 +31,10 @@ class Match < ApplicationRecord
         return state == "open" && challonge_id == tournament.current_match
     end
 
+    def teams_are_tbd?
+        return team1_id.nil? || team2_id.nil?
+    end
+
     def team1_won?
         return complete? && team1_id == winner_id
     end
