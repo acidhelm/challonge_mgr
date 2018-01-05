@@ -31,15 +31,7 @@
   %>
   <tr>
     <td><%= m.number %></td>
-    <td>
-      <%= if m.tournament.tournament_type == "double elimination"
-              winners_or_losers = m.round > 0 ? "Winners'" : "Losers'"
-              "#{winners_or_losers} round #{m.round.abs}"
-          else
-              "Round #{m.round.abs}"
-          end
-      %>
-    </td>
+    <td><%= m.round_name %></td>
     <td>
       <% if m.complete? %>
         <% team1_class = m.team1_won? ? "winning_team" : "losing_team"

@@ -57,4 +57,16 @@ class Match < ApplicationRecord
     def number
         return suggested_play_order
     end
+
+    def round_name(capitalized: true)
+        if tournament.tournament_type == "double elimination"
+            winners_or_losers = round > 0 ? "Winners'" : "Losers'"
+            ret = "#{winners_or_losers} round #{round.abs}"
+        else
+            ret = "Round #{m.round.abs}"
+        end
+
+        ret.downcase! if !capitalized
+        return ret
+    end
 end

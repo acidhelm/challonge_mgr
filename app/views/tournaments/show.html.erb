@@ -4,7 +4,9 @@
 <% current_match = @tournament.matches.upcoming.select(&:current_match?) %>
 <% if current_match.present? %>
 <hr>
-<p><h2>Current match: #<%= current_match.first.number %></h2>
+<p><h2>
+Current match: #<%= current_match.first.number %>
+in <%= current_match.first.round_name(capitalized: false) %></h2>
 <%= render "match_list", matches: current_match %>
 </p>
 <% end %>
