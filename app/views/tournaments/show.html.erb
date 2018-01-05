@@ -1,11 +1,13 @@
 <h1><%= @tournament.name %><h1>
 <h3><%= link_to @tournament.challonge_url, @tournament.challonge_url, target: :_blank %></h3>
 
+<% current_match = @tournament.matches.upcoming.select(&:current_match?) %>
+<% if current_match.present? %>
 <hr>
-<p><h2>Current match:</h2>
-<%= render "match_list", matches: @tournament.matches.upcoming.select(&:current_match?),
-                         show_start_links: false %>
+<p><h2>Current match: #<%= current_match.first.number %></h2>
+<%= render "match_list", matches: current_match, show_start_links: false %>
 </p>
+<% end %>
 
 <hr>
 <p><h2>Upcoming matches:</h2>
