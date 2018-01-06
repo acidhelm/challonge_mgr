@@ -10,7 +10,7 @@
   </tr>
   <% matches.each do |m| %>
   <% if m.team1_id
-         team1_name = m.tournament.teams.find_by_challonge_id(m.team1_id).name
+         team1_name = m.team1_name
          team1_class = "upcoming_team"
      else
          winner_or_loser = m.team1_is_prereq_match_loser ? "Loser" : "Winner"
@@ -20,7 +20,7 @@
      end
   %>
   <% if m.team2_id
-         team2_name = m.tournament.teams.find_by_challonge_id(m.team2_id).name
+         team2_name = m.team2_name
          team2_class = "upcoming_team"
      else
          winner_or_loser = m.team2_is_prereq_match_loser ? "Loser" : "Winner"
@@ -37,10 +37,10 @@
         <% team1_class = m.team1_won? ? "winning_team" : "losing_team"
            team2_class = m.team2_won? ? "winning_team" : "losing_team"
         %>
-        <span class="<%= team1_class %>"><%= "#{team1_name} #{m.team1_score}" %></span> -
+        <span class="<%= team1_class %>"><%= "#{team1_name} #{m.team1_score}" %></span> &mdash;
         <span class="<%= team2_class %>"><%= "#{m.team2_score} #{team2_name}" %></span>
       <% else %>
-        <span class="<%= team1_class %>"><%= team1_name %></span> -
+        <span class="<%= team1_class %>"><%= team1_name %></span> &mdash;
         <span class="<%= team2_class %>"><%= team2_name %></span>
       <% end %>
     </td>

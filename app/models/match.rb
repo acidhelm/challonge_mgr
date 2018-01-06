@@ -44,11 +44,19 @@ class Match < ApplicationRecord
     end
 
     def team1_score
-        return scores_csv.blank? ? 0 : scores_csv.partition(",")[0].split("-")[0]
+        return scores_csv.blank? ? 0 : scores_csv.partition(",")[0].split("-")[0].to_i
     end
 
     def team2_score
-        return scores_csv.blank? ? 0 : scores_csv.partition(",")[0].split("-")[1]
+        return scores_csv.blank? ? 0 : scores_csv.partition(",")[0].split("-")[1].to_i
+    end
+
+    def team1_name
+        return tournament.teams.find_by_challonge_id(team1_id).name
+    end
+
+    def team2_name
+        return tournament.teams.find_by_challonge_id(team2_id).name
     end
 
     # The `suggested_play_order` field ranges from 1 to N, which is useful for
