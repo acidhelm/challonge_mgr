@@ -2,12 +2,52 @@
 <h3><%= link_to @tournament.challonge_url, @tournament.challonge_url, target: :_blank %></h3>
 
 <% current_match = @tournament.matches.upcoming.select(&:current_match?) %>
-<% if current_match.present? %>
+<% if current_match.present?
+       match = current_match.first %>
 <hr>
-<p><h2>
-Current match: #<%= current_match.first.number %>
-in <%= current_match.first.round_name(capitalized: false) %></h2>
-<%= render "match_list", matches: current_match %>
+<p><h1>
+Current match: #<%= match.number %>
+in <%= match.round_name(capitalized: false) %>
+</h1></p>
+<p><table>
+<tr>
+  <td><h1><%= match.team1_name %> <%= match.team1_score %><h1></td>
+  <td><h1>&mdash;</h1></td>
+  <td><h1><%= match.team2_score %> <%= match.team2_name %></h1></td>
+</tr>
+<tr>
+<td><%= button_to 'Add 1 win', tournament_update_score_path(
+                                 @tournament, match_id: match.challonge_id,
+                                 team1_score: match.team1_score + 1,
+                                 team2_score: match.team2_score) %>
+<br>
+<%= button_to 'Subtract 1 win', tournament_update_score_path(
+                                  @tournament, match_id: match.challonge_id,
+                                  score: "#{match.team1_score - 1}-#{match.team2_score}"),
+                                disabled: match.team1_score == 0 %>
+<br>
+<%= button_to 'This team won', tournament_update_winner_path(
+                                 @tournament, match_id: match.challonge_id,
+                                 winner_id: match.team1_id) %>
+</td>
+<td></td>
+<td align='right'>
+<%= button_to 'Add 1 win', tournament_update_score_path(
+                             @tournament, match_id: match.challonge_id,
+                             team1_score: match.team1_score,
+                             team2_score: match.team2_score + 1) %>
+<br>
+<%= button_to 'Subtract 1 win', tournament_update_score_path(
+                                  @tournament, match_id: match.challonge_id,
+                                  score: "#{match.team1_score}-#{match.team2_score - 1}"),
+                                disabled: match.team2_score == 0 %>
+<br>
+<%= button_to 'This team won', tournament_update_winner_path(
+                                 @tournament, match_id: match.challonge_id,
+                                 winner_id: match.team2_id) %>
+</td>
+</tr>
+</table>
 </p>
 <% end %>
 
