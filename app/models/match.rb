@@ -71,7 +71,7 @@ class Match < ApplicationRecord
             winners_or_losers = round > 0 ? "Winners'" : "Losers'"
             ret = "#{winners_or_losers} round #{round.abs}"
         else
-            ret = "Round #{m.round.abs}"
+            ret = "Round #{round}"
         end
 
         ret.downcase! if !capitalized
