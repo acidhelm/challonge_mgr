@@ -51,7 +51,7 @@ class TournamentsController < ApplicationController
         # Re-read the info, matches, and teams for this tournament.
         user = @tournament.user
         url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
-                "v1/tournaments/#{@tournament.challonge_id}.json?"\
+                "v1/tournaments/#{@tournament.challonge_id}.json?" \
                 "include_participants=1&include_matches=1"
         response = RestClient.get(url)
         tournament_hash = JSON.parse(response.body)
@@ -114,6 +114,36 @@ class TournamentsController < ApplicationController
         @tournament = Tournament.find(params[:id])
 
         @tournament.update(current_match: params[:match_id])
+        redirect_to @tournament
+    end
+
+    def update_score
+        @tournament = Tournament.find(params[:id])
+        user = @tournament.user
+        match_id = params[:match_id]
+        team1_score = params[:team1_score]
+        team2_score = params[:team2_score]
+        new_scores_csv = "#{team1_score}-#{team2_score}"
+
+        url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
+                "v1/tournaments/#{@tournament.challonge_id}/matches/" \
+                "#{match_id}.json?match[scores_csv]=#{new_scores_csv}"
+
+        redirect_to @tournament
+    end
+
+    def update_winner
+        @tournament = Tournament.find(params[:id])
+        user = @tournament.user
+        match_id = params[:match_id]
+        match = @tournament.matches.find_by_challonge_id(match_id)
+        winner_id = params[:winner_id]
+
+        url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
+                "v1/tournaments/#{@tournament.challonge_id}/matches/" \
+                "#{match_id}.json?match[scores_csv]=#{match.scores_csv}&" \
+                "match[winner_id]=#{winner_id}"
+
         redirect_to @tournament
     end
 end
