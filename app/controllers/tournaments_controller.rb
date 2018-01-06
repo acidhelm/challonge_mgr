@@ -121,13 +121,21 @@ class TournamentsController < ApplicationController
         @tournament = Tournament.find(params[:id])
         user = @tournament.user
         match_id = params[:match_id]
+        match = @tournament.matches.find_by_challonge_id(match_id)
         team1_score = params[:team1_score]
         team2_score = params[:team2_score]
         new_scores_csv = "#{team1_score}-#{team2_score}"
 
         url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
-                "v1/tournaments/#{@tournament.challonge_id}/matches/" \
-                "#{match_id}.json?match[scores_csv]=#{new_scores_csv}"
+                "v1/tournaments/#{@tournament.challonge_id}/matches/#{match_id}.json"
+
+        response = RestClient.put(url, "match[scores_csv]=#{new_scores_csv}",
+                                  content_type: "application/x-www-form-urlencoded")
+        match_obj = OpenStruct.new(JSON.parse(response.body)["match"])
+
+        match.state = match_obj.state
+        match.scores_csv = match_obj.scores_csv
+        match.save
 
         redirect_to @tournament
     end
@@ -140,10 +148,21 @@ class TournamentsController < ApplicationController
         winner_id = params[:winner_id]
 
         url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
-                "v1/tournaments/#{@tournament.challonge_id}/matches/" \
-                "#{match_id}.json?match[scores_csv]=#{match.scores_csv}&" \
-                "match[winner_id]=#{winner_id}"
+                "v1/tournaments/#{@tournament.challonge_id}/matches/#{match_id}.json"
 
-        redirect_to @tournament
+        response = RestClient.put(url,
+                                  "match[scores_csv]=#{match.scores_csv}&" \
+                                    "match[winner_id]=#{winner_id}",
+                                  content_type: "application/x-www-form-urlencoded")
+
+        match_obj = OpenStruct.new(JSON.parse(response.body)["match"])
+
+        match.state = match_obj.state
+        match.scores_csv = match_obj.scores_csv
+        match.save
+
+        @tournament.update(current_match: nil)
+
+        redirect_to tournament_path(@tournament, refresh: 1)
     end
 end

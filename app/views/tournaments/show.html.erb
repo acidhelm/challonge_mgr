@@ -23,8 +23,9 @@ in <%= match.round_name(capitalized: false) %>
 <br>
 <%= button_to 'Subtract 1 win', tournament_update_score_path(
                                   @tournament, match_id: match.challonge_id,
-                                  score: "#{match.team1_score - 1}-#{match.team2_score}"),
-                                disabled: match.team1_score == 0 %>
+                                  team1_score: match.team1_score - 1,
+                                  team2_score: match.team2_score),
+                                  disabled: match.team1_score == 0 %>
 <br>
 <%= button_to 'This team won', tournament_update_winner_path(
                                  @tournament, match_id: match.challonge_id,
@@ -39,7 +40,8 @@ in <%= match.round_name(capitalized: false) %>
 <br>
 <%= button_to 'Subtract 1 win', tournament_update_score_path(
                                   @tournament, match_id: match.challonge_id,
-                                  score: "#{match.team1_score}-#{match.team2_score - 1}"),
+                                  team1_score: match.team1_score,
+                                  team2_score: match.team2_score - 1),
                                 disabled: match.team2_score == 0 %>
 <br>
 <%= button_to 'This team won', tournament_update_winner_path(
