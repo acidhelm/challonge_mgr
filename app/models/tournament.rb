@@ -6,6 +6,7 @@ class Tournament < ApplicationRecord
     validates :challonge_id, numericality: { only_integer: true, greater_than: 0 },
                              uniqueness: true
     validates :name, presence: true
+    validates :challonge_alphanumeric_id, presence: true, uniqueness: true
     validates :state, presence: true
     validates :challonge_url, presence: true, uniqueness: true
     validates :tournament_type, presence: true

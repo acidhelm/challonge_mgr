@@ -33,6 +33,7 @@ class TournamentsController < ApplicationController
 
             tournament_record.description = tournament_obj.description
             tournament_record.name = tournament_obj.name
+            tournament_record.challonge_alphanumeric_id = tournament_obj.url
             tournament_record.state = tournament_obj.state
             tournament_record.challonge_url = tournament_obj.full_challonge_url
             tournament_record.tournament_type = tournament_obj.tournament_type
