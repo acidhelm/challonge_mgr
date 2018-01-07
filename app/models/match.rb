@@ -74,7 +74,6 @@ class Match < ApplicationRecord
             ret = "Round #{round}"
         end
 
-        ret.downcase! if !capitalized
-        return ret
+        return capitalized ? ret : ret.downcase
     end
 end
