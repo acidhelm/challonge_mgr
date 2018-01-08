@@ -40,6 +40,7 @@ class TournamentsController < ApplicationController
             tournament_record.state = tournament_obj.state
             tournament_record.challonge_url = tournament_obj.full_challonge_url
             tournament_record.tournament_type = tournament_obj.tournament_type
+            tournament_record.gold_on_left ||= Rails.configuration.gold_on_left_default
 
             tournament_record.save
             tournament_record
