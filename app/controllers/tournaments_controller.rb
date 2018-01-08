@@ -1,15 +1,18 @@
 class TournamentsController < ApplicationController
+    before_action :set_tournament, only: [:show, :start_match, :update_score,
+                                          :update_winner]
+
     # GET /tournaments
     def index
         if params[:user].blank?
-            redirect_to "/users", notice: "You must pass a \"user\" parameter in the URL."
+            redirect_to users_path, notice: "You must pass a \"user\" parameter in the URL."
             return
         end
 
         begin
             user = User.find(params[:user])
         rescue ActiveRecord::RecordNotFound
-            redirect_to "/users", notice: "That user was not found."
+            redirect_to users_path, notice: "That user was not found."
             return
         end
 
@@ -45,7 +48,7 @@ class TournamentsController < ApplicationController
 
     # GET /tournaments/1
     def show
-        @tournament = Tournament.find(params[:id])
+        return unless @tournament.present?
 
         return if params[:refresh].blank?
 
@@ -112,14 +115,15 @@ class TournamentsController < ApplicationController
     end
 
     def start_match
-        @tournament = Tournament.find(params[:id])
+        return unless @tournament.present?
 
         @tournament.update(current_match: params[:match_id])
         redirect_to @tournament
     end
 
     def update_score
-        @tournament = Tournament.find(params[:id])
+        return unless @tournament.present?
+
         user = @tournament.user
         match_id = params[:match_id]
         match = @tournament.matches.find_by_challonge_id(match_id)
@@ -142,7 +146,8 @@ class TournamentsController < ApplicationController
     end
 
     def update_winner
-        @tournament = Tournament.find(params[:id])
+        return unless @tournament.present?
+
         user = @tournament.user
         match_id = params[:match_id]
         match = @tournament.matches.find_by_challonge_id(match_id)
@@ -165,5 +170,32 @@ class TournamentsController < ApplicationController
         @tournament.update(current_match: nil)
 
         redirect_to tournament_path(@tournament, refresh: 1)
+    end
+
+    protected
+    def set_tournament
+        @tournament = nil
+        id = params[:id]
+
+        # If the ID is all numbers, look for a Tournament whose primary key is
+        # that number.
+        if id =~ /^\d+$/
+            begin
+                @tournament = Tournament.find(id)
+            rescue ActiveRecord::RecordNotFound
+                # Eat the exception; we'll try searching again, treating `id` as
+                # the `challonge_alphanumeric_id`.
+            end
+        end
+
+        if @tournament.nil?
+            @tournament = Tournament.find_by_challonge_alphanumeric_id(id)
+        end
+
+        if @tournament.nil?
+            render plain: "That tournament was not found.", status: :not_found
+        end
+
+        return @tournament.present?
     end
 end
