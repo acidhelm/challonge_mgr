@@ -11,6 +11,7 @@ class TournamentsController < ApplicationController
 
         begin
             user = User.find(params[:user])
+            @user_name = user.user_name
         rescue ActiveRecord::RecordNotFound
             redirect_to users_path, notice: "That user was not found."
             return
