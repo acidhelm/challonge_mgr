@@ -112,19 +112,7 @@ class TournamentsController < ApplicationController
             match_record.team1_is_prereq_match_loser = match_obj.player1_is_prereq_match_loser
             match_record.team2_is_prereq_match_loser = match_obj.player2_is_prereq_match_loser
 
-            # If this match's teams are not TBD, and the teams have not been
-            # assigned cabs yet (which means that this match just switched from
-            # TBD to not-TBD), then set the teams' colors.  Team 1 defaults to
-            # the left cab, and team 2 defaults to the right cab.
-            if !match_record.teams_are_tbd? && match_record.gold_team_id.nil?
-                if match_record.tournament.gold_on_left
-                    match_record.gold_team_id = match_record.team1_id
-                    match_record.blue_team_id = match_record.team2_id
-                else
-                    match_record.gold_team_id = match_record.team2_id
-                    match_record.blue_team_id = match_record.team1_id
-                end
-            end
+            match_record.assign_cabinets!
 
             match_record.save
         end
@@ -143,9 +131,9 @@ class TournamentsController < ApplicationController
         user = @tournament.user
         match_id = params[:match_id]
         match = @tournament.matches.find_by_challonge_id(match_id)
-        team1_score = params[:team1_score]
-        team2_score = params[:team2_score]
-        new_scores_csv = "#{team1_score}-#{team2_score}"
+        left_score = params[:left_score]
+        right_score = params[:right_score]
+        new_scores_csv = match.make_scores_csv(left_score: left_score, right_score: right_score)
 
         url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
                 "v1/tournaments/#{@tournament.challonge_id}/matches/#{match_id}.json"

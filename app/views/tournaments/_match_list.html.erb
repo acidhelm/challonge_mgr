@@ -9,24 +9,34 @@
     <% end %>
   </tr>
   <% matches.each do |m| %>
-  <% if m.team1_id
-         team1_name = m.team1_name
-         team1_class = "upcoming_team"
+  <% if m.get_team_id(:left)
+         left_team_name = m.left_team_name
+
+         if m.complete?
+             left_team_class = m.left_team_won? ? "winning_team" : "losing_team"
+         else
+             left_team_class = "upcoming_team"
+         end
      else
-         winner_or_loser = m.team1_is_prereq_match_loser ? "Loser" : "Winner"
-         match_num = m.tournament.matches.find_by_challonge_id(m.team1_prereq_match_id).number
-         team1_name = "#{winner_or_loser} of match #{match_num}"
-         team1_class = "tbd_team"
+         winner_or_loser = m.left_team_is_prereq_match_loser? ? "Loser" : "Winner"
+         match_num = m.tournament.matches.find_by_challonge_id(m.left_team_prereq_match_id).number
+         left_team_name = "#{winner_or_loser} of match #{match_num}"
+         left_team_class = "tbd_team"
      end
   %>
-  <% if m.team2_id
-         team2_name = m.team2_name
-         team2_class = "upcoming_team"
+  <% if m.get_team_id(:right)
+         right_team_name = m.right_team_name
+
+         if m.complete?
+             right_team_class = m.right_team_won? ? "winning_team" : "losing_team"
+         else
+             right_team_class = "upcoming_team"
+         end
      else
-         winner_or_loser = m.team2_is_prereq_match_loser ? "Loser" : "Winner"
-         match_num = m.tournament.matches.find_by_challonge_id(m.team2_prereq_match_id).number
-         team2_name = "#{winner_or_loser} of match #{match_num}"
-         team2_class = "tbd_team"
+         winner_or_loser = m.right_team_is_prereq_match_loser? ? "Loser" : "Winner"
+         match_num = m.tournament.matches.find_by_challonge_id(m.right_team_prereq_match_id).number
+         right_team_name = "#{winner_or_loser} of match #{match_num}"
+         right_team_class = "tbd_team"
      end
   %>
   <tr>
@@ -34,14 +44,11 @@
     <td><%= m.round_name %></td>
     <td>
       <% if m.complete? %>
-        <% team1_class = m.team1_won? ? "winning_team" : "losing_team"
-           team2_class = m.team2_won? ? "winning_team" : "losing_team"
-        %>
-        <span class="<%= team1_class %>"><%= "#{team1_name} #{m.team1_score}" %></span> &mdash;
-        <span class="<%= team2_class %>"><%= "#{m.team2_score} #{team2_name}" %></span>
+        <span class="<%= left_team_class %>"><%= "#{left_team_name} #{m.left_team_score}" %></span> &mdash;
+        <span class="<%= right_team_class %>"><%= "#{m.right_team_score} #{right_team_name}" %></span>
       <% else %>
-        <span class="<%= team1_class %>"><%= team1_name %></span> &mdash;
-        <span class="<%= team2_class %>"><%= team2_name %></span>
+        <span class="<%= left_team_class %>"><%= left_team_name %></span> &mdash;
+        <span class="<%= right_team_class %>"><%= right_team_name %></span>
       <% end %>
     </td>
     <td>

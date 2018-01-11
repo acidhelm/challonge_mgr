@@ -9,44 +9,50 @@
 Current match: #<%= match.number %>
 in <%= match.round_name(capitalized: false) %>
 </h1></p>
-<p><table>
+<p>
+<table>
 <tr>
-  <td><h1><%= match.team1_name %> <%= match.team1_score %><h1></td>
+  <td><h2><%= match.left_cabinet_color %></h2></td>
+  <td><h2>&#x21cb;</h2></td>
+  <td align="right"><h2><%= match.right_cabinet_color %></h2></td>
+</tr>
+<tr>
+  <td><h1><%= match.left_team_name %> <%= match.left_team_score %><h1></td>
   <td><h1>&mdash;</h1></td>
-  <td><h1><%= match.team2_score %> <%= match.team2_name %></h1></td>
+  <td><h1><%= match.right_team_score %> <%= match.right_team_name %><h1></td>
 </tr>
 <tr>
 <td><%= button_to 'Add 1 win', tournament_update_score_path(
                                  @tournament, match_id: match.challonge_id,
-                                 team1_score: match.team1_score + 1,
-                                 team2_score: match.team2_score) %>
+                                 left_score: match.left_team_score + 1,
+                                 right_score: match.right_team_score) %>
 <br>
 <%= button_to 'Subtract 1 win', tournament_update_score_path(
                                   @tournament, match_id: match.challonge_id,
-                                  team1_score: match.team1_score - 1,
-                                  team2_score: match.team2_score),
-                                  disabled: match.team1_score == 0 %>
+                                  left_score: match.left_team_score - 1,
+                                  right_score: match.right_team_score),
+                                  disabled: match.left_team_score == 0 %>
 <br>
 <%= button_to 'This team won', tournament_update_winner_path(
                                  @tournament, match_id: match.challonge_id,
-                                 winner_id: match.team1_id) %>
+                                 winner_id: match.get_team_id(:left)) %>
 </td>
 <td></td>
 <td align='right'>
 <%= button_to 'Add 1 win', tournament_update_score_path(
                              @tournament, match_id: match.challonge_id,
-                             team1_score: match.team1_score,
-                             team2_score: match.team2_score + 1) %>
+                             left_score: match.left_team_score,
+                             right_score: match.right_team_score + 1) %>
 <br>
 <%= button_to 'Subtract 1 win', tournament_update_score_path(
                                   @tournament, match_id: match.challonge_id,
-                                  team1_score: match.team1_score,
-                                  team2_score: match.team2_score - 1),
-                                disabled: match.team2_score == 0 %>
+                                  left_score: match.left_team_score,
+                                  right_score: match.right_team_score - 1),
+                                  disabled: match.right_team_score == 0 %>
 <br>
 <%= button_to 'This team won', tournament_update_winner_path(
                                  @tournament, match_id: match.challonge_id,
-                                 winner_id: match.team2_id) %>
+                                 winner_id: match.get_team_id(:right)) %>
 </td>
 </tr>
 </table>

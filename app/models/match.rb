@@ -35,6 +35,124 @@ class Match < ApplicationRecord
         return team1_id.nil? || team2_id.nil?
     end
 
+    def assign_cabinets!
+        # If this match's teams are not TBD, and the teams have not been
+        # assigned cabs yet (which means that this match just switched from
+        # TBD to not-TBD), then set the teams' colors.  Team 1 defaults to
+        # the left cab, and team 2 defaults to the right cab.
+        if !teams_are_tbd? && gold_team_id.nil?
+            if tournament.gold_on_left
+                gold_team_id = team1_id
+                blue_team_id = team2_id
+            else
+                gold_team_id = team2_id
+                blue_team_id = team1_id
+            end
+        end
+    end
+
+    def left_team_name
+        return tournament.teams.find_by_challonge_id(get_team_id(:left)).name
+    end
+
+    def right_team_name
+        return tournament.teams.find_by_challonge_id(get_team_id(:right)).name
+    end
+
+    def left_team_score
+        return 0 if scores_csv.blank?
+
+        scores = scores_csv.partition(",")[0].split("-").map(&:to_i)
+
+        return (get_team_id(:left) == team1_id) ? scores[0] : scores[1]
+    end
+
+    def right_team_score
+        return 0 if scores_csv.blank?
+
+        scores = scores_csv.partition(",")[0].split("-").map(&:to_i)
+
+        return (get_team_id(:right) == team1_id) ? scores[0] : scores[1]
+    end
+
+    def left_team_won?
+        return complete? && get_team_id(:left) == winner_id
+    end
+
+    def right_team_won?
+        return complete? && get_team_id(:right) == winner_id
+    end
+
+    def left_team_is_prereq_match_loser?
+        team_id = get_team_id(:left)
+
+        if team_id
+            return (team_id == team1_id) ? team1_is_prereq_match_loser :
+                                           team2_is_prereq_match_loser
+        else
+            return team1_is_prereq_match_loser
+        end
+    end
+
+    def right_team_is_prereq_match_loser?
+        team_id = get_team_id(:right)
+
+        if team_id
+            return (team_id == team1_id) ? team1_is_prereq_match_loser :
+                                           team2_is_prereq_match_loser
+        else
+            return team2_is_prereq_match_loser
+        end
+    end
+
+    def left_team_prereq_match_id
+        team_id = get_team_id(:left)
+
+        if team_id
+            return (team_id == team1_id) ? team1_prereq_match_id :
+                                           team2_prereq_match_id
+        else
+            return team1_prereq_match_id
+        end
+    end
+
+    def right_team_prereq_match_id
+        team_id = get_team_id(:right)
+
+        if team_id
+            return (team_id == team1_id) ? team1_prereq_match_id :
+                                           team2_prereq_match_id
+        else
+            return team2_prereq_match_id
+        end
+    end
+
+    def get_team_id(side)
+        if side == :left
+            left_team_id = tournament.gold_on_left ? gold_team_id : blue_team_id
+            return left_team_id ? left_team_id : team1_id
+        else
+            right_team_id = tournament.gold_on_left ? blue_team_id : gold_team_id
+            return right_team_id ? right_team_id : team2_id
+        end
+    end
+
+    def make_scores_csv(left_score:, right_score:)
+        if team1_id == get_team_id(:left)
+            return "#{left_score}-#{right_score}"
+        else
+            return "#{right_score}-#{left_score}"
+        end
+    end
+
+    def left_cabinet_color
+        return tournament.gold_on_left ? "Gold" : "Blue"
+    end
+
+    def right_cabinet_color
+        return tournament.gold_on_left ? "Blue" : "Gold"
+    end
+
     def team1_won?
         return complete? && team1_id == winner_id
     end
