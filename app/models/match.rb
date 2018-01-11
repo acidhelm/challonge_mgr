@@ -40,7 +40,7 @@ class Match < ApplicationRecord
         # assigned cabs yet (which means that this match just switched from
         # TBD to not-TBD), then set the teams' colors.  Team 1 defaults to
         # the left cab, and team 2 defaults to the right cab.
-        if !teams_are_tbd? && gold_team_id.nil?
+        if !teams_are_tbd? && !cabinets_assigned?
             if tournament.gold_on_left
                 gold_team_id = team1_id
                 blue_team_id = team2_id
@@ -49,6 +49,10 @@ class Match < ApplicationRecord
                 blue_team_id = team1_id
             end
         end
+    end
+
+    def cabinets_assigned?
+        return gold_team_id && blue_team_id
     end
 
     def left_team_name
