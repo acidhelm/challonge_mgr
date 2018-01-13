@@ -147,8 +147,8 @@ class Match < ApplicationRecord
         end
     end
 
-    def make_scores_csv(left_score:, right_score:)
-        if team1_id == get_team_id(:left)
+    def make_scores_csv(left_score, right_score)
+        if get_team_id(:left) == team1_id
             return "#{left_score}-#{right_score}"
         else
             return "#{right_score}-#{left_score}"

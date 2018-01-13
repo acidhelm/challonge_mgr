@@ -132,7 +132,7 @@ class TournamentsController < ApplicationController
         match = @tournament.matches.find_by_challonge_id(match_id)
         left_score = params[:left_score]
         right_score = params[:right_score]
-        new_scores_csv = match.make_scores_csv(left_score: left_score, right_score: right_score)
+        new_scores_csv = match.make_scores_csv(left_score, right_score)
 
         url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
                 "v1/tournaments/#{@tournament.challonge_id}/matches/#{match_id}.json"
