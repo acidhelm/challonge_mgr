@@ -164,10 +164,11 @@ class Match < ApplicationRecord
     end
 
     # The `suggested_play_order` field ranges from 1 to N, which is useful for
-    # identifying matches in the UI.  I don't want to refer to `suggested_play_order`
-    # in views, though, even it is (currently) equal to the match number.
+    # identifying matches in the UI.  In the first stage of a two-stage
+    # tournament, there is no `suggested_play_order` value, so use
+    # `identifier` instead.
     def number
-        return suggested_play_order
+        return suggested_play_order || identifier
     end
 
     def round_name(capitalized: true)
