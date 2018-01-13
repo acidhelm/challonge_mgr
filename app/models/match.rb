@@ -42,17 +42,23 @@ class Match < ApplicationRecord
         # the left cab, and team 2 defaults to the right cab.
         if !teams_are_tbd? && !cabinets_assigned?
             if tournament.gold_on_left
-                gold_team_id = team1_id
-                blue_team_id = team2_id
+                self.gold_team_id = team1_id
+                self.blue_team_id = team2_id
             else
-                gold_team_id = team2_id
-                blue_team_id = team1_id
+                self.gold_team_id = team2_id
+                self.blue_team_id = team1_id
             end
         end
     end
 
+    def switch_team_sides!
+        temp = self.gold_team_id
+        self.gold_team_id = self.blue_team_id
+        self.blue_team_id = temp
+    end
+
     def cabinets_assigned?
-        return gold_team_id && blue_team_id
+        return gold_team_id.present? && blue_team_id.present?
     end
 
     def left_team_name

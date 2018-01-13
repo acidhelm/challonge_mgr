@@ -1,6 +1,5 @@
 class TournamentsController < ApplicationController
-    before_action :set_tournament, only: [:show, :start_match, :update_score,
-                                          :update_winner]
+    before_action :set_tournament, except: [ :index ]
 
     # GET /tournaments
     def index
@@ -174,6 +173,18 @@ class TournamentsController < ApplicationController
         @tournament.update(current_match: nil)
 
         redirect_to tournament_path(@tournament, refresh: 1)
+    end
+
+    def switch_sides
+        return unless @tournament.present?
+
+        match_id = params[:match_id]
+        match = @tournament.matches.find_by_challonge_id(match_id)
+
+        match.switch_team_sides!
+        match.save
+
+        redirect_to @tournament
     end
 
     protected

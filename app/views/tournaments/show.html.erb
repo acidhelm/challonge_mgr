@@ -12,14 +12,14 @@ in <%= match.round_name(capitalized: false) %>
 <p>
 <table>
 <tr>
-  <td><h2><%= match.left_cabinet_color %></h2></td>
-  <td><h2>&#x21cb;</h2></td>
-  <td align="right"><h2><%= match.right_cabinet_color %></h2></td>
+  <td align="center"><h2><%= match.left_cabinet_color %></h2></td>
+  <td></td>
+  <td align="center"><h2><%= match.right_cabinet_color %></h2></td>
 </tr>
 <tr>
   <td><h1><%= match.left_team_name %> <%= match.left_team_score %><h1></td>
-  <td><h1>&mdash;</h1></td>
-  <td><h1><%= match.right_team_score %> <%= match.right_team_name %><h1></td>
+  <td align="center"><h1>&mdash;</h1></td>
+  <td align="right"><h1><%= match.right_team_score %> <%= match.right_team_name %><h1></td>
 </tr>
 <tr>
 <td><%= button_to 'Add 1 win', tournament_update_score_path(
@@ -37,7 +37,11 @@ in <%= match.round_name(capitalized: false) %>
                                  @tournament, match_id: match.challonge_id,
                                  winner_id: match.get_team_id(:left)) %>
 </td>
-<td></td>
+<td valign="top" align="center">
+<%= button_to "Switch sides",
+              tournament_switch_sides_path(
+                @tournament, match_id: match.challonge_id) %>
+</td>
 <td align='right'>
 <%= button_to 'Add 1 win', tournament_update_score_path(
                              @tournament, match_id: match.challonge_id,
