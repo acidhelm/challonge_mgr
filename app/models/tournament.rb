@@ -10,4 +10,6 @@ class Tournament < ApplicationRecord
     validates :state, presence: true
     validates :challonge_url, presence: true, uniqueness: true
     validates :tournament_type, presence: true
+
+    scope :underway?, -> { where(state: [ "underway", "group_stages_underway" ]) }
 end
