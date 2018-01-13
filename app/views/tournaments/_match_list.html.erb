@@ -51,11 +51,11 @@
         <span class="<%= right_team_class %>"><%= right_team_name %></span>
       <% end %>
     </td>
-    <td>
-      <% if !(m.complete? || m.teams_are_tbd? || m.current_match?) %>
+    <% if !(m.complete? || m.teams_are_tbd? || m.current_match?) %>
+      <td>
         <%= link_to "Start this match", tournament_start_match_path(m.tournament, match_id: m.challonge_id), method: :post %>
-      <% end %>
-    </td>
+      </td>
+    <% end %>
   </tr>
   <% end %>
 </table>
