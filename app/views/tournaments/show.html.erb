@@ -31,11 +31,12 @@ in <%= match.round_name(capitalized: false) %>
                                   @tournament, match_id: match.challonge_id,
                                   left_score: match.left_team_score - 1,
                                   right_score: match.right_team_score),
-                                  disabled: match.left_team_score == 0 %>
+                                disabled: match.left_team_score == 0 %>
 <br>
 <%= button_to 'This team won', tournament_update_winner_path(
                                  @tournament, match_id: match.challonge_id,
-                                 winner_id: match.get_team_id(:left)) %>
+                                 winner_id: match.get_team_id(:left)),
+                               disabled: match.left_team_score <= match.right_team_score %>
 </td>
 <td valign="top" align="center">
 <%= button_to "Switch sides",
@@ -52,11 +53,12 @@ in <%= match.round_name(capitalized: false) %>
                                   @tournament, match_id: match.challonge_id,
                                   left_score: match.left_team_score,
                                   right_score: match.right_team_score - 1),
-                                  disabled: match.right_team_score == 0 %>
+                                disabled: match.right_team_score == 0 %>
 <br>
 <%= button_to 'This team won', tournament_update_winner_path(
                                  @tournament, match_id: match.challonge_id,
-                                 winner_id: match.get_team_id(:right)) %>
+                                 winner_id: match.get_team_id(:right)),
+                               disabled: match.right_team_score <= match.left_team_score %>
 </td>
 </tr>
 </table>
