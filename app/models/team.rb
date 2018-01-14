@@ -8,13 +8,6 @@ class Team < ApplicationRecord
     validates :name, presence: true
     validates :seed, numericality: { only_integer: true, greater_than: 0 }
 
-    def self.from_id(id)
-        return where(challonge_id: id) if Team.where(challonge_id: id).any?
-
-        Team.find_each do |t|
-            return where(challonge_id: t.challonge_id) if t.group_team_ids.include? id
-        end
-
-        return Team.none
-    end
+    scope :from_id, ->(id) { select { |team| team.challonge_id == id ||
+                                             team.group_team_ids.include?(id) } }
 end
