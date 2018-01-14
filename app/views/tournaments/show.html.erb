@@ -77,14 +77,21 @@ in <%= match.round_name(capitalized: false) %>
 
 <hr>
 <p><h2>Team records:</h2>
-<ul>
-  <% @tournament.teams.order(seed: :asc).each do |t| %>
-    <% num_wins = @tournament.matches.winner?(t).count
-       num_losses = @tournament.matches.loser?(t).count
-    %>
-    <li><%= "(#{t.seed}) #{t.name} (#{num_wins} - #{num_losses})" %></li>
-  <% end %>
-</ul>
+<table>
+<tr>
+  <th>Seed</th>
+  <th>Team (W-L)</th>
+</tr>
+<% @tournament.teams.order(seed: :asc).each do |t| %>
+  <% num_wins = @tournament.matches.winner?(t).count
+     num_losses = @tournament.matches.loser?(t).count
+  %>
+  <tr>
+    <td><%= t.seed %></td>
+    <td><%= "#{t.name} (#{num_wins} - #{num_losses})" %></td>
+  </tr>
+<% end %>
+</table>
 </p>
 
 <hr>
