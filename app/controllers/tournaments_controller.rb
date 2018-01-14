@@ -190,6 +190,14 @@ class TournamentsController < ApplicationController
         redirect_to @tournament
     end
 
+    def switch_cabinet_sides
+        return unless @tournament.present?
+
+        @tournament.toggle!(:gold_on_left)
+
+        redirect_to @tournament
+    end
+
     protected
     def set_tournament
         @tournament = nil
