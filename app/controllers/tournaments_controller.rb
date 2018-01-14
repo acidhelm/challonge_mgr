@@ -103,6 +103,7 @@ class TournamentsController < ApplicationController
             match_record.team1_id = match_obj.player1_id
             match_record.team2_id = match_obj.player2_id
             match_record.winner_id = match_obj.winner_id
+            match_record.loser_id = match_obj.loser_id
             match_record.round = match_obj.round
             match_record.suggested_play_order = match_obj.suggested_play_order
             match_record.identifier = match_obj.identifier
