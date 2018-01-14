@@ -23,3 +23,7 @@
     <% end %>
   </tbody>
 </table>
+<p>
+<%= link_to "Reload the tournament list from Challonge", tournament_index_path(user: @user_id, refresh: 1) %> |
+<%= link_to "Back to the user list", users_path %>
+</p>
