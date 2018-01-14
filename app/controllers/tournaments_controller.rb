@@ -86,6 +86,7 @@ class TournamentsController < ApplicationController
 
             team_record.name = participant_obj.name
             team_record.seed = participant_obj.seed
+            team_record.group_team_ids = participant_obj.group_player_ids
 
             team_record.save
         end

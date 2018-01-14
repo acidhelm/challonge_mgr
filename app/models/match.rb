@@ -62,11 +62,11 @@ class Match < ApplicationRecord
     end
 
     def left_team_name
-        return tournament.teams.find_by_challonge_id(get_team_id(:left)).name
+        return tournament.teams.from_id(get_team_id(:left)).first.name
     end
 
     def right_team_name
-        return tournament.teams.find_by_challonge_id(get_team_id(:right)).name
+        return tournament.teams.from_id(get_team_id(:right)).first.name
     end
 
     def left_team_score
