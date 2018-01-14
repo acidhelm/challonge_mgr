@@ -14,8 +14,8 @@ class Match < ApplicationRecord
                                      allow_nil: true
 
     scope :complete?, -> { where(state: "complete") }
-    scope :winner?, ->(id) { complete?.where(winner_id: id) }
-    scope :loser?, ->(id) { complete?.where(loser_id: id) }
+    scope :winner?, ->(team) { complete?.where(winner_id: [team.challonge_id, team.group_team_ids].flatten) }
+    scope :loser?, ->(team) { complete?.where(loser_id: [team.challonge_id, team.group_team_ids].flatten) }
     scope :upcoming, -> { where.not(state: "complete").order(suggested_play_order: :asc) }
     scope :completed, -> { complete?.order(suggested_play_order: :asc) }
 
