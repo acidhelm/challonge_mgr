@@ -16,4 +16,14 @@ class Tournament < ApplicationRecord
     def self.states_to_show
         return %w(underway group_stages_underway awaiting_review)
     end
+
+    def update!(obj)
+        self.description = obj.description
+        self.name = obj.name
+        self.challonge_alphanumeric_id = obj.url
+        self.state = obj.state
+        self.challonge_url = obj.full_challonge_url
+        self.tournament_type = obj.tournament_type
+        self.gold_on_left ||= Rails.configuration.gold_on_left_default
+    end
 end

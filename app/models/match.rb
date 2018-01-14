@@ -20,6 +20,25 @@ class Match < ApplicationRecord
     scope :upcoming, -> { where.not(state: "complete").order(suggested_play_order: :asc, identifier: :asc) }
     scope :completed, -> { complete?.order(suggested_play_order: :asc) }
 
+    def update!(obj)
+        self.state = obj.state
+        self.team1_id = obj.player1_id
+        self.team2_id = obj.player2_id
+        self.winner_id = obj.winner_id
+        self.loser_id = obj.loser_id
+        self.round = obj.round
+        self.suggested_play_order = obj.suggested_play_order
+        self.identifier = obj.identifier
+        self.scores_csv = obj.scores_csv
+        self.underway_at = obj.underway_at
+        self.team1_prereq_match_id = obj.player1_prereq_match_id
+        self.team2_prereq_match_id = obj.player2_prereq_match_id
+        self.team1_is_prereq_match_loser = obj.player1_is_prereq_match_loser
+        self.team2_is_prereq_match_loser = obj.player2_is_prereq_match_loser
+
+        assign_cabinets!
+    end
+
     def complete?
         return state == "complete"
     end

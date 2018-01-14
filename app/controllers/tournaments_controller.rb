@@ -9,7 +9,8 @@ class TournamentsController < ApplicationController
         end
 
         begin
-            user = User.find(params[:user])
+            @user_id = params[:user]
+            user = User.find(@user_id)
             @user_name = user.user_name
         rescue ActiveRecord::RecordNotFound
             redirect_to users_path, notice: "That user was not found."
@@ -34,15 +35,9 @@ class TournamentsController < ApplicationController
             tournament_record = user.tournaments.find_or_initialize_by(
                                     challonge_id: tournament_obj.id)
 
-            tournament_record.description = tournament_obj.description
-            tournament_record.name = tournament_obj.name
-            tournament_record.challonge_alphanumeric_id = tournament_obj.url
-            tournament_record.state = tournament_obj.state
-            tournament_record.challonge_url = tournament_obj.full_challonge_url
-            tournament_record.tournament_type = tournament_obj.tournament_type
-            tournament_record.gold_on_left ||= Rails.configuration.gold_on_left_default
-
+            tournament_record.update!(tournament_obj)
             tournament_record.save
+
             tournament_record
         end
     end
@@ -63,17 +58,11 @@ class TournamentsController < ApplicationController
         tournament_obj = OpenStruct.new(tournament_hash["tournament"])
 
         # Read the properties that we care about from the top level of the JSON,
-        # then create a new Tournament object, or update the Tournament if it's
-        # already in the database.
-        tournament_record = user.tournaments.find_or_initialize_by(
+        # and update the Tournament object.
+        tournament_record = user.tournaments.find_by(
                                 challonge_id: tournament_obj.id)
 
-        tournament_record.description = tournament_obj.description
-        tournament_record.name = tournament_obj.name
-        tournament_record.state = tournament_obj.state
-        tournament_record.challonge_url = tournament_obj.full_challonge_url
-        tournament_record.tournament_type = tournament_obj.tournament_type
-
+        tournament_record.update!(tournament_obj)
         tournament_record.save
 
         # Read the "participants" array and create a Team object for each one,
@@ -84,10 +73,7 @@ class TournamentsController < ApplicationController
             team_record = @tournament.teams.find_or_initialize_by(
                               challonge_id: participant_obj.id)
 
-            team_record.name = participant_obj.name
-            team_record.seed = participant_obj.seed
-            team_record.group_team_ids = participant_obj.group_player_ids
-
+            team_record.update!(participant_obj)
             team_record.save
         end
 
@@ -99,23 +85,7 @@ class TournamentsController < ApplicationController
             match_record = @tournament.matches.find_or_initialize_by(
                                challonge_id: match_obj.id)
 
-            match_record.state = match_obj.state
-            match_record.team1_id = match_obj.player1_id
-            match_record.team2_id = match_obj.player2_id
-            match_record.winner_id = match_obj.winner_id
-            match_record.loser_id = match_obj.loser_id
-            match_record.round = match_obj.round
-            match_record.suggested_play_order = match_obj.suggested_play_order
-            match_record.identifier = match_obj.identifier
-            match_record.scores_csv = match_obj.scores_csv
-            match_record.underway_at = match_obj.underway_at
-            match_record.team1_prereq_match_id = match_obj.player1_prereq_match_id
-            match_record.team2_prereq_match_id = match_obj.player2_prereq_match_id
-            match_record.team1_is_prereq_match_loser = match_obj.player1_is_prereq_match_loser
-            match_record.team2_is_prereq_match_loser = match_obj.player2_is_prereq_match_loser
-
-            match_record.assign_cabinets!
-
+            match_record.update!(match_obj)
             match_record.save
         end
     end

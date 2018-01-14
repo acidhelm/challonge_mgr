@@ -10,4 +10,10 @@ class Team < ApplicationRecord
 
     scope :from_id, ->(id) { select { |team| team.challonge_id == id ||
                                              team.group_team_ids.include?(id) } }
+
+    def update!(obj)
+        self.name = obj.name
+        self.seed = obj.seed
+        self.group_team_ids = obj.group_player_ids
+    end
 end
