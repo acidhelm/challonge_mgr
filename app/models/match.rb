@@ -12,11 +12,12 @@ class Match < ApplicationRecord
     # allow nil.
     validates :suggested_play_order, numericality: { only_integer: true, greater_than: 0 },
                                      allow_nil: true
+    validates :identifier, presence: true
 
     scope :complete?, -> { where(state: "complete") }
     scope :winner?, ->(team) { complete?.where(winner_id: [team.challonge_id, team.group_team_ids].flatten) }
     scope :loser?, ->(team) { complete?.where(loser_id: [team.challonge_id, team.group_team_ids].flatten) }
-    scope :upcoming, -> { where.not(state: "complete").order(suggested_play_order: :asc) }
+    scope :upcoming, -> { where.not(state: "complete").order(suggested_play_order: :asc, identifier: :asc) }
     scope :completed, -> { complete?.order(suggested_play_order: :asc) }
 
     def complete?
