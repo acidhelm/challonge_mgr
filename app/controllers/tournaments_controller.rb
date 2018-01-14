@@ -29,7 +29,7 @@ class TournamentsController < ApplicationController
         @tournaments = tournaments_array.map do |t|
             OpenStruct.new(t["tournament"])
         end.select do |t|
-            [ "underway", "group_stages_underway" ].include? t.state
+            Tournament.states_to_show.include? t.state
         end.map do |tournament_obj|
             tournament_record = user.tournaments.find_or_initialize_by(
                                     challonge_id: tournament_obj.id)
