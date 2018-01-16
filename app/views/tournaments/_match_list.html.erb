@@ -53,7 +53,7 @@
     </td>
     <% if !(m.complete? || m.teams_are_tbd? || m.current_match?) %>
       <td>
-        <%= link_to "Start this match", tournament_start_match_path(m.tournament, match_id: m.challonge_id), method: :post %>
+        <%= link_to "Start this match", [ :start, @user, @tournament, m ], method: :post %>
       </td>
     <% end %>
   </tr>

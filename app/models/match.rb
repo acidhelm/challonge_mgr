@@ -44,10 +44,7 @@ class Match < ApplicationRecord
     end
 
     def current_match?
-        # I use the `challonge_id` field for `current_match` instead of `id`
-        # because the Challonge ID is easier to find than the database ID, and
-        # that makes debugging easier.
-        return state == "open" && challonge_id == tournament.current_match
+        return state == "open" && id == tournament.current_match
     end
 
     def teams_are_tbd?

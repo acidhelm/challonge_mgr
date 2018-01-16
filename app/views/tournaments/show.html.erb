@@ -22,42 +22,46 @@ in <%= match.round_name(capitalized: false) %>
   <td align="right"><h1><%= match.right_team_score %> <%= match.right_team_name %><h1></td>
 </tr>
 <tr>
-<td><%= button_to 'Add 1 win', tournament_update_score_path(
-                                 @tournament, match_id: match.challonge_id,
+<td><%= button_to 'Add 1 win', user_tournament_match_path(
+                                 @user, @tournament, match,
                                  left_score: match.left_team_score + 1,
-                                 right_score: match.right_team_score) %>
+                                 right_score: match.right_team_score),
+                               method: :put %>
 <br>
-<%= button_to 'Subtract 1 win', tournament_update_score_path(
-                                  @tournament, match_id: match.challonge_id,
+<%= button_to 'Subtract 1 win', user_tournament_match_path(
+                                  @user, @tournament, match,
                                   left_score: match.left_team_score - 1,
                                   right_score: match.right_team_score),
+                                method: :put,
                                 disabled: match.left_team_score == 0 %>
 <br>
-<%= button_to 'This team won', tournament_update_winner_path(
-                                 @tournament, match_id: match.challonge_id,
+<%= button_to 'This team won', user_tournament_match_path(
+                                 @user, @tournament, match,
                                  winner_id: match.get_team_id(:left)),
+                               method: :put,
                                disabled: match.left_team_score <= match.right_team_score %>
 </td>
 <td valign="top" align="center">
-<%= button_to "Switch sides",
-              tournament_switch_sides_path(
-                @tournament, match_id: match.challonge_id) %>
+<%= button_to "Switch sides", [ :switch, @user, @tournament, match ] %>
 </td>
 <td align='right'>
-<%= button_to 'Add 1 win', tournament_update_score_path(
-                             @tournament, match_id: match.challonge_id,
+<%= button_to 'Add 1 win', user_tournament_match_path(
+                             @user, @tournament, match,
                              left_score: match.left_team_score,
-                             right_score: match.right_team_score + 1) %>
+                             right_score: match.right_team_score + 1),
+                           method: :put %>
 <br>
-<%= button_to 'Subtract 1 win', tournament_update_score_path(
-                                  @tournament, match_id: match.challonge_id,
+<%= button_to 'Subtract 1 win', user_tournament_match_path(
+                                  @user, @tournament, match,
                                   left_score: match.left_team_score,
                                   right_score: match.right_team_score - 1),
+                                method: :put,
                                 disabled: match.right_team_score == 0 %>
 <br>
-<%= button_to 'This team won', tournament_update_winner_path(
-                                 @tournament, match_id: match.challonge_id,
+<%= button_to 'This team won', user_tournament_match_path(
+                                 @user, @tournament, match,
                                  winner_id: match.get_team_id(:right)),
+                               method: :put,
                                disabled: match.right_team_score <= match.left_team_score %>
 </td>
 </tr>
@@ -95,7 +99,7 @@ in <%= match.round_name(capitalized: false) %>
 </p>
 
 <hr>
-<%= link_to "Reload this tournament from Challonge", tournament_path(@tournament, refresh: 1) %> |
-<%= link_to "Switch the cabinet positions", tournament_switch_cabinet_sides_path(@tournament),
+<%= link_to "Reload this tournament from Challonge", [ :refresh, @user, @tournament ] %> |
+<%= link_to "Switch the cabinet positions", [ :switch, @user, @tournament ],
             method: :post %> |
-<%= link_to "Back to the tournament list", tournament_index_path(user: @tournament.user.id) %>
+<%= link_to "Back to the tournament list", user_tournaments_path(@user) %>
