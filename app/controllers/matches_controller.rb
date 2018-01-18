@@ -13,6 +13,10 @@ class MatchesController < ApplicationController
         right_score = params[:right_score]
         winner_id = params[:winner_id]
 
+        # If `winner_id` is present, then the caller is setting the winner, not
+        # changing the score.  Challonge requires us to send the `scores_csv`
+        # param, even if we're just setting the winner, so use the match's
+        # current scores.
         if winner_id.present?
             new_scores_csv = @match.scores_csv
         else
@@ -34,6 +38,7 @@ class MatchesController < ApplicationController
         @match.scores_csv = match_obj.scores_csv
         @match.save
 
+        # If `winner_id` is present, then the current match is over.
         tournament.update(current_match: nil) if winner_id.present?
 
         redirect_to refresh_user_tournament_path(user, tournament)
