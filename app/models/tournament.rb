@@ -26,4 +26,8 @@ class Tournament < ApplicationRecord
         self.tournament_type = obj.tournament_type
         self.gold_on_left ||= Rails.configuration.gold_on_left_default
     end
+
+    def set_current_match(match)
+        update(current_match: match.id)
+    end
 end

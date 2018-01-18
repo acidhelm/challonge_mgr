@@ -3,12 +3,10 @@ class MatchesController < ApplicationController
 
     def start
         @match.tournament.update(current_match: @match.id)
-        redirect_to user_tournament_path(@match.tournament.user, @match.tournament)
+        redirect_to user_tournament_path(@user, @tournament)
     end
 
     def update
-        tournament = @match.tournament
-        user = tournament.user
         left_score = params[:left_score]
         right_score = params[:right_score]
         winner_id = params[:winner_id]
@@ -26,8 +24,8 @@ class MatchesController < ApplicationController
         post_data = "match[scores_csv]=#{new_scores_csv}"
         post_data << "&match[winner_id]=#{winner_id}" if winner_id.present?
 
-        url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
-                "v1/tournaments/#{tournament.challonge_id}/matches/" \
+        url = "https://#{@user.user_name}:#{@user.api_key}@api.challonge.com/" \
+                "v1/tournaments/#{@tournament.challonge_id}/matches/" \
                 "#{@match.challonge_id}.json"
 
         response = RestClient.put(url, post_data,
@@ -39,16 +37,16 @@ class MatchesController < ApplicationController
         @match.save
 
         # If `winner_id` is present, then the current match is over.
-        tournament.update(current_match: nil) if winner_id.present?
+        @tournament.update(current_match: nil) if winner_id.present?
 
-        redirect_to refresh_user_tournament_path(user, tournament)
+        redirect_to refresh_user_tournament_path(@user, @tournament)
     end
 
     def switch
         @match.switch_team_sides!
         @match.save
 
-        redirect_to user_tournament_path(@match.tournament.user, @match.tournament)
+        redirect_to user_tournament_path(@user, @tournament)
     end
 
     protected
@@ -57,6 +55,8 @@ class MatchesController < ApplicationController
 
         begin
             @match = Match.find(params[:id])
+            @tournament = @match.tournament
+            @user = @tournament.user
         rescue ActiveRecord::RecordNotFound
             render plain: "That match was not found.", status: :not_found
         end
