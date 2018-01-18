@@ -28,6 +28,6 @@ class Tournament < ApplicationRecord
     end
 
     def set_current_match(match)
-        update(current_match: match.id)
+        update(current_match: match&.id)
     end
 end

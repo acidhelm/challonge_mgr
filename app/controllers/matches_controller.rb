@@ -2,7 +2,7 @@ class MatchesController < ApplicationController
     before_action :set_match
 
     def start
-        @match.tournament.update(current_match: @match.id)
+        @tournament.set_current_match(@match)
         redirect_to user_tournament_path(@user, @tournament)
     end
 
@@ -37,7 +37,7 @@ class MatchesController < ApplicationController
         @match.save
 
         # If `winner_id` is present, then the current match is over.
-        @tournament.update(current_match: nil) if winner_id.present?
+        @tournament.set_current_match(nil) if winner_id.present?
 
         redirect_to refresh_user_tournament_path(@user, @tournament)
     end
