@@ -36,7 +36,7 @@ class MatchesController < ApplicationController
         @match.save
 
         # If `winner_id` is present, then the current match is over.
-        @tournament.set_current_match(nil) if winner_id.present?
+        @tournament.set_match_complete(@match) if winner_id.present?
 
         redirect_to refresh_user_tournament_path(@user, @tournament)
     end
