@@ -32,8 +32,7 @@ class MatchesController < ApplicationController
                                   content_type: "application/x-www-form-urlencoded")
         match_obj = OpenStruct.new(JSON.parse(response.body)["match"])
 
-        @match.state = match_obj.state
-        @match.scores_csv = match_obj.scores_csv
+        @match.update!(match_obj)
         @match.save
 
         # If `winner_id` is present, then the current match is over.
