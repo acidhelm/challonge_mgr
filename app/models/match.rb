@@ -78,11 +78,11 @@ class Match < ApplicationRecord
     end
 
     def left_team_name
-        return tournament.teams.from_id(get_team_id(:left)).first.name
+        return tournament.teams.from_id(get_team_id(:left)).first&.name
     end
 
     def right_team_name
-        return tournament.teams.from_id(get_team_id(:right)).first.name
+        return tournament.teams.from_id(get_team_id(:right)).first&.name
     end
 
     def left_team_score
