@@ -109,6 +109,24 @@ class Match < ApplicationRecord
         return complete? && get_team_id(:right) == winner_id
     end
 
+    def winning_team_name
+        return nil if !complete?
+        return left_team_won? ? left_team_name : right_team_name
+    end
+
+    def losing_team_name
+        return nil if !complete?
+        return left_team_won? ? right_team_name :  left_team_name
+    end
+
+    def winning_team_score
+        return left_team_won? ? left_team_score : right_team_score
+    end
+
+    def losing_team_score
+        return left_team_won? ? right_team_score : left_team_score
+    end
+
     def left_team_is_prereq_match_loser?
         team_id = get_team_id(:left)
 
