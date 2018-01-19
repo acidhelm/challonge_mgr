@@ -14,7 +14,7 @@ class Tournament < ApplicationRecord
     scope :underway?, -> { where(state: Tournament.states_to_show) }
 
     def self.states_to_show
-        return %w(underway group_stages_underway awaiting_review)
+        return %w(underway group_stages_underway awaiting_review).freeze
     end
 
     def update!(obj)
