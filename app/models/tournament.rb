@@ -30,7 +30,7 @@ class Tournament < ApplicationRecord
     def set_current_match(match)
         update(current_match: match.id)
 
-        if send_slack_notifications && slack_channel.present?
+        if send_slack_notifications && slack_notifications_channel.present?
             next_match = nil
 
             if matches.upcoming.reject(&:current_match?).present?
@@ -44,7 +44,7 @@ class Tournament < ApplicationRecord
     def set_match_complete(match)
         update(current_match: nil)
 
-        if send_slack_notifications && slack_channel.present?
+        if send_slack_notifications && slack_notifications_channel.present?
             TournamentsHelper.notify_match_complete(self, match)
         end
     end

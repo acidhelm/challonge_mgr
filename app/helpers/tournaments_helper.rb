@@ -10,7 +10,7 @@ module TournamentsHelper
                      " #{next_match.right_team_name || "TBD"}."
         end
 
-        notify_slack(tournament.slack_channel, msg)
+        notify_slack(tournament.slack_notifications_channel, msg)
     end
 
     def self.notify_match_complete(tournament, match)
@@ -18,7 +18,7 @@ module TournamentsHelper
                 " #{match.losing_team_name}" \
                 " #{match.winning_team_score}-#{match.losing_team_score}."
 
-        notify_slack(tournament.slack_channel, msg)
+        notify_slack(tournament.slack_notifications_channel, msg)
     end
 
     def self.notify_slack(slack_channel, msg)
