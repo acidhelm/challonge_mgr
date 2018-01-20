@@ -6,8 +6,7 @@
   <thead>
     <tr>
       <th>User name</th>
-      <th>API key</th>
-      <th colspan="4"></th>
+      <th colspan="4">Actions</th>
     </tr>
   </thead>
 
@@ -15,7 +14,6 @@
     <% @users.each do |user| %>
       <tr>
         <td><%= user.user_name %></td>
-        <td><%= user.api_key.truncate 10 %></td>
         <td><%= link_to "Manage this user's tournaments", user_tournaments_refresh_path(user) %></td>
         <td><%= link_to "Show", user %></td>
         <td><%= link_to "Edit", edit_user_path(user) %></td>
