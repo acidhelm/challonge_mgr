@@ -28,6 +28,9 @@ class TournamentsController < ApplicationController
             tournament_record
         end
 
+        # Delete completed tournaments from the database.
+        @user.tournaments.complete?.each(&:destroy)
+
         redirect_to user_tournaments_path(@user)
     end
 
