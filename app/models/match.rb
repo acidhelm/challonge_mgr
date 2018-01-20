@@ -4,9 +4,7 @@ class Match < ApplicationRecord
     validates :challonge_id, numericality: { only_integer: true, greater_than: 0 },
                              uniqueness: true
     validates :state, presence: true
-    # `round` is normally positive, but in double-elimination tournaments, it is
-    # negative for matches that are in the losers' bracket.
-    validates :round, numericality: { only_integer: true, other_than: 0 }
+    validates :round, numericality: { only_integer: true }
     # `suggested_play_order` is normally positive, but in two-stage tournaments
     # where the first stage is played in groups, it is null, so we have to
     # allow nil.
