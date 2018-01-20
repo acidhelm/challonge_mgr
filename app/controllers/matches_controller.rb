@@ -33,7 +33,15 @@ class MatchesController < ApplicationController
         # If `winner_id` is present, then the current match is over.
         @tournament.set_match_complete(@match) if winner_id.present?
 
-        redirect_to refresh_user_tournament_path(@user, @tournament)
+        # If we are finishing a match, then we need to refresh the tournament,
+        # because the result of this match may have changed the teams that are
+        # in future matches.  If we're just updating the score of the current
+        # match, there's no need to refresh the tournament.
+        if winner_id.present?
+            redirect_to refresh_user_tournament_path(@user, @tournament)
+        else
+            redirect_to user_tournament_path(@user, @tournament)
+        end
     end
 
     def switch
