@@ -18,7 +18,10 @@
         <td><%= tournament.name %></td>
         <td><%= link_to tournament.challonge_url, tournament.challonge_url, target: :_blank %></td>
         <td><%= tournament.state.gsub("_", " ") %></td>
-        <td><%= link_to "Manage this tournament", [ :refresh, @user, tournament ] %></td>
+        <td>
+          <%= link_to "Manage this tournament", [ :refresh, @user, tournament ] %> |
+          <%= link_to "Edit this tournament's settings", [ :edit, @user, tournament ] %>
+        </td>
       </tr>
     <% end %>
   </tbody>

@@ -3,9 +3,8 @@ Rails.application.routes.draw do
     resources :users do
         get "tournaments/refresh", to: "tournaments#refresh_all"
 
-        resources :tournaments, only: [ :index, :show ] do
+        resources :tournaments, only: [ :index, :show, :edit, :update ] do
             get "refresh", on: :member
-            post "switch", on: :member
 
             resources :matches , only: [ :update ] do
                 post "switch", on: :member

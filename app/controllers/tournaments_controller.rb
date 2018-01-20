@@ -77,9 +77,17 @@ class TournamentsController < ApplicationController
         redirect_to user_tournament_path(@user, @tournament)
     end
 
-    def switch
-        @tournament.toggle!(:gold_on_left)
-        redirect_to user_tournament_path(@user, @tournament)
+    def edit
+    end
+
+    def update
+        respond_to do |format|
+            if @tournament.update(tournament_params)
+                format.html { redirect_to user_tournament_path(@user, @tournament) }
+            else
+                format.html { render :edit }
+            end
+        end
     end
 
     protected
@@ -89,7 +97,7 @@ class TournamentsController < ApplicationController
         begin
             @user = User.find(params[:user_id])
         rescue ActiveRecord::RecordNotFound
-            render plain: "That user was not found."
+            render plain: "That user was not found.", status: :not_found
         end
 
         return @user.present?
@@ -105,5 +113,10 @@ class TournamentsController < ApplicationController
         end
 
         return @tournament.present?
+    end
+
+    def tournament_params
+        params.require(:tournament).
+          permit(:gold_on_left, :send_slack_notifications, :slack_notifications_channel)
     end
 end

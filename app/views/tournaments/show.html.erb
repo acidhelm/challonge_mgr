@@ -100,6 +100,5 @@ in <%= match.round_name(capitalized: false) %>
 
 <hr>
 <%= link_to "Reload this tournament from Challonge", [ :refresh, @user, @tournament ] %> |
-<%= link_to "Switch the cabinet positions", [ :switch, @user, @tournament ],
-            method: :post %> |
+<%= link_to "Edit this tournament's settings", [ :edit, @user, @tournament ] %> |
 <%= link_to "Back to the tournament list", user_tournaments_path(@user) %>

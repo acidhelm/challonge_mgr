@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180114073658) do
+ActiveRecord::Schema.define(version: 20180119192407) do
 
   create_table "matches", force: :cascade do |t|
     t.integer "tournament_id"
@@ -60,6 +60,8 @@ ActiveRecord::Schema.define(version: 20180114073658) do
     t.integer "current_match"
     t.string "challonge_alphanumeric_id"
     t.boolean "gold_on_left"
+    t.boolean "send_slack_notifications", default: false
+    t.string "slack_notifications_channel"
     t.index ["user_id"], name: "index_tournaments_on_user_id"
   end
 
