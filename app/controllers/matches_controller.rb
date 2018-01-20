@@ -24,13 +24,8 @@ class MatchesController < ApplicationController
         post_data = "match[scores_csv]=#{new_scores_csv}"
         post_data << "&match[winner_id]=#{winner_id}" if winner_id.present?
 
-        url = "https://#{@user.user_name}:#{@user.api_key}@api.challonge.com/" \
-                "v1/tournaments/#{@tournament.challonge_id}/matches/" \
-                "#{@match.challonge_id}.json"
-
-        response = RestClient.put(url, post_data,
-                                  content_type: "application/x-www-form-urlencoded")
-        match_obj = OpenStruct.new(JSON.parse(response.body)["match"])
+        match_hash = ApplicationHelper.update_match(@match, post_data)
+        match_obj = OpenStruct.new(match_hash["match"])
 
         @match.update!(match_obj)
         @match.save

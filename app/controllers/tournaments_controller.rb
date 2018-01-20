@@ -9,10 +9,7 @@ class TournamentsController < ApplicationController
 
     # GET /tournaments/refresh
     def refresh_all
-        url = "https://#{@user.user_name}:#{@user.api_key}@api.challonge.com/" \
-                "v1/tournaments.json"
-        response = RestClient.get(url)
-        tournaments_array = JSON.parse(response.body)
+        tournaments_array = ApplicationHelper.get_tournament_list(@user)
 
         @tournaments = tournaments_array.map do |t|
             OpenStruct.new(t["tournament"])
@@ -41,11 +38,7 @@ class TournamentsController < ApplicationController
     # GET /tournaments/1/refresh
     def refresh
         # Re-read the info, matches, and teams for this tournament.
-        url = "https://#{@user.user_name}:#{@user.api_key}@api.challonge.com/" \
-                "v1/tournaments/#{@tournament.challonge_id}.json?" \
-                "include_participants=1&include_matches=1"
-        response = RestClient.get(url)
-        tournament_hash = JSON.parse(response.body)
+        tournament_hash = ApplicationHelper.get_tournament_info(@tournament)
         tournament_obj = OpenStruct.new(tournament_hash["tournament"])
 
         # Read the properties that we care about from the top level of the JSON,
