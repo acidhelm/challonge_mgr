@@ -28,7 +28,7 @@ class TournamentsController < ApplicationController
         # Delete completed tournaments from the database.
         @user.tournaments.complete?.each(&:destroy)
 
-        redirect_to user_tournaments_path(@user)
+        redirect_to action: "index"
     end
 
     # GET /tournaments/1
@@ -70,7 +70,7 @@ class TournamentsController < ApplicationController
             match_record.save
         end
 
-        redirect_to user_tournament_path(@user, @tournament)
+        redirect_to action: "show"
     end
 
     def edit
