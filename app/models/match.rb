@@ -125,6 +125,14 @@ class Match < ApplicationRecord
         return left_team_won? ? right_team_score : left_team_score
     end
 
+    def gold_team_name
+        return tournament.gold_on_left ? left_team_name : right_team_name
+    end
+
+    def blue_team_name
+        return tournament.gold_on_left ? right_team_name : left_team_name
+    end
+
     def left_team_is_prereq_match_loser?
         team_id = get_team_id(:left)
 

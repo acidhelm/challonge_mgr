@@ -12,5 +12,7 @@ Rails.application.routes.draw do
             end
         end
     end
-    get "view/:tournament_id", to: "tournaments#view"
+    get "view/:id", to: "tournaments#view"
+    get "view/:id/gold", to: "tournaments#gold"
+    get "view/:id/blue", to: "tournaments#blue"
 end

@@ -1,6 +1,7 @@
 class TournamentsController < ApplicationController
-    before_action :set_user, except: [ :view ]
-    before_action :set_tournament, except: [ :index, :refresh_all, :view ]
+    before_action :set_user, except: [ :view, :gold, :blue ]
+    before_action :set_tournament, except: [ :index, :refresh_all, :view, :gold, :blue ]
+    before_action :set_tournament_from_alphanumeric_id, only: [ :gold, :blue ]
 
     # GET /tournaments
     def index
@@ -87,13 +88,34 @@ class TournamentsController < ApplicationController
     end
 
     def view
-        @tournament = Tournament.readonly.find_by_challonge_alphanumeric_id(params[:tournament_id])
+        @tournament = Tournament.readonly.find_by_challonge_alphanumeric_id(params[:id])
 
         if @tournament.present?
+            @user = @tournament.user
             render :show
         else
-            render plain: "That tournament was not found.", status: :not_found
+            render_not_found_error
         end
+    end
+
+    def gold
+        if @tournament.current_match.present?
+            render plain: Match.find(@tournament.current_match).gold_team_name
+        else
+            render plain: ""
+        end
+    rescue ActiveRecord::RecordNotFound
+        render plain: ""
+    end
+
+    def blue
+        if @tournament.current_match.present?
+            render plain: Match.find(@tournament.current_match).blue_team_name
+        else
+            render plain: ""
+        end
+    rescue ActiveRecord::RecordNotFound
+        render plain: ""
     end
 
     protected
@@ -115,8 +137,16 @@ class TournamentsController < ApplicationController
         begin
             @tournament = Tournament.find(params[:id])
         rescue ActiveRecord::RecordNotFound
-            render plain: "That tournament was not found.", status: :not_found
+            render_not_found_error
         end
+
+        return @tournament.present?
+    end
+
+    def set_tournament_from_alphanumeric_id
+        @tournament = Tournament.find_by_challonge_alphanumeric_id(params[:id])
+
+        render_not_found_error if @tournament.blank?
 
         return @tournament.present?
     end
@@ -124,5 +154,9 @@ class TournamentsController < ApplicationController
     def tournament_params
         params.require(:tournament).
           permit(:gold_on_left, :send_slack_notifications, :slack_notifications_channel)
+    end
+
+    def render_not_found_error
+        render plain: "That tournament was not found.", status: :not_found
     end
 end
