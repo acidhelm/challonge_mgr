@@ -21,6 +21,7 @@ in <%= match.round_name(capitalized: false) %>
   <td align="center"><h1>&mdash;</h1></td>
   <td align="right"><h1><%= match.right_team_score %> <%= match.right_team_name %><h1></td>
 </tr>
+<% if !@tournament.readonly? %>
 <tr>
 <td><%= button_to 'Add 1 win', user_tournament_match_path(
                                  @user, @tournament, match,
@@ -65,6 +66,7 @@ in <%= match.round_name(capitalized: false) %>
                                disabled: match.right_team_score <= match.left_team_score %>
 </td>
 </tr>
+<% end %>
 </table>
 </p>
 <% end %>
@@ -99,6 +101,8 @@ in <%= match.round_name(capitalized: false) %>
 </p>
 
 <hr>
-<%= link_to "Reload this tournament from Challonge", [ :refresh, @user, @tournament ] %> |
-<%= link_to "Edit this tournament's settings", [ :edit, @user, @tournament ] %> |
-<%= link_to "Back to the tournament list", user_tournaments_path(@user) %>
+<% if !@tournament.readonly? %>
+  <%= link_to "Reload this tournament from Challonge", [ :refresh, @user, @tournament ] %> |
+  <%= link_to "Edit this tournament's settings", [ :edit, @user, @tournament ] %> |
+  <%= link_to "Back to the tournament list", user_tournaments_path(@user) %>
+<% end %>

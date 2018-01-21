@@ -1,6 +1,6 @@
 class TournamentsController < ApplicationController
-    before_action :set_user
-    before_action :set_tournament, except: [ :index, :refresh_all ]
+    before_action :set_user, except: [ :view ]
+    before_action :set_tournament, except: [ :index, :refresh_all, :view ]
 
     # GET /tournaments
     def index
@@ -83,6 +83,16 @@ class TournamentsController < ApplicationController
             else
                 format.html { render :edit }
             end
+        end
+    end
+
+    def view
+        @tournament = Tournament.readonly.find_by_challonge_alphanumeric_id(params[:tournament_id])
+
+        if @tournament.present?
+            render :show
+        else
+            render plain: "That tournament was not found.", status: :not_found
         end
     end
 

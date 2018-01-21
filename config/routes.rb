@@ -12,4 +12,5 @@ Rails.application.routes.draw do
             end
         end
     end
+    get "view/:tournament_id", to: "tournaments#view"
 end
