@@ -1,48 +1,27 @@
-require 'test_helper'
+require "test_helper"
 
 class TournamentsControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    @tournament = tournaments(:one)
-  end
-
-  test "should get index" do
-    get tournaments_url
-    assert_response :success
-  end
-
-  test "should get new" do
-    get new_tournament_url
-    assert_response :success
-  end
-
-  test "should create tournament" do
-    assert_difference('Tournament.count') do
-      post tournaments_url, params: { tournament: { challonge_id: @tournament.challonge_id, challonge_url: @tournament.challonge_url, description: @tournament.description, name: @tournament.name, state: @tournament.state, user_id: @tournament.user_id } }
+    setup do
+        @tournament = tournaments(:one)
     end
 
-    assert_redirected_to tournament_url(Tournament.last)
-  end
-
-  test "should show tournament" do
-    get tournament_url(@tournament)
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get edit_tournament_url(@tournament)
-    assert_response :success
-  end
-
-  test "should update tournament" do
-    patch tournament_url(@tournament), params: { tournament: { challonge_id: @tournament.challonge_id, challonge_url: @tournament.challonge_url, description: @tournament.description, name: @tournament.name, state: @tournament.state, user_id: @tournament.user_id } }
-    assert_redirected_to tournament_url(@tournament)
-  end
-
-  test "should destroy tournament" do
-    assert_difference('Tournament.count', -1) do
-      delete tournament_url(@tournament)
+    test "Get the tournaments index" do
+        get user_tournaments_path(@tournament.user)
+        assert_response :success
     end
 
-    assert_redirected_to tournaments_url
-  end
+    test "Show a tournament" do
+        get user_tournament_path(@tournament.user, @tournament)
+        assert_response :success
+    end
+
+    test "Get the tournament settings page" do
+        get edit_user_tournament_path(@tournament.user, @tournament)
+        assert_response :success
+    end
+
+    test "Update a tournament" do
+        patch user_tournament_path(@tournament.user, @tournament), params: { tournament: { challonge_id: @tournament.challonge_id, challonge_url: @tournament.challonge_url, description: @tournament.description, name: @tournament.name, state: @tournament.state, user_id: @tournament.user_id } }
+        assert_redirected_to user_tournament_path(@tournament.user, @tournament)
+    end
 end
