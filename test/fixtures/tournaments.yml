@@ -1,17 +1,29 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  description: MyString
-  challonge_id: 1
-  name: MyString
-  state: MyString
-  challonge_url: MyString
+  description: Elbonia's finest KQ teams collide!
+  challonge_id: 1001
+  name: Elbonia KQ Clash
+  state: underway
+  challonge_url: http://challonge.com/elboniakq1
+  tournament_type: single elimination
+  current_match: null
+  challonge_alphanumeric_id: elboniakq1
+  gold_on_left: true
+  send_slack_notifications: false
+  slack_notifications_channel: null
   user: one
 
 two:
-  description: MyString
-  challonge_id: 1
-  name: MyString
-  state: MyString
-  challonge_url: MyString
+  description: Sunnydale's finest KQ teams collide!
+  challonge_id: 1002
+  name: Sunnydale KQ Clash
+  state: underway
+  challonge_url: http://challonge.com/sunnydalekq1
+  tournament_type: single elimination
+  current_match: null
+  challonge_alphanumeric_id: sunnydalekq1
+  gold_on_left: false
+  send_slack_notifications: false
+  slack_notifications_channel: null
   user: two

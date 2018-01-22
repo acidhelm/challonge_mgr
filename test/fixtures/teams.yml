@@ -1,13 +1,57 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  tournament: one
-  challonge_id: 1
-  name: MyString
+  challonge_id: 2001
+  name: CGNU Dumples
   seed: 1
+  group_team_ids: null
+  tournament: one
 
 two:
-  tournament: two
-  challonge_id: 1
-  name: MyString
+  challonge_id: 2002
+  name: Homestar's Knees Tech
+  seed: 2
+  group_team_ids: null
+  tournament: one
+
+three:
+  challonge_id: 2003
+  name: Pile of Electronics State
+  seed: 3
+  group_team_ids: null
+  tournament: one
+
+four:
+  challonge_id: 2004
+  name: Northwise Meeps
+  seed: 4
+  group_team_ids: null
+  tournament: one
+
+five:
+  challonge_id: 2011
+  name: Sunnyvale Slayers
   seed: 1
+  group_team_ids: null
+  tournament: two
+
+six:
+  challonge_id: 2012
+  name: Hellmouth Hounds
+  seed: 2
+  group_team_ids: null
+  tournament: two
+
+seven:
+  challonge_id: 2013
+  name: UC Sunnydale Wildcats
+  seed: 3
+  group_team_ids: null
+  tournament: two
+
+eight:
+  challonge_id: 2014
+  name: The Scoobies
+  seed: 4
+  group_team_ids: null
+  tournament: two

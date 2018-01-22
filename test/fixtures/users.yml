@@ -1,9 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  user_name: MyString
-  api_key: MyString
+  user_name: willow
+  api_key: somestringofrandomstuff
 
 two:
-  user_name: MyString
-  api_key: MyString
+  user_name: buffy
+  api_key: somestringofmorerandomstuff
