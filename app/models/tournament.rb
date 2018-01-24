@@ -49,4 +49,15 @@ class Tournament < ApplicationRecord
             TournamentsHelper.notify_match_complete(self, match)
         end
     end
+
+    def cabinet_color(side)
+        case side
+            when :left
+                return gold_on_left ? "Gold" : "Blue"
+            when :right
+                return gold_on_left ? "Blue" : "Gold"
+            else
+                return ""
+        end
+    end
 end

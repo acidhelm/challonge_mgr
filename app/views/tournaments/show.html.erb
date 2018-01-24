@@ -12,9 +12,9 @@ in <%= match.round_name(capitalized: false) %>
 <p>
 <table>
 <tr>
-  <td align="center"><h2><%= match.left_cabinet_color %></h2></td>
+  <td align="center"><h2><%= @tournament.cabinet_color(:left) %></h2></td>
   <td></td>
-  <td align="center"><h2><%= match.right_cabinet_color %></h2></td>
+  <td align="center"><h2><%= @tournament.cabinet_color(:right) %></h2></td>
 </tr>
 <tr>
   <td><h1><%= match.left_team_name %> <%= match.left_team_score %><h1></td>

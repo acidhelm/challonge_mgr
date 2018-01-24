@@ -199,14 +199,6 @@ class Match < ApplicationRecord
         end
     end
 
-    def left_cabinet_color
-        return tournament.gold_on_left ? "Gold" : "Blue"
-    end
-
-    def right_cabinet_color
-        return tournament.gold_on_left ? "Blue" : "Gold"
-    end
-
     # The `suggested_play_order` field ranges from 1 to N, which is useful for
     # identifying matches in the UI.  In the first stage of a two-stage
     # tournament, there is no `suggested_play_order` value, so use
