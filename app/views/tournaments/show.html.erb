@@ -67,6 +67,21 @@ in <%= match.round_name(capitalized: false) %>
 </td>
 </tr>
 <% end %>
+<tr>
+  <td>
+    <% @tournament.matches.completed.has_team?(match.left_team).each do |past_match| %>
+      <%= "#{past_match.left_team_name} #{past_match.left_team_score} - " %>
+      <%= "#{past_match.right_team_score} #{past_match.right_team_name}" %><br>
+    <% end %>
+  </td>
+  <td></td>
+  <td>
+    <% @tournament.matches.completed.has_team?(match.right_team).each do |past_match| %>
+      <%= "#{past_match.left_team_name} #{past_match.left_team_score} - " %>
+      <%= "#{past_match.right_team_score} #{past_match.right_team_name}" %><br>
+    <% end %>
+  </td>
+</tr>
 </table>
 </p>
 <% end %>

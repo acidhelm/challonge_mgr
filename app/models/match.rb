@@ -77,12 +77,20 @@ class Match < ApplicationRecord
         return gold_team_id.present? && blue_team_id.present?
     end
 
+    def left_team
+        return tournament.teams.from_id(get_team_id(:left)).first
+    end
+
+    def right_team
+        return tournament.teams.from_id(get_team_id(:right)).first
+    end
+
     def left_team_name
-        return tournament.teams.from_id(get_team_id(:left)).first&.name
+        return left_team&.name
     end
 
     def right_team_name
-        return tournament.teams.from_id(get_team_id(:right)).first&.name
+        return right_team&.name
     end
 
     def left_team_score
