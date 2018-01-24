@@ -1,5 +1,10 @@
-<b>Previous matches:</b><br>
-<% matches.each do |match| %>
-  <%= "#{match.team_name(:left)} #{match.team_score(:left)} - " %>
-  <%= "#{match.team_score(:right)} #{match.team_name(:right)}" %><br>
+<b>Previous matches:</b>
+<% team.tournament.matches.completed.has_team?(team).each do |match| %>
+  <br>
+  <% if match.team_won?(team) %>
+    Defeated <%= match.team_name(:loser) %>
+  <% else %>
+    Lost to <%= match.team_name(:winner) %>
+  <% end %>
+  <%= match.team_score(:winner) %> - <%= match.team_score(:loser) %>
 <% end %>

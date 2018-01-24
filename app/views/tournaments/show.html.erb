@@ -68,14 +68,12 @@ in <%= match.round_name(capitalized: false) %>
 </tr>
 <% end %>
 <tr>
-  <td>
-    <br><br><%= render partial: "previous_matches",
-                       locals: { matches: @tournament.matches.completed.has_team?(match.get_team(:left)) } %>
+  <td valign="top">
+    <br><br><%= render partial: "previous_matches", locals: { team: match.get_team(:left) } %>
   </td>
   <td></td>
-  <td>
-    <br><br><%= render partial: "previous_matches",
-                       locals: { matches: @tournament.matches.completed.has_team?(match.get_team(:right)) } %>
+  <td valign="top">
+    <br><br><%= render partial: "previous_matches", locals: { team: match.get_team(:right) } %>
   </td>
 </tr>
 </table>
