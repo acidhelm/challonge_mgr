@@ -20,6 +20,158 @@ class Match < ApplicationRecord
     scope :upcoming, -> { where.not(state: "complete").order(suggested_play_order: :asc, identifier: :asc) }
     scope :completed, -> { complete?.order(suggested_play_order: :asc, identifier: :asc) }
 
+    def complete?
+        return state == "complete"
+    end
+
+    def current_match?
+        return state == "open" && id == tournament.current_match
+    end
+
+    def teams_are_tbd?
+        return team1_id.nil? || team2_id.nil?
+    end
+
+    def team_won?(side)
+        case side
+            when :left, :right
+                return complete? && get_team_id(side) == winner_id
+            else
+                return false
+        end
+    end
+
+    def left_team_is_prereq_match_loser?
+        team_id = get_team_id(:left)
+
+        if team_id
+            return (team_id == team1_id) ? team1_is_prereq_match_loser :
+                                           team2_is_prereq_match_loser
+        else
+            return team1_is_prereq_match_loser
+        end
+    end
+
+    def right_team_is_prereq_match_loser?
+        team_id = get_team_id(:right)
+
+        if team_id
+            return (team_id == team1_id) ? team1_is_prereq_match_loser :
+                                           team2_is_prereq_match_loser
+        else
+            return team2_is_prereq_match_loser
+        end
+    end
+
+    # Returns the challonge_id of the team on the given side.  If no team has
+    # been assigned to that side yet, returns `team1_id` for the left side, and
+    # `team2_id` for the right side.  If _that_ ID hasn't been set yet, because
+    # prereq matches need to be played still, then this function returns nil.
+    def get_team_id(side)
+        if side == :left
+            left_team_id = tournament.gold_on_left ? gold_team_id : blue_team_id
+            return left_team_id ? left_team_id : team1_id
+        else
+            right_team_id = tournament.gold_on_left ? blue_team_id : gold_team_id
+            return right_team_id ? right_team_id : team2_id
+        end
+    end
+
+    # This returns nil if no team has been assigned to the side yet.
+    def get_team(side)
+        case side
+            when :left, :right
+                return tournament.teams.from_id(get_team_id(side)).first
+            else
+                return nil
+        end
+    end
+
+    # This returns nil if no team has been assigned to the side yet.
+    def team_name(location)
+        case location
+            when :left, :right
+                return get_team(location)&.name
+            when :gold
+                return tournament.gold_on_left ? team_name(:left) : team_name(:right)
+            when :blue
+                return tournament.gold_on_left ? team_name(:right) : team_name(:left)
+            when :winner
+                return nil if !complete?
+                return team_won?(:left) ? team_name(:left) : team_name(:right)
+            when :loser
+                return nil if !complete?
+                return team_won?(:left) ? team_name(:right) : team_name(:left)
+            else
+                return nil
+        end
+    end
+
+    def left_team_score
+        return 0 if scores_csv.blank?
+
+        scores = scores_csv.partition(",")[0].split("-").map(&:to_i)
+
+        return (get_team_id(:left) == team1_id) ? scores[0] : scores[1]
+    end
+
+    def right_team_score
+        return 0 if scores_csv.blank?
+
+        scores = scores_csv.partition(",")[0].split("-").map(&:to_i)
+
+        return (get_team_id(:right) == team1_id) ? scores[0] : scores[1]
+    end
+
+    def winning_team_score
+        return team_won?(:left) ? left_team_score : right_team_score
+    end
+
+    def losing_team_score
+        return team_won?(:left) ? right_team_score : left_team_score
+    end
+
+    def left_team_prereq_match_id
+        team_id = get_team_id(:left)
+
+        if team_id
+            return (team_id == team1_id) ? team1_prereq_match_id :
+                                           team2_prereq_match_id
+        else
+            return team1_prereq_match_id
+        end
+    end
+
+    def right_team_prereq_match_id
+        team_id = get_team_id(:right)
+
+        if team_id
+            return (team_id == team1_id) ? team1_prereq_match_id :
+                                           team2_prereq_match_id
+        else
+            return team2_prereq_match_id
+        end
+    end
+
+    # The `suggested_play_order` field ranges from 1 to N, which is useful for
+    # identifying matches in the UI.  In the first stage of a two-stage
+    # tournament, there is no `suggested_play_order` value, so use
+    # `identifier` instead.
+    def number
+        return suggested_play_order || identifier
+    end
+
+    def round_name(capitalized: true)
+        if tournament.tournament_type == "double elimination"
+            winners_or_losers = round > 0 ? "Winners'" : "Losers'"
+            ret = "#{winners_or_losers} round #{round.abs}"
+        else
+            ret = "Round #{round}"
+        end
+
+        return capitalized ? ret : ret.downcase
+    end
+
     def update!(obj)
         self.state = obj.state
         self.team1_id = obj.player1_id
@@ -51,144 +203,8 @@ class Match < ApplicationRecord
         end
     end
 
-    def complete?
-        return state == "complete"
-    end
-
-    def current_match?
-        return state == "open" && id == tournament.current_match
-    end
-
-    def teams_are_tbd?
-        return team1_id.nil? || team2_id.nil?
-    end
-
     def switch_team_sides!
         self.gold_team_id, self.blue_team_id = self.blue_team_id, self.gold_team_id
-    end
-
-    def cabinets_assigned?
-        return gold_team_id.present? && blue_team_id.present?
-    end
-
-    def left_team
-        return tournament.teams.from_id(get_team_id(:left)).first
-    end
-
-    def right_team
-        return tournament.teams.from_id(get_team_id(:right)).first
-    end
-
-    def left_team_name
-        return left_team&.name
-    end
-
-    def right_team_name
-        return right_team&.name
-    end
-
-    def left_team_score
-        return 0 if scores_csv.blank?
-
-        scores = scores_csv.partition(",")[0].split("-").map(&:to_i)
-
-        return (get_team_id(:left) == team1_id) ? scores[0] : scores[1]
-    end
-
-    def right_team_score
-        return 0 if scores_csv.blank?
-
-        scores = scores_csv.partition(",")[0].split("-").map(&:to_i)
-
-        return (get_team_id(:right) == team1_id) ? scores[0] : scores[1]
-    end
-
-    def left_team_won?
-        return complete? && get_team_id(:left) == winner_id
-    end
-
-    def right_team_won?
-        return complete? && get_team_id(:right) == winner_id
-    end
-
-    def winning_team_name
-        return nil if !complete?
-        return left_team_won? ? left_team_name : right_team_name
-    end
-
-    def losing_team_name
-        return nil if !complete?
-        return left_team_won? ? right_team_name :  left_team_name
-    end
-
-    def winning_team_score
-        return left_team_won? ? left_team_score : right_team_score
-    end
-
-    def losing_team_score
-        return left_team_won? ? right_team_score : left_team_score
-    end
-
-    def gold_team_name
-        return tournament.gold_on_left ? left_team_name : right_team_name
-    end
-
-    def blue_team_name
-        return tournament.gold_on_left ? right_team_name : left_team_name
-    end
-
-    def left_team_is_prereq_match_loser?
-        team_id = get_team_id(:left)
-
-        if team_id
-            return (team_id == team1_id) ? team1_is_prereq_match_loser :
-                                           team2_is_prereq_match_loser
-        else
-            return team1_is_prereq_match_loser
-        end
-    end
-
-    def right_team_is_prereq_match_loser?
-        team_id = get_team_id(:right)
-
-        if team_id
-            return (team_id == team1_id) ? team1_is_prereq_match_loser :
-                                           team2_is_prereq_match_loser
-        else
-            return team2_is_prereq_match_loser
-        end
-    end
-
-    def left_team_prereq_match_id
-        team_id = get_team_id(:left)
-
-        if team_id
-            return (team_id == team1_id) ? team1_prereq_match_id :
-                                           team2_prereq_match_id
-        else
-            return team1_prereq_match_id
-        end
-    end
-
-    def right_team_prereq_match_id
-        team_id = get_team_id(:right)
-
-        if team_id
-            return (team_id == team1_id) ? team1_prereq_match_id :
-                                           team2_prereq_match_id
-        else
-            return team2_prereq_match_id
-        end
-    end
-
-    def get_team_id(side)
-        if side == :left
-            left_team_id = tournament.gold_on_left ? gold_team_id : blue_team_id
-            return left_team_id ? left_team_id : team1_id
-        else
-            right_team_id = tournament.gold_on_left ? blue_team_id : gold_team_id
-            return right_team_id ? right_team_id : team2_id
-        end
     end
 
     def make_scores_csv(left_score, right_score)
@@ -199,22 +215,8 @@ class Match < ApplicationRecord
         end
     end
 
-    # The `suggested_play_order` field ranges from 1 to N, which is useful for
-    # identifying matches in the UI.  In the first stage of a two-stage
-    # tournament, there is no `suggested_play_order` value, so use
-    # `identifier` instead.
-    def number
-        return suggested_play_order || identifier
-    end
-
-    def round_name(capitalized: true)
-        if tournament.tournament_type == "double elimination"
-            winners_or_losers = round > 0 ? "Winners'" : "Losers'"
-            ret = "#{winners_or_losers} round #{round.abs}"
-        else
-            ret = "Round #{round}"
-        end
-
-        return capitalized ? ret : ret.downcase
+    protected
+    def cabinets_assigned?
+        return gold_team_id.present? && blue_team_id.present?
     end
 end

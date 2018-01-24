@@ -10,10 +10,10 @@
   </tr>
   <% matches.each do |m| %>
   <% if m.get_team_id(:left)
-         left_team_name = m.left_team_name
+         left_team_name = m.team_name(:left)
 
          if m.complete?
-             left_team_class = m.left_team_won? ? "winning_team" : "losing_team"
+             left_team_class = m.team_won?(:left) ? "winning_team" : "losing_team"
          else
              left_team_class = "upcoming_team"
          end
@@ -25,10 +25,10 @@
      end
   %>
   <% if m.get_team_id(:right)
-         right_team_name = m.right_team_name
+         right_team_name = m.team_name(:right)
 
          if m.complete?
-             right_team_class = m.right_team_won? ? "winning_team" : "losing_team"
+             right_team_class = m.team_won?(:right) ? "winning_team" : "losing_team"
          else
              right_team_class = "upcoming_team"
          end
@@ -44,8 +44,8 @@
     <td><%= m.round_name %></td>
     <td>
       <% if m.complete? %>
-        <span class="<%= left_team_class %>"><%= "#{left_team_name} #{m.left_team_score}" %></span> &mdash;
-        <span class="<%= right_team_class %>"><%= "#{m.right_team_score} #{right_team_name}" %></span>
+        <span class="<%= left_team_class %>"><%= "#{left_team_name}&nbsp;&nbsp;#{m.left_team_score}".html_safe %></span> &mdash;
+        <span class="<%= right_team_class %>"><%= "#{m.right_team_score}&nbsp;&nbsp;#{right_team_name}".html_safe %></span>
       <% else %>
         <span class="<%= left_team_class %>"><%= left_team_name %></span> &mdash;
         <span class="<%= right_team_class %>"><%= right_team_name %></span>

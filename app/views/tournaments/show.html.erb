@@ -17,9 +17,9 @@ in <%= match.round_name(capitalized: false) %>
   <td align="center"><h2><%= @tournament.cabinet_color(:right) %></h2></td>
 </tr>
 <tr>
-  <td><h1><%= match.left_team_name %> <%= match.left_team_score %><h1></td>
+  <td><h1><%= match.team_name(:left) %>&nbsp;&nbsp;&nbsp;<%= match.left_team_score %><h1></td>
   <td align="center"><h1>&mdash;</h1></td>
-  <td align="right"><h1><%= match.right_team_score %> <%= match.right_team_name %><h1></td>
+  <td align="right"><h1><%= match.right_team_score %>&nbsp;&nbsp;&nbsp;<%= match.team_name(:right) %><h1></td>
 </tr>
 <% if !@tournament.readonly? %>
 <tr>
@@ -69,16 +69,16 @@ in <%= match.round_name(capitalized: false) %>
 <% end %>
 <tr>
   <td>
-    <% @tournament.matches.completed.has_team?(match.left_team).each do |past_match| %>
-      <%= "#{past_match.left_team_name} #{past_match.left_team_score} - " %>
-      <%= "#{past_match.right_team_score} #{past_match.right_team_name}" %><br>
+    <% @tournament.matches.completed.has_team?(match.get_team(:left)).each do |past_match| %>
+      <%= "#{past_match.team_name(:left)} #{past_match.left_team_score} - " %>
+      <%= "#{past_match.right_team_score} #{past_match.team_name(:right)}" %><br>
     <% end %>
   </td>
   <td></td>
   <td>
-    <% @tournament.matches.completed.has_team?(match.right_team).each do |past_match| %>
-      <%= "#{past_match.left_team_name} #{past_match.left_team_score} - " %>
-      <%= "#{past_match.right_team_score} #{past_match.right_team_name}" %><br>
+    <% @tournament.matches.completed.has_team?(match.get_team(:right)).each do |past_match| %>
+      <%= "#{past_match.team_name(:left)} #{past_match.left_team_score} - " %>
+      <%= "#{past_match.right_team_score} #{past_match.team_name(:right)}" %><br>
     <% end %>
   </td>
 </tr>

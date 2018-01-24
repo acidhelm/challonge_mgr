@@ -100,7 +100,7 @@ class TournamentsController < ApplicationController
 
     def gold
         if @tournament.current_match.present?
-            render plain: Match.find(@tournament.current_match).gold_team_name
+            render plain: Match.find(@tournament.current_match).team_name(:gold)
         else
             render plain: ""
         end
@@ -110,7 +110,7 @@ class TournamentsController < ApplicationController
 
     def blue
         if @tournament.current_match.present?
-            render plain: Match.find(@tournament.current_match).blue_team_name
+            render plain: Match.find(@tournament.current_match).team_name(:blue)
         else
             render plain: ""
         end
