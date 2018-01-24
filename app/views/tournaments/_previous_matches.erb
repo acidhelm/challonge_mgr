@@ -1,0 +1,5 @@
+<b>Previous matches:</b><br>
+<% matches.each do |match| %>
+  <%= "#{match.team_name(:left)} #{match.team_score(:left)} - " %>
+  <%= "#{match.team_score(:right)} #{match.team_name(:right)}" %><br>
+<% end %>
