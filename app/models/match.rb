@@ -33,9 +33,13 @@ class Match < ApplicationRecord
     end
 
     def team_won?(side)
+        return false if !complete?
+
         case side
             when :left, :right
-                return complete? && get_team_id(side) == winner_id
+                return get_team_id(side) == winner_id
+            when Team
+                return side.all_challonge_ids.include?(winner_id)
             else
                 return false
         end
