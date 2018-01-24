@@ -44,8 +44,8 @@
     <td><%= m.round_name %></td>
     <td>
       <% if m.complete? %>
-        <span class="<%= left_team_class %>"><%= "#{left_team_name}&nbsp;&nbsp;#{m.left_team_score}".html_safe %></span> &mdash;
-        <span class="<%= right_team_class %>"><%= "#{m.right_team_score}&nbsp;&nbsp;#{right_team_name}".html_safe %></span>
+        <span class="<%= left_team_class %>"><%= "#{left_team_name}&nbsp;&nbsp;#{m.team_score(:left)}".html_safe %></span> &mdash;
+        <span class="<%= right_team_class %>"><%= "#{m.team_score(:right)}&nbsp;&nbsp;#{right_team_name}".html_safe %></span>
       <% else %>
         <span class="<%= left_team_class %>"><%= left_team_name %></span> &mdash;
         <span class="<%= right_team_class %>"><%= right_team_name %></span>

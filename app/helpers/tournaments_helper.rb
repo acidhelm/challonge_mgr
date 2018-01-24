@@ -16,7 +16,7 @@ module TournamentsHelper
     def self.notify_match_complete(tournament, match)
         msg = "#{tournament.name}: #{match.team_name(:winner)} defeated" \
                 " #{match.team_name(:loser)}" \
-                " #{match.winning_team_score}-#{match.losing_team_score}."
+                " #{match.team_score(:winner)}-#{match.team_score(:loser)}."
 
         notify_slack(tournament.slack_notifications_channel, msg)
     end

@@ -87,7 +87,7 @@ class Match < ApplicationRecord
         end
     end
 
-    # This returns nil if no team has been assigned to the side yet.
+    # This returns nil if no team has been assigned to `location` yet.
     def team_name(location)
         case location
             when :left, :right
@@ -107,28 +107,26 @@ class Match < ApplicationRecord
         end
     end
 
-    def left_team_score
-        return 0 if scores_csv.blank?
+    # When the caller passes `:left` or `:right`, this returns 0 if the match
+    # has not begun yet.  When the caller passes `:winner` or `:loser`, this
+    # returns 0 if the match is not complete.
+    def team_score(location)
+        case location
+            when :left, :right
+                return 0 if scores_csv.blank?
 
-        scores = scores_csv.partition(",")[0].split("-").map(&:to_i)
+                scores = scores_csv.partition(",")[0].split("-").map(&:to_i)
 
-        return (get_team_id(:left) == team1_id) ? scores[0] : scores[1]
-    end
-
-    def right_team_score
-        return 0 if scores_csv.blank?
-
-        scores = scores_csv.partition(",")[0].split("-").map(&:to_i)
-
-        return (get_team_id(:right) == team1_id) ? scores[0] : scores[1]
-    end
-
-    def winning_team_score
-        return team_won?(:left) ? left_team_score : right_team_score
-    end
-
-    def losing_team_score
-        return team_won?(:left) ? right_team_score : left_team_score
+                return (get_team_id(location) == team1_id) ? scores[0] : scores[1]
+            when :winner
+                return 0 if !complete?
+                return team_won?(:left) ? team_score(:left) : team_score(:right)
+            when :loser
+                return 0 if !complete?
+                return team_won?(:left) ? team_score(:right) : team_score(:left)
+            else
+                return 0
+        end
     end
 
     def left_team_prereq_match_id
