@@ -36,22 +36,6 @@ class Match < ApplicationRecord
         self.team1_is_prereq_match_loser = obj.player1_is_prereq_match_loser
         self.team2_is_prereq_match_loser = obj.player2_is_prereq_match_loser
 
-        assign_cabinets!
-    end
-
-    def complete?
-        return state == "complete"
-    end
-
-    def current_match?
-        return state == "open" && id == tournament.current_match
-    end
-
-    def teams_are_tbd?
-        return team1_id.nil? || team2_id.nil?
-    end
-
-    def assign_cabinets!
         # If this match's teams are not TBD, and the teams have not been
         # assigned cabs yet (which means that this match just switched from
         # TBD to not-TBD), then set the teams' colors.  Team 1 defaults to
@@ -67,10 +51,20 @@ class Match < ApplicationRecord
         end
     end
 
+    def complete?
+        return state == "complete"
+    end
+
+    def current_match?
+        return state == "open" && id == tournament.current_match
+    end
+
+    def teams_are_tbd?
+        return team1_id.nil? || team2_id.nil?
+    end
+
     def switch_team_sides!
-        temp = self.gold_team_id
-        self.gold_team_id = self.blue_team_id
-        self.blue_team_id = temp
+        self.gold_team_id, self.blue_team_id = self.blue_team_id, self.gold_team_id
     end
 
     def cabinets_assigned?
