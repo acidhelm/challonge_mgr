@@ -29,5 +29,6 @@
 </table>
 <p>
 <%= link_to "Reload the tournament list from Challonge", user_tournaments_refresh_path(@user) %> |
-<%= link_to "Back to the user list", users_path %>
+<%= link_to "Edit this user's settings", edit_user_path(@user) %> |
+<%= link_to "Log out", logout_path, method: :delete %>
 </p>

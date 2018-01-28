@@ -1,0 +1,15 @@
+<% content_for :title, "Log in" %>
+<p id="notice"><%= notice %></p>
+<%= form_for(:session, url: login_path) do |f| %>
+  <div class="field">
+    <%= f.label :user_name %>
+    <%= f.text_field :user_name, id: :user_name %>
+  </div>
+  <div class="field">
+    <%= f.label :password %>
+    <%= f.password_field :password, id: :password %>
+  </div>
+  <div class="actions">
+    <%= f.submit "Log in" %>
+  </div>
+<% end %>

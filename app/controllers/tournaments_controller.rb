@@ -1,7 +1,9 @@
 class TournamentsController < ApplicationController
-    before_action :set_user, except: [ :view, :gold, :blue ]
+    before_action :set_user, only: [ :index, :refresh_all ]
     before_action :set_tournament, except: [ :index, :refresh_all, :view, :gold, :blue ]
     before_action :set_tournament_from_alphanumeric_id, only: [ :gold, :blue ]
+    before_action :require_log_in, except: [ :view, :gold, :blue ]
+    before_action :correct_user?, except: [ :view, :gold, :blue ]
 
     # GET /tournaments
     def index
@@ -136,6 +138,7 @@ class TournamentsController < ApplicationController
 
         begin
             @tournament = Tournament.find(params[:id])
+            @user = @tournament.user
         rescue ActiveRecord::RecordNotFound
             render_not_found_error
         end

@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
-    root "users#index"
-    resources :users do
+    root "sessions#new"
+
+    get "/login", to: "sessions#new"
+    post "/login", to: "sessions#create"
+    delete "/logout",  to: "sessions#destroy"
+
+    resources :users, only: [ :show, :edit, :update ] do
         get "tournaments/refresh", to: "tournaments#refresh_all"
 
         resources :tournaments, only: [ :index, :show, :edit, :update ] do

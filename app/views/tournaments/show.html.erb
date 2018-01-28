@@ -114,5 +114,6 @@ in <%= match.round_name(capitalized: false) %>
 <% if !@tournament.readonly? %>
   <%= link_to "Reload this tournament from Challonge", [ :refresh, @user, @tournament ] %> |
   <%= link_to "Edit this tournament's settings", [ :edit, @user, @tournament ] %> |
-  <%= link_to "Back to the tournament list", user_tournaments_path(@user) %>
+  <%= link_to "Back to the tournament list", user_tournaments_path(@user) %> |
+  <%= link_to "Log out", logout_path, method: :delete %>
 <% end %>
