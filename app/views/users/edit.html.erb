@@ -1,4 +1,5 @@
-<h1>Edit a Challonge user</h1>
+<% content_for :title, "Edit settings for #{@user.user_name}" %>
+<h1>Edit settings for <%= @user.user_name %></h1>
 
 <%= render "form", user: @user %>
 
