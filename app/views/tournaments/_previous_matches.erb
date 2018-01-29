@@ -1,10 +1,12 @@
-<b>Previous matches:</b>
-<% team.tournament.matches.completed.has_team?(team).each do |match| %>
-  <br>
+<b>Previous matches:</b><br>
+<% matches = team.tournament.matches.completed.has_team?(team) %>
+<%= "None".html_safe if matches.blank? %>
+<% matches.each do |match| %>
   <% if match.team_won?(team) %>
     Defeated <%= match.team_name(:loser) %>
   <% else %>
     Lost to <%= match.team_name(:winner) %>
   <% end %>
   <%= match.team_score(:winner) %> - <%= match.team_score(:loser) %>
+  <br>
 <% end %>
