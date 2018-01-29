@@ -28,6 +28,30 @@ $ bundle install --path vendor/bundle
 $ bin/rails db:create db:migrate
 ```
 
+There are two configuration keys that you will need to set, but you'll only have
+to do this once.  In the `challonge_mgr` directory, run:
+
+```sh
+$ ruby -e 'require "securerandom"; puts "ATTR_ENCRYPTED_KEY=#{SecureRandom.hex 16}"' > .env
+```
+
+That creates an encryption key that only works on your computer.  You should not
+move that file to any other computer; generate a new one if you need to.
+
+The other key is for the Slack API.  If you don't plan on sending tournament
+updates to Slack, you can skip this step.
+
+Open the `.env` file in a text editor, and add this line:
+
+```
+SLACK_TOKEN=[the API token]
+```
+
+Use a key from Slackbot in [the team's custom integrations
+page](https://kqchat.slack.com/apps/manage/custom-integrations).  The token is
+the string after "token=" in the URL.
+
+
 Then run the Rails server:
 
 ```sh
@@ -61,8 +85,8 @@ not have to be the same as your Challonge password.
 ## Log in
 
 Open [the login page](http://localhost:3000/login) in a browser and enter the
-user name and password that you just set.  After logging in, you will be
-taken to your list of tournaments.
+user name and password that you just set.  After logging in, you will see your
+list of tournaments.
 
 # Create and manage a tournament
 
