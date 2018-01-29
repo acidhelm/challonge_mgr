@@ -12,4 +12,5 @@
 </p>
 
 <%= link_to "Edit this user's settings", edit_user_path(@user) %> |
-<%= link_to "View this user's tournaments", user_tournaments_path(@user) %>
+<%= link_to "View this user's tournaments", user_tournaments_path(@user) %> |
+<%= link_to "Log out", logout_path, method: :delete %>
