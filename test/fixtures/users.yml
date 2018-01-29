@@ -2,10 +2,12 @@
 
 willow:
   user_name: willow
-  api_key: somestringofrandomstuff
+  encrypted_api_key: "HxTlg/hERdlScQ08X/JgHxV2pMGvjg=="
+  encrypted_api_key_iv: "CHKrEeUuj3D2Skit"
   password_digest: <%= User.digest("password") %>
 
 buffy:
   user_name: buffy
-  api_key: somestringofmorerandomstuff
+  encrypted_api_key: "HxTlg/hERdlScQ08X/JgHxV2pMGvjg=="
+  encrypted_api_key_iv: "CHKrEeUuj3D2Skit"
   password_digest: <%= User.digest("password") %>
