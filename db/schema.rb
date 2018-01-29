@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180128044754) do
+ActiveRecord::Schema.define(version: 20180129043429) do
 
   create_table "matches", force: :cascade do |t|
     t.integer "tournament_id"
@@ -67,10 +67,11 @@ ActiveRecord::Schema.define(version: 20180128044754) do
 
   create_table "users", force: :cascade do |t|
     t.string "user_name"
-    t.string "api_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_digest"
+    t.string "encrypted_api_key"
+    t.string "encrypted_api_key_iv"
   end
 
 end
