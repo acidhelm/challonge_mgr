@@ -1,9 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+willow:
   user_name: willow
   api_key: somestringofrandomstuff
+  password_digest: <%= User.digest("password") %>
 
-two:
+buffy:
   user_name: buffy
   api_key: somestringofmorerandomstuff
+  password_digest: <%= User.digest("password") %>

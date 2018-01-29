@@ -12,7 +12,7 @@ one:
   gold_on_left: true
   send_slack_notifications: false
   slack_notifications_channel: null
-  user: one
+  user: willow
 
 two:
   description: Sunnydale's finest KQ teams collide!
@@ -26,4 +26,4 @@ two:
   gold_on_left: false
   send_slack_notifications: false
   slack_notifications_channel: null
-  user: two
+  user: buffy
