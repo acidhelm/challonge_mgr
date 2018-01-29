@@ -9,8 +9,8 @@ about, which creates a worse viewing experience for folks who want to
 follow the progress of the tournament.
 
 My goal with Challonge Mgr is to make it super easy to update your bracket.  The
-actions that you need to do -- starting a match, updating the score, and ending
-a match -- can all be done with one click.  Challonge Mgr also shows other info,
+actions that you need to do -- start a match, update the score, and end a
+match -- can all be done with one click.  Challonge Mgr also shows other info,
 like the order of upcoming matches, that can be useful for your commentators.
 
 Challonge Mgr can also send notifications to a Slack channel.  That lets viewers
@@ -34,28 +34,45 @@ Then run the Rails server:
 $ bin/rails server
 ```
 
-Open [the main page](http://localhost:3000/products/ui) in a browser, and you
-should see an empty user list.
-
 ## Add your Challonge account
 
-Click _Add a user_.  Enter your Challonge user name and your API key.  You can
-find the API key in [your account settings](https://challonge.com/settings/developer).
-Note that Challonge Mgr currently has **no security** regarding access to this
-key, so you should only run it on a local computer that you control.  It should
-work if you deploy it to a cloud service like Heroku, but your only security will
-be obscurity.
+Challonge Mgr accounts are used to hold your Challonge login information.  You
+will need your Challonge API key, which you can find in
+[your account settings](https://challonge.com/settings/developer).
+
+There is no UI for creating accounts, but you can make an account in the Rails
+console.  Run the console:
+
+```sh
+$ bin/rails console
+```
+
+Then run this command to make an account:
+
+```ruby
+> User.create user_name: "Your Challonge user name",
+              api_key: "Your API key",
+              password: "A password"
+```
+
+The password that you set here will be used to log in to Challonge Mgr.  It does
+not have to be the same as your Challonge password.
+              
+## Log in
+
+Open [the login page](http://localhost:3000/login) in a browser and enter the
+user name and password that you just set.  After logging in, you will be
+taken to your list of tournaments.
 
 # Create and manage a tournament
 
 [Create your tournament](http://challonge.com/tournaments/new) on the Challonge
-web site.   Be sure to click the "Start the tournament" button on your
-tournament's Bracket settings page.
+web site, then set up the teams and the bracket.  Be sure to click the "Start the
+tournament" button on your tournament's Bracket settings page.
 
-Back in the browser, click _Manage this user's tournaments_ next to your
-Challonge user.  You'll see a list of the tournaments that are in progress and
-owned by your Challonge account.  Click _Manage this tournament_ next to the
-tournament that you are running.
+Back in the browser, click _Reload the tournament list from Challonge_ if your
+new tournament isn't already in the tournament list.  Click _Manage this tournament_
+next to the tournament that you are running.
 
 ## Update matches
 
@@ -95,11 +112,9 @@ can go to `/view/<tournament_id>` to see the list.  For example,
 `/view/elboniakq1` shows the progress of
 [the "elboniakq1" tournament](http://challonge.com/elboniakq1).
 
-Note that this feature is currently of limited usefulness, because it requires
-giving spectators access to your Rails database.  If someone knows or guesses the
-URL scheme, they can mess with anything in your Challonge account.  However, this
-view is useful for broadcasters, since it gives them an easy-to-read list of the
-upcoming matches.
+This view is also useful for your commentators, since it gives them an easy-to-read
+list of the upcoming matches, and the match history of the teams that are in the
+current match.
 
 If you use Xsplit for broadcasting, Challonge Mgr can automatically update the
 team names in your video.  The `/view/<tournament_id>/gold` and
@@ -109,10 +124,6 @@ You can make your text labels get their text from those URLs, and the names
 will be updated when you start each match.
 
 # Known problems
-
-There is **no security** around account data.  I plan to add a login system to
-fix this.  I'm still learning Rails, so that's why I didn't do this right from
-the beginning.
 
 When you start a match, the bracket on Challonge does not indicate that the
 match is in progress.  The Challonge API does not provide a way to mark a match
