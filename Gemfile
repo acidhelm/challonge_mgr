@@ -55,6 +55,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "attr_encrypted"
 gem "bcrypt"
+gem "dotenv-rails"
 gem "rails-controller-testing"
 gem "rest-client"
 
