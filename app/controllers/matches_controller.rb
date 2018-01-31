@@ -1,5 +1,7 @@
 class MatchesController < ApplicationController
     before_action :set_match
+    before_action :require_log_in
+    before_action :correct_user?
 
     def start
         @tournament.set_current_match(@match)
