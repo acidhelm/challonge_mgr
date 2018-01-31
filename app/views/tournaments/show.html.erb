@@ -81,15 +81,19 @@ in <%= match.round_name(capitalized: false) %>
 </p>
 <% end %>
 
-<hr>
-<p><h2>Upcoming matches:</h2>
-<%= render "match_list", matches: @tournament.matches.upcoming.reject(&:current_match?) %>
-</p>
+<% matches = @tournament.matches.upcoming.reject(&:current_match?) %>
+<% if matches.present? %>
+  <hr>
+  <p><h2>Upcoming matches:</h2>
+  <p><%= render "match_list", matches: matches %></p>
+<% end %>
 
-<hr>
-<p><h2>Completed matches:</h2>
-<%= render "match_list", matches: @tournament.matches.completed %>
-</p>
+<% matches = @tournament.matches.completed %>
+<% if matches.present? %>
+  <hr>
+  <p><h2>Completed matches:</h2>
+  <p><%= render "match_list", matches: matches %></p>
+<% end %>
 
 <hr>
 <p><h2>Team records:</h2>
