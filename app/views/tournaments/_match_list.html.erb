@@ -1,4 +1,4 @@
-<% show_actions = !(matches.all?(&:complete?) || matches.all?(&:teams_are_tbd?) || matches.any?(&:current_match?)) %>
+<% show_actions = !(readonly || match_list.all?(&:complete?) || match_list.all?(&:teams_are_tbd?) || match_list.any?(&:current_match?)) %>
 <table>
   <tr>
     <th>Match #</th>
@@ -8,7 +8,7 @@
       <th>Actions</th>
     <% end %>
   </tr>
-  <% matches.each do |m| %>
+  <% match_list.each do |m| %>
   <% if m.get_team_id(:left)
          left_team_name = m.team_name(:left)
 
@@ -51,7 +51,7 @@
         <span class="<%= right_team_class %>"><%= right_team_name %></span>
       <% end %>
     </td>
-    <% if !(m.complete? || m.teams_are_tbd? || m.current_match?) %>
+    <% if show_actions && !(m.complete? || m.teams_are_tbd? || m.current_match?) %>
       <td>
         <%= link_to "Start this match", [ :start, @user, @tournament, m ], method: :post %>
       </td>

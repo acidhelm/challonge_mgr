@@ -85,14 +85,14 @@ in <%= match.round_name(capitalized: false) %>
 <% if matches.present? %>
   <hr>
   <p><h2>Upcoming matches:</h2>
-  <p><%= render "match_list", matches: matches %></p>
+  <p><%= render partial: "match_list", object: matches, locals: { readonly: @tournament.readonly? } %></p>
 <% end %>
 
 <% matches = @tournament.matches.completed %>
 <% if matches.present? %>
   <hr>
   <p><h2>Completed matches:</h2>
-  <p><%= render "match_list", matches: matches %></p>
+  <p><%= render partial: "match_list", object: matches, locals: { readonly: @tournament.readonly? } %></p>
 <% end %>
 
 <hr>
