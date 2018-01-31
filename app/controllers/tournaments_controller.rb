@@ -7,7 +7,7 @@ class TournamentsController < ApplicationController
 
     # GET /tournaments
     def index
-        @tournaments = @user.tournaments.underway?
+        @tournaments = @user.tournaments.underway?.order(started_at: :desc)
     end
 
     # GET /tournaments/refresh

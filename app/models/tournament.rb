@@ -25,6 +25,7 @@ class Tournament < ApplicationRecord
         self.state = obj.state
         self.challonge_url = obj.full_challonge_url
         self.tournament_type = obj.tournament_type
+        self.started_at = obj.started_at
         self.gold_on_left ||= Rails.configuration.gold_on_left_default
     end
 
