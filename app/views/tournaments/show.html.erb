@@ -13,22 +13,25 @@ in <%= match.round_name(capitalized: false) %>
 <p>
 <table>
 <tr>
-  <td align="center"><h2><%= @tournament.cabinet_color(:left) %></h2></td>
+  <td colspan='2' align="center"><h2><%= @tournament.cabinet_color(:left) %></h2></td>
   <td></td>
-  <td align="center"><h2><%= @tournament.cabinet_color(:right) %></h2></td>
+  <td colspan='2' align="center"><h2><%= @tournament.cabinet_color(:right) %></h2></td>
 </tr>
 <tr>
-  <td><h1><%= match.team_name(:left) %>&nbsp;&nbsp;&nbsp;<%= match.team_score(:left) %><h1></td>
+  <td><h1><%= match.team_name(:left) %><h1></td>
+  <td><h1><%= match.team_score(:left) %><h1></td>
   <td align="center"><h1>&mdash;</h1></td>
-  <td align="right"><h1><%= match.team_score(:right) %>&nbsp;&nbsp;&nbsp;<%= match.team_name(:right) %><h1></td>
+  <td align="right"><h1><%= match.team_score(:right) %><h1></td>
+  <td align="right"><h1><%= match.team_name(:right) %><h1></td>
 </tr>
 <% if !@tournament.readonly? %>
 <tr>
-<td><%= button_to 'Add 1 win', user_tournament_match_path(
-                                 @user, @tournament, match,
-                                 left_score: match.team_score(:left) + 1,
-                                 right_score: match.team_score(:right)),
-                               method: :put %>
+<td colspan='2'>
+<%= button_to 'Add 1 win', user_tournament_match_path(
+                             @user, @tournament, match,
+                             left_score: match.team_score(:left) + 1,
+                             right_score: match.team_score(:right)),
+                           method: :put %>
 <br>
 <%= button_to 'Subtract 1 win', user_tournament_match_path(
                                   @user, @tournament, match,
@@ -46,7 +49,7 @@ in <%= match.round_name(capitalized: false) %>
 <td valign="top" align="center">
 <%= button_to "Switch sides", [ :switch, @user, @tournament, match ] %>
 </td>
-<td align='right'>
+<td colspan='2' align='right'>
 <%= button_to 'Add 1 win', user_tournament_match_path(
                              @user, @tournament, match,
                              left_score: match.team_score(:left),
@@ -69,11 +72,12 @@ in <%= match.round_name(capitalized: false) %>
 </tr>
 <% end %>
 <tr>
-  <td valign="top">
+  <td colspan='2' valign="top">
     <br><br><%= render partial: "previous_matches", locals: { team: match.get_team(:left) } %>
   </td>
   <td></td>
-  <td valign="top">
+  <td></td>
+  <td valign="top" style="float:right">
     <br><br><%= render partial: "previous_matches", locals: { team: match.get_team(:right) } %>
   </td>
 </tr>
