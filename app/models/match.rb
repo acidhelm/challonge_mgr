@@ -122,6 +122,10 @@ class Match < ApplicationRecord
                 scores = scores_csv.partition(",")[0].split("-").map(&:to_i)
 
                 return (get_team_id(location) == team1_id) ? scores[0] : scores[1]
+            when :gold
+                return tournament.gold_on_left ? team_score(:left) : team_score(:right)
+            when :blue
+                return tournament.gold_on_left ? team_score(:right) : team_score(:left)
             when :winner
                 return 0 if !complete?
                 return team_won?(:left) ? team_score(:left) : team_score(:right)

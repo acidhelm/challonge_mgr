@@ -147,6 +147,10 @@ currently on that cabinet, or an empty string if no match is in progress.
 You can make your text labels get their text from those URLs, and the names
 will be updated when you start each match.
 
+Similarly, each team's score can be retrieved from the
+`/view/<tournament_id>/gold_score` and `/view/<tournament_id>/blue_score` URLs.
+Those actions return 0 if no match is in progress.
+
 # Known problems
 
 When you start a match, the bracket on Challonge does not indicate that the

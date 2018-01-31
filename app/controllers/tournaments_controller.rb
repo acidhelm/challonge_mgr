@@ -1,9 +1,11 @@
 class TournamentsController < ApplicationController
     before_action :set_user, only: [ :index, :refresh_all ]
-    before_action :set_tournament, except: [ :index, :refresh_all, :view, :gold, :blue ]
-    before_action :set_tournament_from_alphanumeric_id, only: [ :gold, :blue ]
-    before_action :require_log_in, except: [ :view, :gold, :blue ]
-    before_action :correct_user?, except: [ :view, :gold, :blue ]
+    before_action :set_tournament, except: [ :index, :refresh_all, :view,
+                                             :gold, :blue, :gold_score, :blue_score ]
+    before_action :set_tournament_from_alphanumeric_id,
+                  only: [ :gold, :blue, :gold_score, :blue_score ]
+    before_action :require_log_in, except: [ :view, :gold, :blue, :gold_score, :blue_score ]
+    before_action :correct_user?, except: [ :view, :gold, :blue, :gold_score, :blue_score ]
 
     # GET /tournaments
     def index
@@ -108,6 +110,14 @@ class TournamentsController < ApplicationController
         render plain: current_match_team_name(:blue)
     end
 
+    def gold_score
+        render plain: current_match_team_score(:gold)
+    end
+
+    def blue_score
+        render plain: current_match_team_score(:blue)
+    end
+
     protected
     def set_user
         @user = nil
@@ -153,6 +163,19 @@ class TournamentsController < ApplicationController
         end
 
         return name
+    end
+
+    def current_match_team_score(side)
+        score = 0
+
+        begin
+            if @tournament.current_match.present?
+                score = Match.find(@tournament.current_match).team_score(side)
+            end
+        rescue ActiveRecord::RecordNotFound
+        end
+
+        return score
     end
 
     def tournament_params
