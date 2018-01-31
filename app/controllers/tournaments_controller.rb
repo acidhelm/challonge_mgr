@@ -101,23 +101,11 @@ class TournamentsController < ApplicationController
     end
 
     def gold
-        if @tournament.current_match.present?
-            render plain: Match.find(@tournament.current_match).team_name(:gold)
-        else
-            render plain: ""
-        end
-    rescue ActiveRecord::RecordNotFound
-        render plain: ""
+        render plain: current_match_team_name(:gold)
     end
 
     def blue
-        if @tournament.current_match.present?
-            render plain: Match.find(@tournament.current_match).team_name(:blue)
-        else
-            render plain: ""
-        end
-    rescue ActiveRecord::RecordNotFound
-        render plain: ""
+        render plain: current_match_team_name(:blue)
     end
 
     protected
@@ -152,6 +140,19 @@ class TournamentsController < ApplicationController
         render_not_found_error if @tournament.blank?
 
         return @tournament.present?
+    end
+
+    def current_match_team_name(side)
+        name = ""
+
+        begin
+            if @tournament.current_match.present?
+                name = Match.find(@tournament.current_match).team_name(side)
+            end
+        rescue ActiveRecord::RecordNotFound
+        end
+
+        return name
     end
 
     def tournament_params
