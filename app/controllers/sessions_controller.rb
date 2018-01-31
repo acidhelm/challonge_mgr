@@ -3,7 +3,8 @@ class SessionsController < ApplicationController
     end
 
     def create
-        user = User.find_by(user_name: params.dig(:session, :user_name))
+        user = User.where("lower(user_name) = ?",
+                          params.dig(:session, :user_name)&.downcase).first
 
         if user&.authenticate(params.dig(:session, :password))
             log_in(user)
