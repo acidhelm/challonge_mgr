@@ -84,7 +84,8 @@ class TournamentsController < ApplicationController
     def update
         respond_to do |format|
             if @tournament.update(tournament_params)
-                format.html { redirect_to user_tournament_path(@user, @tournament) }
+                format.html { redirect_to user_tournament_path(@user, @tournament),
+                                          notice: "The tournament was updated." }
             else
                 format.html { render :edit }
             end

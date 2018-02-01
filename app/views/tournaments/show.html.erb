@@ -1,4 +1,5 @@
 <% content_for :title, @tournament.name %>
+<p id="notice"><%= notice %></p>
 <h1><%= @tournament.name %><h1>
 <h3><%= link_to @tournament.challonge_url, @tournament.challonge_url, target: :_blank %></h3>
 
