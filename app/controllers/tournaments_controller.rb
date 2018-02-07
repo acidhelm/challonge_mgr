@@ -97,7 +97,7 @@ class TournamentsController < ApplicationController
 
         if @tournament.present?
             @user = @tournament.user
-            render :show
+            render :show, layout: "tournament_view"
         else
             render_not_found_error
         end
