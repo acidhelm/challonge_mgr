@@ -5,7 +5,9 @@
 
 <% current_match = @tournament.matches.upcoming.select(&:current_match?) %>
 <% if current_match.present?
-       match = current_match.first %>
+       match = current_match.first
+       left_score = match.team_score(:left)
+       right_score = match.team_score(:right) %>
 <hr>
 <p><h1>
 Current match: #<%= match.number %>
@@ -20,9 +22,9 @@ in <%= match.round_name(capitalized: false) %>
 </tr>
 <tr>
   <td><h1><%= match.team_name(:left) %><h1></td>
-  <td><h1><%= match.team_score(:left) %><h1></td>
+  <td><h1><%= left_score %><h1></td>
   <td align="center"><h1>&mdash;</h1></td>
-  <td align="right"><h1><%= match.team_score(:right) %><h1></td>
+  <td align="right"><h1><%= right_score %><h1></td>
   <td align="right"><h1><%= match.team_name(:right) %><h1></td>
 </tr>
 <% if !@tournament.readonly? %>
@@ -30,22 +32,22 @@ in <%= match.round_name(capitalized: false) %>
 <td colspan='2'>
 <%= button_to 'Add 1 win', user_tournament_match_path(
                              @user, @tournament, match,
-                             left_score: match.team_score(:left) + 1,
-                             right_score: match.team_score(:right)),
+                             left_score: left_score + 1,
+                             right_score: right_score),
                            method: :put %>
 <br>
 <%= button_to 'Subtract 1 win', user_tournament_match_path(
                                   @user, @tournament, match,
-                                  left_score: match.team_score(:left) - 1,
-                                  right_score: match.team_score(:right)),
+                                  left_score: left_score - 1,
+                                  right_score: right_score),
                                 method: :put,
-                                disabled: match.team_score(:left) == 0 %>
+                                disabled: left_score == 0 %>
 <br>
 <%= button_to 'This team won', user_tournament_match_path(
                                  @user, @tournament, match,
                                  winner_id: match.get_team_id(:left)),
                                method: :put,
-                               disabled: match.team_score(:left) <= match.team_score(:right) %>
+                               disabled: left_score <= right_score %>
 </td>
 <td valign="top" align="center">
 <%= button_to "Switch sides", [ :switch, @user, @tournament, match ] %>
@@ -53,22 +55,22 @@ in <%= match.round_name(capitalized: false) %>
 <td colspan='2' align='right'>
 <%= button_to 'Add 1 win', user_tournament_match_path(
                              @user, @tournament, match,
-                             left_score: match.team_score(:left),
-                             right_score: match.team_score(:right) + 1),
+                             left_score: left_score,
+                             right_score: right_score + 1),
                            method: :put %>
 <br>
 <%= button_to 'Subtract 1 win', user_tournament_match_path(
                                   @user, @tournament, match,
-                                  left_score: match.team_score(:left),
-                                  right_score: match.team_score(:right) - 1),
+                                  left_score: left_score,
+                                  right_score: right_score - 1),
                                 method: :put,
-                                disabled: match.team_score(:right) == 0 %>
+                                disabled: right_score == 0 %>
 <br>
 <%= button_to 'This team won', user_tournament_match_path(
                                  @user, @tournament, match,
                                  winner_id: match.get_team_id(:right)),
                                method: :put,
-                               disabled: match.team_score(:right) <= match.team_score(:left) %>
+                               disabled: right_score <= left_score %>
 </td>
 </tr>
 <% end %>
