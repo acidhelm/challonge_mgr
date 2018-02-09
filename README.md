@@ -94,14 +94,21 @@ list of tournaments.
 web site, then set up the teams and the bracket.  Be sure to click the "Start the
 tournament" button on your tournament's Bracket settings page.
 
+![The tournament list](images/tournament_list.png)
+
 Back in the browser, click _Reload the tournament list from Challonge_ if your
 new tournament isn't already in the tournament list.  Click _Manage this tournament_
 next to the tournament that you are running.
 
 ## Update matches
 
+![The match list](images/match_list.png)
+
 When a match is about to start, click the _Start this match_ link next to it.
 Challonge Mgr will show this match in the "Current match" section of the page.
+
+![The current match](images/current_match.png)
+
 As each team wins a game, click the _Add 1 win_ button under that team's name.
 If you mistakenly add a win for the wrong team, click the _Subtract 1 win_
 button to correct the score.  Click the _Switch sides_ button if the cabinets
