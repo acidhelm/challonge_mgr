@@ -109,7 +109,7 @@ Challonge Mgr will show this match in the "Current match" section of the page.
 
 ![The current match](images/current_match.png)
 
-As each team wins a game, click the _Add 1 win_ button under that team's name.
+When a team wins a game, click the _Add 1 win_ button under that team's name.
 If you mistakenly add a win for the wrong team, click the _Subtract 1 win_
 button to correct the score.  Click the _Switch sides_ button if the cabinets
 that the teams are on is opposite of the order in which they are shown on the page.
@@ -129,6 +129,8 @@ check box.  You can set the default value for this option by changing the
 value of `config.gold_on_left_default` in the `config/applcation.rb` file.
 If you set that value to match your cabinets, then you shouldn't have to toggle
 this check box.
+
+![Slack notification](images/match_starting.png)
 
 If you turn on Slack notifications and enter a channel name, Challonge Mgr will
 post a message to the channel when a match begins and ends.  The notification
