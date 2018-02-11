@@ -12,13 +12,13 @@ class Match < ApplicationRecord
                                      allow_nil: true
     validates :identifier, presence: true
 
-    scope :complete?, -> { where(state: "complete") }
-    scope :has_team?, ->(team) { where("team1_id IN (:ids) OR team2_id IN (:ids)",
-                                       ids: team.all_challonge_ids) }
-    scope :winner?, ->(team) { complete?.where(winner_id: team.all_challonge_ids) }
-    scope :loser?, ->(team) { complete?.where(loser_id: team.all_challonge_ids) }
+    scope :complete, -> { where(state: "complete") }
+    scope :has_team, ->(team) { where("team1_id IN (:ids) OR team2_id IN (:ids)",
+                                      ids: team.all_challonge_ids) }
+    scope :winner, ->(team) { complete.where(winner_id: team.all_challonge_ids) }
+    scope :loser, ->(team) { complete.where(loser_id: team.all_challonge_ids) }
     scope :upcoming, -> { where.not(state: "complete").order(suggested_play_order: :asc, identifier: :asc) }
-    scope :completed, -> { complete?.order(suggested_play_order: :asc, identifier: :asc) }
+    scope :completed, -> { complete.order(suggested_play_order: :asc, identifier: :asc) }
 
     def complete?
         return state == "complete"

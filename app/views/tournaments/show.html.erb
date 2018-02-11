@@ -31,8 +31,8 @@
   <th>Team (W-L)</th>
 </tr>
 <% @tournament.teams.order(seed: :asc).each do |t| %>
-  <% num_wins = @tournament.matches.winner?(t).count
-     num_losses = @tournament.matches.loser?(t).count
+  <% num_wins = @tournament.matches.winner(t).count
+     num_losses = @tournament.matches.loser(t).count
   %>
   <tr>
     <td><%= t.seed %></td>

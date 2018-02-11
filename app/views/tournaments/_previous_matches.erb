@@ -1,5 +1,5 @@
 <b>Previous matches:</b><br>
-<% matches = team.tournament.matches.completed.has_team?(team) %>
+<% matches = team.tournament.matches.completed.has_team(team) %>
 <%= "None".html_safe if matches.blank? %>
 <% matches.each do |match| %>
   <% if match.team_won?(team) %>

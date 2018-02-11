@@ -9,7 +9,7 @@ class TournamentsController < ApplicationController
 
     # GET /tournaments
     def index
-        @tournaments = @user.tournaments.underway?.order(started_at: :desc)
+        @tournaments = @user.tournaments.underway.order(started_at: :desc)
     end
 
     # GET /tournaments/refresh
@@ -31,7 +31,7 @@ class TournamentsController < ApplicationController
         end
 
         # Delete completed tournaments from the database.
-        @user.tournaments.complete?.each(&:destroy)
+        @user.tournaments.complete.each(&:destroy)
 
         redirect_to action: "index"
     end
