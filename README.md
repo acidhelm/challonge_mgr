@@ -160,6 +160,11 @@ Similarly, each team's score can be retrieved from the
 `/view/<tournament_id>/gold_score` and `/view/<tournament_id>/blue_score` URLs.
 Those actions return 0 if no match is in progress.
 
+If your streaming software can't poll a URL, you can run a script on the streaming
+computer that downloads the team names to text files, then set your streaming
+software to read those files.  The `scripts` directory contains scripts for doing
+this; currently, the directory has a PowerShell script for Windows.
+
 # Known problems
 
 When you start a match, the bracket on Challonge does not indicate that the
