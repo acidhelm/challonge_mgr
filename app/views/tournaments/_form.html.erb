@@ -12,12 +12,12 @@
   <% end %>
 
   <div class="field">
-    <%= form.check_box :gold_on_left %>
+    <%= form.check_box :gold_on_left, id: :tournament_gold_on_left, autofocus: true %>
     <%= form.label :gold_on_left, "The Gold cabinet is on the left side" %>
   </div>
 
   <div class="field">
-    <%= form.check_box :send_slack_notifications %>
+    <%= form.check_box :send_slack_notifications, id: :tournament_send_slack_notifications %>
     <%= form.label :send_slack_notifications, "Send Slack notifications when matches begin and end" %>
   </div>
 
