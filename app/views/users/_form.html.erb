@@ -12,13 +12,8 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :user_name %>
-    <%= form.text_field :user_name, id: :user_user_name %>
-  </div>
-
-  <div class="field">
-    <%= form.label :api_key %>
-    <%= form.text_field :api_key, id: :user_api_key %>
+    <%= form.label :api_key, "API key" %>
+    <%= form.text_field :api_key, id: :user_api_key, autofocus: true %>
   </div>
 
   <div class="actions">
