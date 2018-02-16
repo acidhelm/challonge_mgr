@@ -4,7 +4,7 @@ class TournamentsController < ApplicationController
                                              :gold, :blue, :gold_score, :blue_score ]
     before_action :set_tournament_from_alphanumeric_id,
                   only: [ :gold, :blue, :gold_score, :blue_score ]
-    before_action :require_log_in, except: [ :view, :gold, :blue, :gold_score, :blue_score ]
+    before_action :require_login, except: [ :view, :gold, :blue, :gold_score, :blue_score ]
     before_action :correct_user?, except: [ :view, :gold, :blue, :gold_score, :blue_score ]
 
     # GET /tournaments

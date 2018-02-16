@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
     include SessionsHelper
 
-    def require_log_in
+    def require_login
         if !logged_in?
             store_location
             flash[:notice] = "You must log in."

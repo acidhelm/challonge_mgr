@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
     before_action :set_user
-    before_action :require_log_in
+    before_action :require_login
     before_action :correct_user?
 
     # GET /users/1
