@@ -54,8 +54,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         log_in_as(@user)
         assert is_logged_in?
 
-        params = { user: { api_key: @user.api_key, password: "password",
-                           password_confirmation: "password" } }
+        params = { user: { api_key: @user.api_key, subdomain: @user.subdomain,
+                           password: "password", password_confirmation: "password" } }
 
         patch user_url(@user), params: params
 
@@ -66,16 +66,16 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         log_in_as(@user)
         assert is_logged_in?
 
-        params = { user: { api_key: @user.api_key, password: "password",
-                           password_confirmation: "password" } }
+        params = { user: { api_key: @user.api_key, subdomain: @user.subdomain,
+                           password: "password", password_confirmation: "password" } }
 
         patch user_url(@other_user), params: params
         assert_response :forbidden
     end
 
     test "Try to update a user without logging in" do
-        params = { user: { api_key: @user.api_key, password: "password",
-                           password_confirmation: "password" } }
+        params = { user: { api_key: @user.api_key, subdomain: @user.subdomain,
+                           password: "password", password_confirmation: "password" } }
 
         patch user_url(@user), params: params
 

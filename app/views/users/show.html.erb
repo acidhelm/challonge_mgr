@@ -7,8 +7,13 @@
 </p>
 
 <p>
-  <strong>Api key:</strong>
+  <strong>API key:</strong>
   <%= @user.api_key %>
+</p>
+
+<p>
+  <strong>Subdomain:</strong>
+  <%= @user.subdomain %>
 </p>
 
 <%= link_to "Edit this user's settings", edit_user_path(@user) %> |

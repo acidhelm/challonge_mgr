@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180131032908) do
+ActiveRecord::Schema.define(version: 20180217000725) do
 
   create_table "matches", force: :cascade do |t|
     t.integer "tournament_id"
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 20180131032908) do
     t.string "password_digest"
     t.string "encrypted_api_key"
     t.string "encrypted_api_key_iv"
+    t.string "subdomain"
   end
 
 end

@@ -3,6 +3,8 @@ module ApplicationHelper
         url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
                 "v1/tournaments.json"
 
+        url << "?subdomain=#{user.subdomain}" if user.subdomain.present?
+
         return self.send_get_request(url)
     end
 

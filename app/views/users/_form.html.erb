@@ -17,7 +17,12 @@
   </div>
 
   <div class="field">
-    <%= form.label :password %>
+    <%= form.label :subdomain, "Subdomain (leave this blank if you don't have one)" %>
+    <%= form.text_field :subdomain %>
+  </div>
+
+  <div class="field">
+    <%= form.label :password, "Password (leave this blank to keep your current password)" %>
     <%= form.password_field :password %>
   </div>
 
