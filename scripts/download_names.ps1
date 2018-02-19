@@ -15,8 +15,8 @@ $tournament = "YOUR-TOURNAMENT-NAME"
 $desktop = [Environment]::GetFolderPath("desktop")
 $gold_name_url = "$server/view/$tournament/gold"
 $blue_name_url = "$server/view/$tournament/blue"
-$gold_name_file = $(Join-Path $desktop "gold.txt")
-$blue_name_file = $(Join-Path $desktop "blue.txt")
+$gold_name_file = Join-Path $desktop "gold.txt"
+$blue_name_file = Join-Path $desktop "blue.txt"
 
 if ( ( $server -cmatch "YOUR-" ) -or ( $tournament -cmatch "YOUR-" ) )
 {
