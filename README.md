@@ -81,6 +81,13 @@ Then run this command to make an account:
 
 The password that you set here will be used to log in to Challonge Mgr.  It does
 not have to be the same as your Challonge password.
+
+If your user belongs to an organization that has a subdomain on challonge.com,
+add a `subdomain: "your-subdomain"` parameter to the `create` call.  This lets
+you manage tournaments owned by other users in your organization.
+
+You can change these settings later by clicking the _Edit this user's settings_
+link in your list of tournaments.
               
 ## Log in
 
