@@ -3,8 +3,9 @@ class Team < ApplicationRecord
 
     serialize :group_team_ids, Array
 
-    validates :challonge_id, numericality: { only_integer: true, greater_than: 0 },
-                             uniqueness: true
+    # FIXME: The uniqueness constraint should be scoped to just the ID of the
+    #        user that's accessing the records.
+    validates :challonge_id, numericality: { only_integer: true, greater_than: 0 } # , uniqueness: true
     validates :name, presence: true
     validates :seed, numericality: { only_integer: true, greater_than: 0 }
 

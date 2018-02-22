@@ -1,8 +1,9 @@
 class Match < ApplicationRecord
     belongs_to :tournament
 
-    validates :challonge_id, numericality: { only_integer: true, greater_than: 0 },
-                             uniqueness: true
+    # FIXME: The uniqueness constraint should be scoped to just the ID of the
+    #        user that's accessing the records.
+    validates :challonge_id, numericality: { only_integer: true, greater_than: 0 } # , uniqueness: true
     validates :state, presence: true
     validates :round, numericality: { only_integer: true }
     # `suggested_play_order` is normally positive, but in two-stage tournaments

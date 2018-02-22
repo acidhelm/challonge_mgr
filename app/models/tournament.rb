@@ -4,11 +4,11 @@ class Tournament < ApplicationRecord
     has_many :matches, dependent: :destroy
 
     validates :challonge_id, numericality: { only_integer: true, greater_than: 0 },
-                             uniqueness: true
+                             uniqueness: { scope: :user_id }
     validates :name, presence: true
-    validates :challonge_alphanumeric_id, presence: true, uniqueness: true
+    validates :challonge_alphanumeric_id, presence: true, uniqueness: { scope: :user_id }
     validates :state, presence: true
-    validates :challonge_url, presence: true, uniqueness: true
+    validates :challonge_url, presence: true, uniqueness: { scope: :user_id }
     validates :tournament_type, presence: true
 
     scope :underway, -> { where(state: Tournament.states_to_show) }
