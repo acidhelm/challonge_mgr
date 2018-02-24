@@ -1,14 +1,18 @@
 module ApplicationHelper
     def self.get_tournament_list(user)
-        # TODO: If the user is in a subdomain, return both the user's own
-        #       tournaments and the tournaments owned by the organization.
-        #       Currently, we only return the latter.
+        # If the user is in an organization, return the tournaments that are
+        # owned by the user and the organization.
         url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
                 "v1/tournaments.json"
 
-        url << "?subdomain=#{user.subdomain}" if user.subdomain.present?
+        tournaments = self.send_get_request(url)
 
-        return self.send_get_request(url)
+        if user.subdomain.present?
+            url << "?subdomain=#{user.subdomain}"
+            tournaments.concat self.send_get_request(url)
+        end
+
+        return tournaments
     end
 
     def self.get_tournament_info(tournament)
