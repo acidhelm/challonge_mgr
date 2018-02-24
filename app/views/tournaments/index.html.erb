@@ -10,6 +10,7 @@ manage tournaments that have had their teams and seeds set up on the Challonge s
 If the tournament has been started and doesn't appear in this list, click the
 <i>Reload the tournament list from Challonge</i> link below the list.
 </p>
+<% if @tournaments.present? %>
 <table>
   <thead>
     <tr>
@@ -34,6 +35,7 @@ If the tournament has been started and doesn't appear in this list, click the
     <% end %>
   </tbody>
 </table>
+<% end %>
 <p>
 <%= link_to "Reload the tournament list from Challonge", user_tournaments_refresh_path(@user) %> |
 <%= link_to "Edit this user's settings", edit_user_path(@user) %> |
