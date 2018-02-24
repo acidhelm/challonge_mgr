@@ -24,7 +24,11 @@ class UsersController < ApplicationController
 
     private
     def set_user
-        @user = User.find(params[:id])
+        begin
+            @user = User.find(params[:id])
+        rescue ActiveRecord::RecordNotFound
+            render_not_found_error(:user)
+        end
     end
 
     def user_params

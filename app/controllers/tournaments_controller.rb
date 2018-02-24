@@ -95,7 +95,7 @@ class TournamentsController < ApplicationController
             @user = @tournament.user
             render :show, layout: "tournament_view"
         else
-            render_not_found_error
+            render_not_found_error(:tournament)
         end
     end
 
@@ -120,7 +120,7 @@ class TournamentsController < ApplicationController
         begin
             @user = User.find(params[:user_id])
         rescue ActiveRecord::RecordNotFound
-            render plain: "That user was not found.", status: :not_found
+            render_not_found_error(:user)
         end
     end
 
@@ -129,13 +129,13 @@ class TournamentsController < ApplicationController
             @tournament = Tournament.find(params[:id])
             @user = @tournament.user
         rescue ActiveRecord::RecordNotFound
-            render_not_found_error
+            render_not_found_error(:tournament)
         end
     end
 
     def set_tournament_from_alphanumeric_id
         @tournament = Tournament.find_by_challonge_alphanumeric_id(params[:id])
-        render_not_found_error if @tournament.blank?
+        render_not_found_error(:tournament) if @tournament.blank?
     end
 
     def current_match_team_name(side)
@@ -167,9 +167,5 @@ class TournamentsController < ApplicationController
     def tournament_params
         params.require(:tournament).
           permit(:gold_on_left, :send_slack_notifications, :slack_notifications_channel)
-    end
-
-    def render_not_found_error
-        render plain: "That tournament was not found.", status: :not_found
     end
 end

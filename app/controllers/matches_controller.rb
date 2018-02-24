@@ -57,7 +57,7 @@ class MatchesController < ApplicationController
             @tournament = @match.tournament
             @user = @tournament.user
         rescue ActiveRecord::RecordNotFound
-            render plain: "That match was not found.", status: :not_found
+            render_not_found_error(:match)
         end
     end
 end
