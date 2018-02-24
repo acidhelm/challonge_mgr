@@ -208,10 +208,13 @@ class Match < ApplicationRecord
                 self.blue_team_id = team1_id
             end
         end
+
+        save!
     end
 
     def switch_team_sides!
         self.gold_team_id, self.blue_team_id = self.blue_team_id, self.gold_team_id
+        save!
     end
 
     def make_scores_csv(left_score, right_score)

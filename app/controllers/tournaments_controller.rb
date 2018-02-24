@@ -25,7 +25,6 @@ class TournamentsController < ApplicationController
                                     challonge_id: tournament_obj.id)
 
             tournament_record.update!(tournament_obj)
-            tournament_record.save
 
             tournament_record
         end
@@ -49,7 +48,6 @@ class TournamentsController < ApplicationController
         # Read the properties that we care about from the top level of the JSON,
         # and update the Tournament object.
         @tournament.update!(tournament_obj)
-        @tournament.save
 
         # Read the "participants" array and create a Team object for each one,
         # or update the Team if it's already in the database.
@@ -60,7 +58,6 @@ class TournamentsController < ApplicationController
                               challonge_id: participant_obj.id)
 
             team_record.update!(participant_obj)
-            team_record.save
         end
 
         # Read the "matches" array and create a Match object for each one, or
@@ -72,7 +69,6 @@ class TournamentsController < ApplicationController
                                challonge_id: match_obj.id)
 
             match_record.update!(match_obj)
-            match_record.save
         end
 
         redirect_to action: "show"

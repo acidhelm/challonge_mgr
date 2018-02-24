@@ -15,6 +15,7 @@ class Team < ApplicationRecord
         self.name = obj.name
         self.seed = obj.seed
         self.group_team_ids = obj.group_player_ids
+        save!
     end
 
     def all_challonge_ids

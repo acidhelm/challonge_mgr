@@ -30,7 +30,6 @@ class MatchesController < ApplicationController
         match_obj = OpenStruct.new(match_hash["match"])
 
         @match.update!(match_obj)
-        @match.save
 
         # If `winner_id` is present, then the current match is over.
         @tournament.set_match_complete(@match) if winner_id.present?
@@ -48,8 +47,6 @@ class MatchesController < ApplicationController
 
     def switch
         @match.switch_team_sides!
-        @match.save
-
         redirect_to user_tournament_path(@user, @tournament)
     end
 
