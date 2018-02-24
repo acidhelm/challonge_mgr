@@ -52,8 +52,6 @@ class MatchesController < ApplicationController
 
     protected
     def set_match
-        @match = nil
-
         begin
             @match = Match.find(params[:id])
             @tournament = @match.tournament
@@ -61,7 +59,5 @@ class MatchesController < ApplicationController
         rescue ActiveRecord::RecordNotFound
             render plain: "That match was not found.", status: :not_found
         end
-
-        return @match.present?
     end
 end

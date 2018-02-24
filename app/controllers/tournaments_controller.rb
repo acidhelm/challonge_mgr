@@ -117,36 +117,25 @@ class TournamentsController < ApplicationController
 
     protected
     def set_user
-        @user = nil
-
         begin
             @user = User.find(params[:user_id])
         rescue ActiveRecord::RecordNotFound
             render plain: "That user was not found.", status: :not_found
         end
-
-        return @user.present?
     end
 
     def set_tournament
-        @tournament = nil
-
         begin
             @tournament = Tournament.find(params[:id])
             @user = @tournament.user
         rescue ActiveRecord::RecordNotFound
             render_not_found_error
         end
-
-        return @tournament.present?
     end
 
     def set_tournament_from_alphanumeric_id
         @tournament = Tournament.find_by_challonge_alphanumeric_id(params[:id])
-
         render_not_found_error if @tournament.blank?
-
-        return @tournament.present?
     end
 
     def current_match_team_name(side)
