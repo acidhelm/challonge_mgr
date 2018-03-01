@@ -144,6 +144,9 @@ class TournamentsController < ApplicationController
         begin
             if @tournament.current_match.present?
                 name = Match.find(@tournament.current_match).team_name(side)
+            else
+                name = (side == :gold) ? @tournament.view_gold_name :
+                                         @tournament.view_blue_name
             end
         rescue ActiveRecord::RecordNotFound
         end
@@ -157,6 +160,9 @@ class TournamentsController < ApplicationController
         begin
             if @tournament.current_match.present?
                 score = Match.find(@tournament.current_match).team_score(side)
+            else
+                score = (side == :gold) ? @tournament.view_gold_score :
+                                          @tournament.view_blue_score
             end
         rescue ActiveRecord::RecordNotFound
         end

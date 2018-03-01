@@ -10,6 +10,10 @@ class Tournament < ApplicationRecord
     validates :state, presence: true
     validates :challonge_url, presence: true, uniqueness: { scope: :user_id }
     validates :tournament_type, presence: true
+    validates :view_gold_score, numericality: { only_integer: true,
+                                                greater_than_or_equal_to: 0 }
+    validates :view_blue_score, numericality: { only_integer: true,
+                                                greater_than_or_equal_to: 0 }
 
     scope :underway, -> { where(state: Tournament.states_to_show) }
     scope :complete, -> { where(state: "complete") }
@@ -45,7 +49,13 @@ class Tournament < ApplicationRecord
     end
 
     def set_match_complete(match)
-        update(current_match: nil)
+        # Store the team names and scores from the just-completed match, so that
+        # the viewing APIs return those values until the next match begins.
+        update(current_match: nil,
+               view_gold_name: match.team_name(:gold),
+               view_blue_name: match.team_name(:blue),
+               view_gold_score: match.team_score(:gold),
+               view_blue_score: match.team_score(:blue))
 
         if send_slack_notifications && slack_notifications_channel.present?
             TournamentsHelper.notify_match_complete(self, match)

@@ -159,13 +159,15 @@ current match.
 If you use Xsplit for broadcasting, Challonge Mgr can automatically update the
 team names in your video.  The `/view/<tournament_id>/gold` and
 `/view/<tournament_id>/blue` URLs return the name of the team that is
-currently on that cabinet, or an empty string if no match is in progress.
-You can make your text labels get their text from those URLs, and the names
-will be updated when you start each match.
+currently on that cabinet.  You can make your text labels get their text from
+those URLs, and the names will be updated when you start each match.
 
 Similarly, each team's score can be retrieved from the
 `/view/<tournament_id>/gold_score` and `/view/<tournament_id>/blue_score` URLs.
-Those actions return 0 if no match is in progress.
+
+After a match finishes, those URLs return the team names and scores from the
+just-completed match, so your stream will continue to show those values until
+the next match begins.
 
 If your streaming software can't poll a URL, you can run a script on the streaming
 computer that downloads the team names to text files, then set your streaming
