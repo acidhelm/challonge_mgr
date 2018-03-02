@@ -12,6 +12,21 @@ class Match < ApplicationRecord
     validates :suggested_play_order, numericality: { only_integer: true, greater_than: 0 },
                                      allow_nil: true
     validates :identifier, presence: true
+    validate :scores_csv, :validate_scores_csv
+
+    with_options numericality: { only_integer: true, greater_than: 0 }, allow_nil: true do |v|
+        # These are nil in an elimination tournament when the teams are TBD.
+        v.validates :team1_id
+        v.validates :team2_id
+
+        # These are nil when the match is not complete.
+        v.validates :winner_id
+        v.validates :loser_id
+
+        # These are nil in round-robin tournaments.
+        v.validates :team1_prereq_match_id
+        v.validates :team2_prereq_match_id
+    end
 
     scope :complete, -> { where(state: "complete") }
     scope :has_team, ->(team) { where("team1_id IN (:ids) OR team2_id IN (:ids)",
@@ -228,5 +243,11 @@ class Match < ApplicationRecord
     protected
     def cabinets_assigned?
         return gold_team_id.present? && blue_team_id.present?
+    end
+
+    def validate_scores_csv
+        if scores_csv.split(",").map { |s| s !~ /\d+-\d+/ }.any?
+            errors.add(:scores_csv, "is not a valid list of scores")
+        end
     end
 end

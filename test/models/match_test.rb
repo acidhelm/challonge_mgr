@@ -1,7 +1,42 @@
-require 'test_helper'
+require "test_helper"
 
 class MatchTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+    def setup
+        @match = matches(:one)
+    end
+
+    test "Try to save a match with an illegal team1" do
+        @match.team1_id = -1
+        assert_not @match.save
+    end
+
+    test "Try to save a match with an illegal team2" do
+        @match.team2_id = -1
+        assert_not @match.save
+    end
+
+    test "Try to save a match with an illegal winner_id" do
+        @match.winner_id = -1
+        assert_not @match.save
+    end
+
+    test "Try to save a match with an illegal loser_id" do
+        @match.loser_id = -1
+        assert_not @match.save
+    end
+
+    test "Try to save a match with an illegal team1_prereq_match_id" do
+        @match.team1_prereq_match_id = -1
+        assert_not @match.save
+    end
+
+    test "Try to save a match with an illegal team2_prereq_match_id" do
+        @match.team2_prereq_match_id = -1
+        assert_not @match.save
+    end
+
+    test "Try to save a match with an invalid scores_csv" do
+        @match.scores_csv = "homeschool-winner"
+        assert_not @match.save
+    end
 end
