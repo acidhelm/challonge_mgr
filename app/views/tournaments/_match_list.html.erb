@@ -11,11 +11,16 @@
   <% match_list.each do |m| %>
   <% if m.get_team_id(:left)
          left_team_name = m.team_name(:left)
+         left_team_won = m.team_won?(:left)
 
          if m.complete?
-             left_team_class = m.team_won?(:left) ? "winning_team" : "losing_team"
+             left_team_class = left_team_won ? "winning_team" : "losing_team"
          else
              left_team_class = "upcoming_team"
+         end
+
+         if !left_team_won && m.forfeited
+             left_team_class << " forfeited_team"
          end
      else
          winner_or_loser = m.left_team_is_prereq_match_loser? ? "Loser" : "Winner"
@@ -26,11 +31,16 @@
   %>
   <% if m.get_team_id(:right)
          right_team_name = m.team_name(:right)
+         right_team_won = m.team_won?(:right)
 
          if m.complete?
-             right_team_class = m.team_won?(:right) ? "winning_team" : "losing_team"
+             right_team_class = right_team_won ? "winning_team" : "losing_team"
          else
              right_team_class = "upcoming_team"
+         end
+
+         if !right_team_won && m.forfeited
+             right_team_class << " forfeited_team"
          end
      else
          winner_or_loser = m.right_team_is_prereq_match_loser? ? "Loser" : "Winner"
@@ -44,8 +54,8 @@
     <td><%= m.round_name %></td>
     <td>
       <% if m.complete? %>
-        <span class="<%= left_team_class %>"><%= "#{left_team_name}&nbsp;&nbsp;#{m.team_score(:left)}".html_safe %></span> &mdash;
-        <span class="<%= right_team_class %>"><%= "#{m.team_score(:right)}&nbsp;&nbsp;#{right_team_name}".html_safe %></span>
+        <span class="<%= left_team_class %>"><%= left_team_name %>&nbsp;&nbsp;<%= m.team_score(:left) if !m.forfeited %></span> &mdash;
+        <span class="<%= right_team_class %>"><%= m.team_score(:right) if !m.forfeited %>&nbsp;&nbsp;<%= right_team_name %></span>
       <% else %>
         <span class="<%= left_team_class %>"><%= left_team_name %></span> &mdash;
         <span class="<%= right_team_class %>"><%= right_team_name %></span>

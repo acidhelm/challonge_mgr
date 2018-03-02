@@ -200,6 +200,7 @@ class Match < ApplicationRecord
         self.team2_id = obj.player2_id
         self.winner_id = obj.winner_id
         self.loser_id = obj.loser_id
+        self.forfeited = obj.forfeited
         self.round = obj.round
         self.suggested_play_order = obj.suggested_play_order
         self.identifier = obj.identifier
