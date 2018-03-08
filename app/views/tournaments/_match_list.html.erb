@@ -54,8 +54,23 @@
     <td><%= m.round_name %></td>
     <td>
       <% if m.complete? %>
-        <span class="<%= left_team_class %>"><%= left_team_name %>&nbsp;&nbsp;<%= m.team_score(:left) if !m.forfeited %></span> &mdash;
-        <span class="<%= right_team_class %>"><%= m.team_score(:right) if !m.forfeited %>&nbsp;&nbsp;<%= right_team_name %></span>
+        <span class="<%= left_team_class %>"><%= left_team_name %></span>
+        <% if m.forfeited %>
+          <% if !left_team_won %>
+            <span class="forfeited_score">(forfeited)</span>
+          <% end %>
+        <% else %>
+          &nbsp;<span class="<%= left_team_class %>"><%= m.team_score(:left) %></span>
+        <% end %>
+        &mdash;
+        <% if m.forfeited %>
+          <% if !right_team_won %>
+            <span class="forfeited_score">(forfeited)</span>
+          <% end %>
+        <% else %>
+          <span class="<%= right_team_class %>"><%= m.team_score(:right) %></span>&nbsp;
+        <% end %>
+        <span class="<%= right_team_class %>"><%= right_team_name %></span>
       <% else %>
         <span class="<%= left_team_class %>"><%= left_team_name %></span> &mdash;
         <span class="<%= right_team_class %>"><%= right_team_name %></span>
