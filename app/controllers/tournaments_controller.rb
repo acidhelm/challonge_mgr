@@ -30,7 +30,7 @@ class TournamentsController < ApplicationController
         end
 
         # Delete completed tournaments from the database.
-        @user.tournaments.complete.each(&:destroy)
+        @user.tournaments.complete.destroy_all
 
         redirect_to action: "index"
     end
