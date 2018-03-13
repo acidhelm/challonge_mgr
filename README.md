@@ -58,7 +58,7 @@ Then run the Rails server:
 $ bin/rails server
 ```
 
-## Add your Challonge account
+## Create your Challonge Mgr account
 
 Challonge Mgr accounts are used to hold your Challonge login information.  You
 will need your Challonge API key, which you can find in
@@ -173,6 +173,61 @@ If your streaming software can't poll a URL, you can run a script on the streami
 computer that downloads the team names to text files, then set your streaming
 software to read those files.  The `scripts` directory contains scripts for doing
 this; currently, the directory has a PowerShell script for Windows.
+
+# Installing Challonge Mgr on Heroku
+
+Challonge Mgr is ready to deploy to a Heroku app, so that the tournament info can
+be viewed by anyone.  These instructions assume that you have created a Heroku
+account, and that you have the `heroku` CLI app installed.  Challonge Mgr doesn't
+require any paid components, so you can do all this with a free Heroku account.
+
+After you clone the repo, run:
+
+```sh
+$ heroku create <heroku app name>
+```
+
+For example, run this command:
+
+```sh
+$ heroku create my-challonge-mgr
+```
+
+to create <tt>my-challonge-mgr.herokuapp.com</tt>.  Don't use this name, of
+course; use a name that's related to your scene or organization.  `heroku
+create` also creates a git remote with the default name of "heroku".  Then, push
+the app to that remote:
+
+```sh
+$ git push heroku master
+```
+
+You'll see a bunch of output as the app is compiled and installed.  Next,
+create the environment variables `ATTR_ENCRYPTED_KEY` and (if needed)
+`SLACK_TOKEN`.  Instead of creating an `.env` file, you add those variables
+to your Heroku app's configuration:
+
+```sh
+$ key=`ruby -e 'require "securerandom"; puts SecureRandom.hex(16)'`
+$ heroku config:set ATTR_ENCRYPTED_KEY=$key
+$ heroku config:set SLACK_TOKEN=[the Slack token]
+```
+
+Next, set up the database:
+
+```sh
+$ heroku run rails db:migrate
+```
+
+Run the Rails console:
+
+```sh
+$ heroku console
+```
+
+and create a Challonge Mgr account as described in the first section of this
+document.  You can then access Challonge Mgr at
+https://your-app-name.herokuapp.com.
 
 # Known problems
 
