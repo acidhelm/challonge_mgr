@@ -22,7 +22,7 @@ when their match is coming up.
 To set up Challonge Mgr, clone the repo and set up gems and the initial database:
 
 ```sh
-$ git clone git@github.com:acidhelm/challonge_mgr.git
+$ git clone https://github.com/acidhelm/challonge_mgr.git
 $ cd challonge_mgr
 $ bundle install --path vendor/bundle
 $ bin/rails db:create db:migrate
