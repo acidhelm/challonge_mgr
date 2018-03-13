@@ -178,8 +178,9 @@ this; currently, the directory has a PowerShell script for Windows.
 
 Challonge Mgr is ready to deploy to a Heroku app, so that the tournament info can
 be viewed by anyone.  These instructions assume that you have created a Heroku
-account, and that you have the `heroku` CLI app installed.  Challonge Mgr doesn't
-require any paid components, so you can do all this with a free Heroku account.
+account, and that you have the [Heroku CLI app](https://devcenter.heroku.com/articles/heroku-cli)
+installed.  Challonge Mgr doesn't require any paid components, so you can do
+all this with a free Heroku account.
 
 After you clone the repo, run:
 
