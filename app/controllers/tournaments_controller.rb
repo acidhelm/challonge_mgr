@@ -14,19 +14,12 @@ class TournamentsController < ApplicationController
 
     # GET /tournaments/refresh
     def refresh_all
-        tournaments_array = ApplicationHelper.get_tournament_list(@user)
-
-        @tournaments = tournaments_array.map do |t|
+        ApplicationHelper.get_tournament_list(@user).map do |t|
             OpenStruct.new(t["tournament"])
         end.select do |t|
             Tournament.states_to_show.include? t.state
-        end.map do |tournament_obj|
-            tournament_record = @user.tournaments.find_or_initialize_by(
-                                    challonge_id: tournament_obj.id)
-
-            tournament_record.update!(tournament_obj)
-
-            tournament_record
+        end.each do |t|
+            @user.tournaments.find_or_initialize_by(challonge_id: t.id).update!(t)
         end
 
         # Delete completed tournaments from the database.
