@@ -44,24 +44,18 @@ class TournamentsController < ApplicationController
 
         # Read the "participants" array and create a Team object for each one,
         # or update the Team if it's already in the database.
-        tournament_obj.participants.map do |participant|
-            OpenStruct.new(participant["participant"])
-        end.each do |participant_obj|
-            team_record = @tournament.teams.find_or_initialize_by(
-                              challonge_id: participant_obj.id)
-
-            team_record.update!(participant_obj)
+        tournament_obj.participants.map do |p|
+            OpenStruct.new(p["participant"])
+        end.each do |p|
+            @tournament.teams.find_or_initialize_by(challonge_id: p.id).update!(p)
         end
 
         # Read the "matches" array and create a Match object for each one, or
         # update the Match if it's already in the database.
-        tournament_obj.matches.map do |match|
-            OpenStruct.new(match["match"])
-        end.each do |match_obj|
-            match_record = @tournament.matches.find_or_initialize_by(
-                               challonge_id: match_obj.id)
-
-            match_record.update!(match_obj)
+        tournament_obj.matches.map do |m|
+            OpenStruct.new(m["match"])
+        end.each do |m|
+            @tournament.matches.find_or_initialize_by(challonge_id: m.id).update!(m)
         end
 
         redirect_to action: "show"
