@@ -1,6 +1,4 @@
 <% content_for :title, "Edit settings for #{@user.user_name}" %>
 <h1>Edit settings for <%= @user.user_name %></h1>
-
 <%= render "form", user: @user %>
-
-<%= link_to "Cancel", @user %>
+<%= link_to "Cancel", :back %>

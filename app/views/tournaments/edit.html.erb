@@ -1,4 +1,4 @@
 <% content_for :title, "Edit settings for #{@tournament.name}" %>
 <h1>Edit settings for <%= @tournament.name %></h1>
 <p><%= render "form", tournament: @tournament %>
-<p><%= link_to "Cancel", user_tournament_path %>
+<p><%= link_to "Cancel", :back %>
