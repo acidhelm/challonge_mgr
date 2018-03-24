@@ -85,11 +85,11 @@ class TournamentsController < ApplicationController
     end
 
     def gold
-        render plain: current_match_team_name(:gold)
+        render plain: current_match_team_name(:gold).sub(/\(.*?\)$/, '')
     end
 
     def blue
-        render plain: current_match_team_name(:blue)
+        render plain: current_match_team_name(:blue).sub(/\(.*?\)$/, '')
     end
 
     def gold_score
