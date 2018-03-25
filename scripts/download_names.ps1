@@ -15,8 +15,12 @@ $tournament = "YOUR-TOURNAMENT-NAME"
 $desktop = [Environment]::GetFolderPath("desktop")
 $gold_name_url = "$server/view/$tournament/gold"
 $blue_name_url = "$server/view/$tournament/blue"
+$gold_score_url = "$server/view/$tournament/gold_score"
+$blue_score_url = "$server/view/$tournament/blue_score"
 $gold_name_file = Join-Path $desktop "gold.txt"
 $blue_name_file = Join-Path $desktop "blue.txt"
+$gold_score_file = Join-Path $desktop "gold_score.txt"
+$blue_score_file = Join-Path $desktop "blue_score.txt"
 
 if ( ( $server -cmatch "YOUR-" ) -or ( $tournament -cmatch "YOUR-" ) )
 {
@@ -29,7 +33,9 @@ if ( ( $server -cmatch "YOUR-" ) -or ( $tournament -cmatch "YOUR-" ) )
 
 while (1)
 {
-    Invoke-WebRequest $gold_name_url -OutFile $gold_name_file 
-    Invoke-WebRequest $blue_name_url -OutFile $blue_name_file 
-    sleep 15
+    Invoke-WebRequest $gold_name_url -OutFile $gold_name_file
+    Invoke-WebRequest $blue_name_url -OutFile $blue_name_file
+    Invoke-WebRequest $gold_score_url -OutFile $gold_score_file
+    Invoke-WebRequest $blue_score_url -OutFile $blue_score_file
+    sleep 5
 }
