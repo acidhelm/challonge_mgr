@@ -85,11 +85,11 @@ class TournamentsController < ApplicationController
     end
 
     def gold
-        render plain: current_match_team_name(:gold).sub(/\(.*?\)$/, '')
+        render plain: current_match_team_name(:gold)
     end
 
     def blue
-        render plain: current_match_team_name(:blue).sub(/\(.*?\)$/, '')
+        render plain: current_match_team_name(:blue)
     end
 
     def gold_score
@@ -136,7 +136,12 @@ class TournamentsController < ApplicationController
         rescue ActiveRecord::RecordNotFound
         end
 
-        return name
+        # Remove a parenthesized part from the end of the team name.  This lets
+        # the Challonge bracket have names like "Bert's Bees (PHX)", but the
+        # name on the stream will be just "Bert's Bees".  That saves space on the
+        # stream, which i espcially necessary with multi-scene teams that have
+        # multiple cities in the name.
+        return name.sub(/\(.*?\)$/, '').strip
     end
 
     def current_match_team_score(side)
