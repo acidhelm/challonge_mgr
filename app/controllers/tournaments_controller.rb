@@ -139,7 +139,7 @@ class TournamentsController < ApplicationController
         # Remove a parenthesized part from the end of the team name.  This lets
         # the Challonge bracket have names like "Bert's Bees (PHX)", but the
         # name on the stream will be just "Bert's Bees".  That saves space on the
-        # stream, which i espcially necessary with multi-scene teams that have
+        # stream, which is espcially necessary with multi-scene teams that have
         # multiple cities in the name.
         return name.sub(/\(.*?\)$/, '').strip
     end
