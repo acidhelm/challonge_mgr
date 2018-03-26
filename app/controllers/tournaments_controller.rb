@@ -17,7 +17,8 @@ class TournamentsController < ApplicationController
         ApplicationHelper.get_tournament_list(@user).map do |t|
             OpenStruct.new(t["tournament"])
         end.select do |t|
-            Tournament.states_to_show.include? t.state
+            Tournament.states_to_show.include?(t.state) ||
+              @user.tournaments.where(challonge_id: t.id).exists?
         end.each do |t|
             @user.tournaments.find_or_initialize_by(challonge_id: t.id).update!(t)
         end
