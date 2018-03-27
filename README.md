@@ -176,7 +176,9 @@ the next match begins.
 If your streaming software can't poll a URL, you can run a script on the streaming
 computer that downloads the team names to text files, then set your streaming
 software to read those files.  The `scripts` directory contains scripts for doing
-this; currently, the directory has a PowerShell script for Windows.
+this.  Currently, that directory has a PowerShell script.  You'll need to change
+two strings in the script before you run it; see the TODO comments in the file 
+for instructions.
 
 # Installing Challonge Mgr on Heroku
 
