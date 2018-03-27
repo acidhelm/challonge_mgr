@@ -160,7 +160,11 @@ If you use Xsplit for broadcasting, Challonge Mgr can automatically update the
 team names in your video.  The `/view/<tournament_id>/gold` and
 `/view/<tournament_id>/blue` URLs return the name of the team that is
 currently on that cabinet.  You can make your text labels get their text from
-those URLs, and the names will be updated when you start each match.
+those URLs, and the names will be updated when you start each match.  If there
+is parenthesized text at the end of the name, it will be removed from the text
+that these actions return.  This lets you have a team name like "The Bee's Knees
+(SF/PHX)" in Challonge, but the "(SF/PHX)" part won't appear in the stream, to
+save space on the screen.
 
 Similarly, each team's score can be retrieved from the
 `/view/<tournament_id>/gold_score` and `/view/<tournament_id>/blue_score` URLs.
