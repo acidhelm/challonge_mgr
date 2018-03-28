@@ -69,6 +69,8 @@
                 tournament_list: "Back to the tournament list"
             },
             edit: {
+                page_title: "Edit settings for %{name}",
+                page_header: "Edit settings for %{name}"
             },
             form: {
             },
