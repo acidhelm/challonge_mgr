@@ -79,6 +79,12 @@
             match_list: {
             },
             previous_matches: {
+                header: "Previous matches:",
+                none: "None",
+                match_won: "Defeated %{loser} %{winning_score} - %{losing_score}",
+                match_won_forfeited: "Defeated %{loser} by forfeit",
+                match_lost: "Lost to %{winner} %{winning_score} - %{losing_score}",
+                match_lost_forfeited: "Lost to %{winner} by forfeit"
             },
             edit_tournament: "Edit this tournament's settings"
         },
