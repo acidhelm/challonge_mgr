@@ -19,7 +19,6 @@
                 user_name: "User name:",
                 api_key: "API key:",
                 subdomain: "Subdomain:",
-                edit_user: "Edit this user's settings",
                 view_tournaments: "View this user's tournaments"
             },
             edit: {
@@ -35,9 +34,44 @@
                 subdomain: "Subdomain (leave this blank if you don't have one)",
                 password: "Password (leave this blank to keep your current password)",
                 password_confirmation: "Confirm the new password"
-            }
+            },
+            edit_user: "Edit this user's settings",
+            log_out: "Log out"
         },
-        cancel_link: "Cancel",
-        log_out_link: "Log out"
+        tournaments: {
+            index: {
+                page_title: "Tournament list for %{user_name}",
+                page_header: "Challonge tournaments owned by %{user_name}",
+                instructions1: "This list shows the tournaments that are underway" \
+                  " and owned by your user.  If the tournament that you want to" \
+                  " manage doesn't appear here, check that you have started the" \
+                  " tournament on the Challonge web site.  Challonge Mgr can only" \
+                  " manage tournaments that have had their teams and seeds set up" \
+                  " on the Challonge site.",
+                instructions2_html: "If the tournament has been started and doesn't" \
+                  " appear in this list, click the <i>Reload the tournament list" \
+                  " from Challonge</i> link below the list.",
+                name: "Name",
+                challonge_url: "Challonge URL",
+                state: "State",
+                actions: "Actions",
+                manage_tournament: "Manage this tournament",
+                reload_tournaments: "Reload the tournament list from Challonge",
+            },
+            show: {
+            },
+            edit: {
+            },
+            form: {
+            },
+            current_match: {
+            },
+            match_list: {
+            },
+            previous_matches: {
+            },
+            edit_tournament: "Edit this tournament's settings"
+        },
+        cancel_link: "Cancel"
     }
 }
