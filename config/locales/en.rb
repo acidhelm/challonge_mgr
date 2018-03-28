@@ -59,6 +59,14 @@
                 reload_tournaments: "Reload the tournament list from Challonge",
             },
             show: {
+                upcoming_matches: "Upcoming matches:",
+                completed_matches: "Completed matches:",
+                team_records: "Team records:",
+                seed: "Seed",
+                record: "Team (W-L)",
+                team_record: "%{name} (%{wins} - %{losses})",
+                reload: "Reload this tournament from Challonge",
+                tournament_list: "Back to the tournament list"
             },
             edit: {
             },
