@@ -1,19 +1,17 @@
 <% readme_url = "https://github.com/acidhelm/challonge_mgr/blob/master/README.md#create-your-challonge-mgr-account" %>
-<% content_for :title, "Log in" %>
+<% content_for :title, t(".page_title") %>
 <p id="notice"><%= notice %></p>
-<p>Enter the user name and password of your Challonge Mgr account.
-If you haven't made an account yet, see <a href="<%= readme_url %>">the instructions in the readme file</a>
-on how to set one up.</p>
+<p><%= t ".account_setup_instructions_html", readme_url: readme_url %></p>
 <%= form_for(:session, url: login_path) do |f| %>
   <div class="field">
-    <%= f.label :user_name, "<u>U</u>ser name".html_safe, for: :user_name, accesskey: "u" %>
+    <%= f.label :user_name, t(".user_name_html"), for: :user_name, accesskey: t(".user_name_accesskey") %>
     <%= f.text_field :user_name, id: :user_name, autofocus: true %>
   </div>
   <div class="field">
-    <%= f.label :password, "<u>P</u>assword".html_safe, for: :password, accesskey: "p" %>
+    <%= f.label :password, t(".password_html"), for: :password, accesskey: t(".password_accesskey") %>
     <%= f.password_field :password, id: :password %>
   </div>
   <div class="actions">
-    <%= f.submit "Log in" %>
+    <%= f.submit t(".log_in_button") %>
   </div>
 <% end %>
