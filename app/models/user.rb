@@ -2,6 +2,7 @@ class User < ApplicationRecord
     has_many :tournaments, dependent: :destroy
 
     validates :user_name, presence: true, uniqueness: { case_sensitive: false }
+    validates :api_key, presence: true
     validates :password, presence: true, allow_nil: true
     has_secure_password
 
