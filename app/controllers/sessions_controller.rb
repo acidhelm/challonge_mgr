@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
             log_in(user)
             redirect_back_or user_tournaments_refresh_path(user)
         else
-            flash.now[:notice] = "The user name or password was incorrect."
+            flash.now[:notice] = I18n.t("errors.login_failed")
             render :new
         end
     end

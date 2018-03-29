@@ -1,11 +1,11 @@
 <% show_actions = !(readonly || match_list.all?(&:complete?) || match_list.all?(&:teams_are_tbd?) || match_list.any?(&:current_match?)) %>
 <table>
   <tr>
-    <th>Match #</th>
-    <th>Round</th>
-    <th>Teams</th>
+    <th><%= t(".match_number") %></th>
+    <th><%= t(".round") %></th>
+    <th><%= t(".teams") %></th>
     <% if show_actions %>
-      <th>Actions</th>
+      <th><%= t(".actions") %></th>
     <% end %>
   </tr>
   <% match_list.each do |m| %>
@@ -23,10 +23,14 @@
              left_team_class << " forfeited_team"
          end
      else
-         winner_or_loser = m.left_team_is_prereq_match_loser? ? "Loser" : "Winner"
          match_num = m.tournament.matches.find_by_challonge_id(m.left_team_prereq_match_id).number
-         left_team_name = "#{winner_or_loser} of match #{match_num}"
          left_team_class = "tbd_team"
+
+         if m.left_team_is_prereq_match_loser?
+             left_team_name = t(".loser_of_match", number: match_num)
+         else
+             left_team_name = t(".winner_of_match", number: match_num)
+         end
      end
   %>
   <% if m.get_team_id(:right)
@@ -43,10 +47,14 @@
              right_team_class << " forfeited_team"
          end
      else
-         winner_or_loser = m.right_team_is_prereq_match_loser? ? "Loser" : "Winner"
          match_num = m.tournament.matches.find_by_challonge_id(m.right_team_prereq_match_id).number
-         right_team_name = "#{winner_or_loser} of match #{match_num}"
          right_team_class = "tbd_team"
+
+         if m.right_team_is_prereq_match_loser?
+             right_team_name = t(".loser_of_match", number: match_num)
+         else
+             right_team_name = t(".winner_of_match", number: match_num)
+         end
      end
   %>
   <tr>
@@ -57,7 +65,7 @@
         <span class="<%= left_team_class %>"><%= left_team_name %></span>
         <% if m.forfeited %>
           <% if !left_team_won %>
-            <span class="forfeited_score">(forfeited)</span>
+            <span class="forfeited_score"><%= t(".forfeited") %></span>
           <% end %>
         <% else %>
           &nbsp;<span class="<%= left_team_class %>"><%= m.team_score(:left) %></span>
@@ -65,7 +73,7 @@
         &mdash;
         <% if m.forfeited %>
           <% if !right_team_won %>
-            <span class="forfeited_score">(forfeited)</span>
+            <span class="forfeited_score"><%= t(".forfeited") %></span>
           <% end %>
         <% else %>
           <span class="<%= right_team_class %>"><%= m.team_score(:right) %></span>&nbsp;
@@ -78,8 +86,8 @@
     </td>
     <% if show_actions && !(m.complete? || m.teams_are_tbd? || m.current_match?) %>
       <td>
-      <%= link_to "Switch sides", [ :switch, @user, @tournament, m ], method: :post %> |
-      <%= link_to "Start this match", [ :start, @user, @tournament, m ], method: :post %>
+        <%= link_to t(".switch_sides"), [ :switch, @user, @tournament, m ], method: :post %> |
+        <%= link_to t(".start_this_match"), [ :start, @user, @tournament, m ], method: :post %>
       </td>
     <% end %>
   </tr>

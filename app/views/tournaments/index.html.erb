@@ -1,23 +1,15 @@
-<% content_for :title, "Tournament list for #{@user.user_name}" %>
-<h1>Challonge tournaments owned by <%= @user.user_name %></h1>
-<p>
-This list shows the tournaments that are underway and owned by your user.
-If the tournament that you want to manage doesn't appear here, check that you
-have started the tournament on the Challonge web site.  Challonge Mgr can only
-manage tournaments that have had their teams and seeds set up on the Challonge site.
-</p>
-<p>
-If the tournament has been started and doesn't appear in this list, click the
-<i>Reload the tournament list from Challonge</i> link below the list.
-</p>
+<% content_for :title, t(".page_title", user_name: @user.user_name) %>
+<h1><%= t(".page_header", user_name: @user.user_name) %></h1>
+<p><%= t(".instructions1") %></p>
+<p><%= t(".instructions2_html") %></p>
 <% if @tournaments.present? %>
 <table>
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Challonge URL</th>
-      <th>State</th>
-      <th>Actions</th>
+      <th><%= t(".name") %></th>
+      <th><%= t(".challonge_url") %></th>
+      <th><%= t(".state") %></th>
+      <th><%= t(".actions") %></th>
     </tr>
   </thead>
 
@@ -28,8 +20,8 @@ If the tournament has been started and doesn't appear in this list, click the
         <td><%= link_to tournament.challonge_url, tournament.challonge_url, target: :_blank %></td>
         <td><%= tournament.state.gsub("_", " ") %></td>
         <td>
-          <%= link_to "Manage this tournament", [ :refresh, @user, tournament ] %> |
-          <%= link_to "Edit this tournament's settings", [ :edit, @user, tournament ] %>
+          <%= link_to t(".manage_tournament"), [ :refresh, @user, tournament ] %> |
+          <%= link_to t("tournaments.edit_tournament"), [ :edit, @user, tournament ] %>
         </td>
       </tr>
     <% end %>
@@ -37,7 +29,7 @@ If the tournament has been started and doesn't appear in this list, click the
 </table>
 <% end %>
 <p>
-<%= link_to "Reload the tournament list from Challonge", user_tournaments_refresh_path(@user) %> |
-<%= link_to "Edit this user's settings", edit_user_path(@user) %> |
-<%= link_to "Log out", logout_path, method: :delete %>
+<%= link_to t(".reload_tournaments"), user_tournaments_refresh_path(@user) %> |
+<%= link_to t("users.edit_user"), edit_user_path(@user) %> |
+<%= link_to t("users.log_out"), logout_path, method: :delete %>
 </p>

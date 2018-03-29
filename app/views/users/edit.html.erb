@@ -1,4 +1,4 @@
-<% content_for :title, "Edit settings for #{@user.user_name}" %>
-<h1>Edit settings for <%= @user.user_name %></h1>
+<% content_for :title, t(".page_title", user_name: @user.user_name) %>
+<h1><%= t(".page_header", user_name: @user.user_name) %></h1>
 <%= render "form", user: @user %>
-<%= link_to "Cancel", :back %>
+<%= link_to t("cancel_link"), :back %>

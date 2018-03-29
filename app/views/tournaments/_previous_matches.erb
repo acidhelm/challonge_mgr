@@ -1,16 +1,21 @@
-<b>Previous matches:</b><br>
+<b><%= t(".header") %></b><br>
 <% matches = team.tournament.matches.completed.has_team(team) %>
-<%= "None" if matches.blank? %>
+<%= t(".none") if matches.blank? %>
 <% matches.each do |match| %>
   <% if match.team_won?(team) %>
-    Defeated <%= match.team_name(:loser) %>
+    <% if match.forfeited %>
+      <%= t(".match_won_forfeited", loser: match.team_name(:loser)) %>
+    <% else %>
+      <%= t(".match_won", loser: match.team_name(:loser),
+            winning_score: match.team_score(:winner), losing_score: match.team_score(:loser)) %>
+    <% end %>
   <% else %>
-    Lost to <%= match.team_name(:winner) %>
-  <% end %>
-  <% if match.forfeited %>
-    by forfeit
-  <% else %>
-    <%= match.team_score(:winner) %> - <%= match.team_score(:loser) %>
+    <% if match.forfeited %>
+      <%= t(".match_lost_forfeited", winner: match.team_name(:winner)) %>
+    <% else %>
+      <%= t(".match_lost", winner: match.team_name(:winner),
+            winning_score: match.team_score(:winner), losing_score: match.team_score(:loser)) %>
+    <% end %>
   <% end %>
   <br>
 <% end %>

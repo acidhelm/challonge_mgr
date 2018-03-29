@@ -12,23 +12,23 @@
 <% matches = @tournament.matches.upcoming.reject(&:current_match?) %>
 <% if matches.present? %>
   <hr>
-  <p><h2>Upcoming matches:</h2>
+  <p><h2><%= t(".upcoming_matches") %></h2>
   <p><%= render partial: "match_list", object: matches, locals: { readonly: @tournament.readonly? } %></p>
 <% end %>
 
 <% matches = @tournament.matches.completed %>
 <% if matches.present? %>
   <hr>
-  <p><h2>Completed matches:</h2>
+  <p><h2><%= t(".completed_matches") %></h2>
   <p><%= render partial: "match_list", object: matches, locals: { readonly: @tournament.readonly? } %></p>
 <% end %>
 
 <hr>
-<p><h2>Team records:</h2>
+<p><h2><%= t(".team_records") %></h2>
 <table>
 <tr>
-  <th>Seed</th>
-  <th>Team (W-L)</th>
+  <th><%= t(".seed") %></th>
+  <th><%= t(".record") %></th>
 </tr>
 <% @tournament.teams.order(seed: :asc).each do |t| %>
   <% num_wins = @tournament.matches.winner(t).count
@@ -36,7 +36,7 @@
   %>
   <tr>
     <td><%= t.seed %></td>
-    <td><%= "#{t.name} (#{num_wins} - #{num_losses})" %></td>
+    <td><%= t(".team_record", name: t.name, wins: num_wins, losses: num_losses) %></td>
   </tr>
 <% end %>
 </table>
@@ -44,8 +44,8 @@
 
 <hr>
 <% if !@tournament.readonly? %>
-  <%= link_to "Reload this tournament from Challonge", [ :refresh, @user, @tournament ] %> |
-  <%= link_to "Edit this tournament's settings", [ :edit, @user, @tournament ] %> |
-  <%= link_to "Back to the tournament list", user_tournaments_path(@user) %> |
-  <%= link_to "Log out", logout_path, method: :delete %>
+  <%= link_to t(".reload"), [ :refresh, @user, @tournament ] %> |
+  <%= link_to t("tournaments.edit_tournament"), [ :edit, @user, @tournament ] %> |
+  <%= link_to t(".tournament_list"), user_tournaments_path(@user) %> |
+  <%= link_to t("user.log_out"), logout_path, method: :delete %>
 <% end %>

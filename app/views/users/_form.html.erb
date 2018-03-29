@@ -1,8 +1,7 @@
 <%= form_with(model: user, local: true) do |form| %>
   <% if user.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(user.errors.count, "error") %> prevented this user from being saved:</h2>
-
+      <h2><%= t(".errors_list_header", count: user.errors.count) %></h2>
       <ul>
       <% user.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -12,22 +11,22 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :api_key, "API key" %>
+    <%= form.label :api_key, t(".api_key") %>
     <%= form.text_field :api_key, id: :user_api_key, autofocus: true %>
   </div>
 
   <div class="field">
-    <%= form.label :subdomain, "Subdomain (leave this blank if you don't have one)" %>
+    <%= form.label :subdomain, t(".subdomain") %>
     <%= form.text_field :subdomain %>
   </div>
 
   <div class="field">
-    <%= form.label :password, "Password (leave this blank to keep your current password)" %>
+    <%= form.label :password, t(".password") %>
     <%= form.password_field :password %>
   </div>
 
   <div class="field">
-    <%= form.label :password_confirmation %>
+    <%= form.label :password_confirmation, t(".password_confirmation") %>
     <%= form.password_field :password_confirmation %>
   </div>
 
