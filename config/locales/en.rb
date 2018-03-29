@@ -15,6 +15,14 @@
             user_updated: "The user was updated.",
             tournament_updated: "The tournament was updated."
         },
+        slack: {
+            tbd: "TBD",
+            match_starting: "%{tournament_name}: Match #%{match_number} is about to start:" \
+                              " %{left_team} vs. %{right_team}.",
+            on_deck_match: " The on-deck match is %{first_team} vs. %{second_team}.",
+            match_complete: "%{tournament_name}: %{winning_team} defeated" \
+                              " %{losing_team} %{winning_score}-%{losing_score}."
+        },
         sessions: {
             new: {
                 page_title: "Log in",
