@@ -73,6 +73,13 @@
                 page_header: "Edit settings for %{name}"
             },
             form: {
+                errors_list_header: {
+                    one: "1 error prevented this tournament from being saved:",
+                    other: "%{count} errors prevented this tournament from being saved:"
+                },
+                gold_on_left: "The Gold cabinet is on the left side",
+                send_slack_notifications: "Send Slack notifications when matches begin and end",
+                slack_notifications_channel: "Slack channel"
             },
             current_match: {
             },
