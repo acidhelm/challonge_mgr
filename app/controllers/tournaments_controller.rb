@@ -82,7 +82,7 @@ class TournamentsController < ApplicationController
     def update
         if @tournament.update(tournament_params)
             redirect_to user_tournament_path(@user, @tournament),
-                        notice: "The tournament was updated."
+                        notice: I18n.t("notices.tournament_updated")
         else
             render :edit
         end

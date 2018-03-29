@@ -2,6 +2,19 @@
     en: {
         browser_title: "%{title} - Challonge Mgr",
         browser_title_view: "Viewing %{title}",
+        cancel_link: "Cancel",
+        errors: {
+            login_required: "You must log in.",
+            page_access_denied: "You cannot access that page.",
+            match_not_found: "That match was not found.",
+            tournament_not_found: "That tournament was not found.",
+            user_not_found: "That user was not found.",
+            login_failed: "The user name or password was incorrect."
+        },
+        notices: {
+            user_updated: "The user was updated.",
+            tournament_updated: "The tournament was updated."
+        },
         sessions: {
             new: {
                 page_title: "Log in",
@@ -110,7 +123,6 @@
                 match_lost_forfeited: "Lost to %{winner} by forfeit"
             },
             edit_tournament: "Edit this tournament's settings"
-        },
-        cancel_link: "Cancel"
+        }
     }
 }
