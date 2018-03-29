@@ -89,6 +89,15 @@
                 switch_sides: "Switch sides",
             },
             match_list: {
+                match_number: "Match #",
+                round: "Round",
+                teams: "Teams",
+                actions: "Actions",
+                winner_of_match: "Winner of match %{number}",
+                loser_of_match: "Loser of match %{number}",
+                forfeited: "(forfeited)",
+                switch_sides: "Switch sides",
+                start_this_match: "Start this match"
             },
             previous_matches: {
                 header: "Previous matches:",
