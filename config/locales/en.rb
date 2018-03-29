@@ -1,5 +1,7 @@
 {
     en: {
+        browser_title: "%{title} - Challonge Mgr",
+        browser_title_view: "Viewing %{title}",
         sessions: {
             new: {
                 page_title: "Log in",
