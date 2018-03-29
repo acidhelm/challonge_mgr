@@ -131,6 +131,16 @@
                 match_lost_forfeited: "Lost to %{winner} by forfeit"
             },
             edit_tournament: "Edit this tournament's settings"
+        },
+        matches: {
+            round_names: {
+                winners_round: "winners' round %{round}",
+                winners_round_cap: "Winners' round %{round}",
+                losers_round: "losers' round %{round}",
+                losers_round_cap: "Losers' round %{round}",
+                round: "round %{round}",
+                round_cap: "Round %{round}"
+            }
         }
     }
 }

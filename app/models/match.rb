@@ -185,13 +185,16 @@ class Match < ApplicationRecord
 
     def round_name(capitalized: true)
         if tournament.tournament_type == "double elimination"
-            winners_or_losers = round > 0 ? "Winners'" : "Losers'"
-            ret = "#{winners_or_losers} round #{round.abs}"
+            if round > 0
+                string_id = capitalized ? :winners_round_cap : :winners_round
+            else
+                string_id = capitalized ? :losers_round_cap : :losers_round
+            end
         else
-            ret = "Round #{round}"
+            string_id = capitalized ? :round_cap : :round
         end
 
-        return capitalized ? ret : ret.downcase
+        return I18n.t(string_id, scope: "matches.round_names", round: round.abs)
     end
 
     def update!(obj)
