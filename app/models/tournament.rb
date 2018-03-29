@@ -14,6 +14,7 @@ class Tournament < ApplicationRecord
                                                 greater_than_or_equal_to: 0 }
     validates :view_blue_score, numericality: { only_integer: true,
                                                 greater_than_or_equal_to: 0 }
+    validates :slack_notifications_channel, presence: true, if: :send_slack_notifications
 
     scope :underway, -> { where(state: Tournament.states_to_show) }
     scope :complete, -> { where(state: "complete") }
