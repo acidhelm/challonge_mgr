@@ -82,6 +82,11 @@
                 slack_notifications_channel: "Slack channel"
             },
             current_match: {
+                header: "Current match: #%{number} in %{round_name}",
+                add_a_win: "Add 1 win",
+                subtract_a_win: "Subtract 1 win",
+                this_team_won: "This team won",
+                switch_sides: "Switch sides",
             },
             match_list: {
             },
