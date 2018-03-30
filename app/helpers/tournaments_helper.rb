@@ -2,6 +2,16 @@
 
 module TournamentsHelper
     def self.notify_match_starting(tournament, match, next_match = nil)
+        msg = get_match_starting_msg(tournament, match, next_match)
+        notify_slack(msg, tournament.slack_notifications_channel)
+    end
+
+    def self.notify_match_complete(tournament, match)
+        msg = get_match_complete_msg(tournament, match)
+        notify_slack(msg, tournament.slack_notifications_channel)
+    end
+
+    def self.get_match_starting_msg(tournament, match, next_match)
         msg = I18n.t("slack.match_starting", tournament_name: tournament.name,
                      match_number: match.number, left_team: match.team_name(:left),
                      right_team: match.team_name(:right))
@@ -24,17 +34,15 @@ module TournamentsHelper
             end
         end
 
-        notify_slack(msg, tournament.slack_notifications_channel)
+        return msg
     end
 
-    def self.notify_match_complete(tournament, match)
-        msg = I18n.t("slack.match_complete", tournament_name: tournament.name,
-                     winning_team: match.team_name(:winner),
-                     losing_team: match.team_name(:loser),
-                     winning_score: match.team_score(:winner),
-                     losing_score: match.team_score(:loser))
-
-        notify_slack(msg, tournament.slack_notifications_channel)
+    def self.get_match_complete_msg(tournament, match)
+        return I18n.t("slack.match_complete", tournament_name: tournament.name,
+                      winning_team: match.team_name(:winner),
+                      losing_team: match.team_name(:loser),
+                      winning_score: match.team_score(:winner),
+                      losing_score: match.team_score(:loser))
     end
 
     def self.notify_slack(msg, channel_name)
