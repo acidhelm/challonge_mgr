@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 class TournamentsController < ApplicationController
-    before_action :set_user, only: [ :index, :refresh_all ]
-    before_action :set_tournament, except: [ :index, :refresh_all, :view,
-                                             :gold, :blue, :gold_score, :blue_score ]
+    before_action :set_user, only: %i(index refresh_all)
+    before_action :set_tournament, except: %i(index refresh_all view
+                                              gold blue gold_score blue_score)
     before_action :set_tournament_from_alphanumeric_id,
-                  only: [ :gold, :blue, :gold_score, :blue_score ]
-    before_action :require_login, except: [ :view, :gold, :blue, :gold_score, :blue_score ]
-    before_action :correct_user?, except: [ :view, :gold, :blue, :gold_score, :blue_score ]
+                  only: %i(gold blue gold_score blue_score)
+    before_action :require_login, except: %i(view gold blue gold_score blue_score)
+    before_action :correct_user?, except: %i(view gold blue gold_score blue_score)
 
     # GET /tournaments
     def index
