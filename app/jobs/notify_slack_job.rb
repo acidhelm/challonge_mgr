@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NotifySlackJob < ApplicationJob
     queue_as :default
 

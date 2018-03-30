@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ApplicationHelper
     def self.get_tournament_list(user)
         # If the user is in an organization, return the tournaments that are
@@ -8,7 +10,7 @@ module ApplicationHelper
         tournaments = self.send_get_request(url)
 
         if user.subdomain.present?
-            url << "?subdomain=#{user.subdomain}"
+            url += "?subdomain=#{user.subdomain}"
             tournaments.concat self.send_get_request(url)
         end
 

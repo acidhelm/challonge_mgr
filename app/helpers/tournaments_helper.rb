@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TournamentsHelper
     def self.notify_match_starting(tournament, match, next_match = nil)
         msg = I18n.t("slack.match_starting", tournament_name: tournament.name,

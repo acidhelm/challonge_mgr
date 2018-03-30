@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TournamentsController < ApplicationController
     before_action :set_user, only: [ :index, :refresh_all ]
     before_action :set_tournament, except: [ :index, :refresh_all, :view,
