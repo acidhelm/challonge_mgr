@@ -7,11 +7,11 @@ module ApplicationHelper
         url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
                 "v1/tournaments.json"
 
-        tournaments = self.send_get_request(url)
+        tournaments = send_get_request(url)
 
         if user.subdomain.present?
             url += "?subdomain=#{user.subdomain}"
-            tournaments.concat self.send_get_request(url)
+            tournaments.concat send_get_request(url)
         end
 
         return tournaments
@@ -24,7 +24,7 @@ module ApplicationHelper
                 "v1/tournaments/#{tournament.challonge_id}.json?" \
                 "include_participants=1&include_matches=1"
 
-        return self.send_get_request(url)
+        return send_get_request(url)
     end
 
     def self.update_match(match, post_data, content_type = "application/x-www-form-urlencoded")
@@ -34,7 +34,7 @@ module ApplicationHelper
                 "v1/tournaments/#{match.tournament.challonge_id}/matches/" \
                 "#{match.challonge_id}.json"
 
-        return self.send_put_request(url, post_data, content_type)
+        return send_put_request(url, post_data, content_type)
     end
 
     protected
