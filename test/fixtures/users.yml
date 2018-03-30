@@ -5,9 +5,11 @@ willow:
   encrypted_api_key: "HxTlg/hERdlScQ08X/JgHxV2pMGvjg=="
   encrypted_api_key_iv: "CHKrEeUuj3D2Skit"
   password_digest: <%= User.digest("password") %>
+  subdomain: "sub1"
 
 buffy:
   user_name: buffy
   encrypted_api_key: "HxTlg/hERdlScQ08X/JgHxV2pMGvjg=="
   encrypted_api_key_iv: "CHKrEeUuj3D2Skit"
   password_digest: <%= User.digest("password") %>
+

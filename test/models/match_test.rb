@@ -5,6 +5,36 @@ class MatchTest < ActiveSupport::TestCase
         @match = matches(:one)
     end
 
+    test "Try to save a match with an illegal challonge_id" do
+        @match.challonge_id = -1
+        assert_not @match.save
+    end
+
+    test "Try to save a match with an illegal state" do
+        @match.state = ""
+        assert_not @match.save
+    end
+
+    test "Try to save a match with an illegal round" do
+        @match.round = 37.42
+        assert_not @match.save
+    end
+
+    test "Try to save a match with an illegal suggested_play_order" do
+        @match.suggested_play_order = 37.42
+        assert_not @match.save
+    end
+
+    test "Try to save a match with an illegal identifier" do
+        @match.identifier = ""
+        assert_not @match.save
+    end
+
+    test "Try to save a match with an invalid scores_csv" do
+        @match.scores_csv = "homeschool-winner"
+        assert_not @match.save
+    end
+
     test "Try to save a match with an illegal team1" do
         @match.team1_id = -1
         assert_not @match.save
@@ -32,11 +62,6 @@ class MatchTest < ActiveSupport::TestCase
 
     test "Try to save a match with an illegal team2_prereq_match_id" do
         @match.team2_prereq_match_id = -1
-        assert_not @match.save
-    end
-
-    test "Try to save a match with an invalid scores_csv" do
-        @match.scores_csv = "homeschool-winner"
         assert_not @match.save
     end
 end
