@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-    protect_from_forgery with: :exception
-
     include SessionsHelper
+
+    protect_from_forgery with: :exception
 
     def require_login
         if !logged_in?
