@@ -90,12 +90,15 @@ class Match < ApplicationRecord
     # `team2_id` for the right side.  If _that_ ID hasn't been set yet, because
     # prereq matches need to be played still, then this function returns nil.
     def get_team_id(side)
-        if side == :left
-            left_team_id = tournament.gold_on_left ? gold_team_id : blue_team_id
-            return left_team_id ? left_team_id : team1_id
-        else
-            right_team_id = tournament.gold_on_left ? blue_team_id : gold_team_id
-            return right_team_id ? right_team_id : team2_id
+        case side
+            when :left
+                left_team_id = tournament.gold_on_left ? gold_team_id : blue_team_id
+                return left_team_id ? left_team_id : team1_id
+            when :right
+                right_team_id = tournament.gold_on_left ? blue_team_id : gold_team_id
+                return right_team_id ? right_team_id : team2_id
+            else
+                return nil
         end
     end
 
