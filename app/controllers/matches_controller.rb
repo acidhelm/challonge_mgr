@@ -54,12 +54,10 @@ class MatchesController < ApplicationController
 
     protected
     def set_match
-        begin
-            @match = Match.find(params[:id])
-            @tournament = @match.tournament
-            @user = @tournament.user
-        rescue ActiveRecord::RecordNotFound
-            render_not_found_error(:match)
-        end
+        @match = Match.find(params[:id])
+        @tournament = @match.tournament
+        @user = @tournament.user
+    rescue ActiveRecord::RecordNotFound
+        render_not_found_error(:match)
     end
 end

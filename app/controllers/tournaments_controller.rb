@@ -117,20 +117,16 @@ class TournamentsController < ApplicationController
 
     protected
     def set_user
-        begin
-            @user = User.find(params[:user_id])
-        rescue ActiveRecord::RecordNotFound
-            render_not_found_error(:user)
-        end
+        @user = User.find(params[:user_id])
+    rescue ActiveRecord::RecordNotFound
+        render_not_found_error(:user)
     end
 
     def set_tournament
-        begin
-            @user = User.find(params[:user_id])
-            @tournament = @user.tournaments.find(params[:id])
-        rescue ActiveRecord::RecordNotFound
-            render_not_found_error(:tournament)
-        end
+        @user = User.find(params[:user_id])
+        @tournament = @user.tournaments.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+        render_not_found_error(:tournament)
     end
 
     def set_tournament_from_alphanumeric_id
