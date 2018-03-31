@@ -1,8 +1,10 @@
 {
     en: {
+        blue_cab_name: "Blue",
         browser_title: "%{title} - Challonge Mgr",
         browser_title_view: "Viewing %{title}",
         cancel_link: "Cancel",
+        gold_cab_name: "Gold",
         errors: {
             login_required: "You must log in.",
             page_access_denied: "You cannot access that page.",

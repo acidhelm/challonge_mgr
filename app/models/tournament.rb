@@ -66,13 +66,15 @@ class Tournament < ApplicationRecord
     end
 
     def cabinet_color(side)
-        case side
-            when :left
-                return gold_on_left ? "Gold" : "Blue"
-            when :right
-                return gold_on_left ? "Blue" : "Gold"
-            else
-                return ""
-        end
+        string_id = case side
+                        when :left
+                            gold_on_left ? :gold_cab_name : :blue_cab_name
+                        when :right
+                            gold_on_left ? :blue_cab_name : :gold_cab_name
+                        else
+                            nil
+                    end
+
+        return string_id ? I18n.t(string_id) : ""
     end
 end
