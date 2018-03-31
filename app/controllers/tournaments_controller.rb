@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 class TournamentsController < ApplicationController
+    READONLY_METHODS = %i(view gold blue gold_score blue_score).freeze
+
     before_action :set_user, only: %i(index refresh_all)
-    before_action :set_tournament, except: %i(index refresh_all view
-                                              gold blue gold_score blue_score)
-    before_action :set_tournament_from_alphanumeric_id,
-                  only: %i(gold blue gold_score blue_score)
-    before_action :require_login, except: %i(view gold blue gold_score blue_score)
-    before_action :correct_user?, except: %i(view gold blue gold_score blue_score)
+    before_action :set_tournament, except: READONLY_METHODS + %i(index refresh_all)
+    before_action :set_tournament_from_alphanumeric_id, only: READONLY_METHODS
+    before_action :require_login, except: READONLY_METHODS
+    before_action :correct_user?, except: READONLY_METHODS
 
     # GET /tournaments
     def index
@@ -91,8 +91,6 @@ class TournamentsController < ApplicationController
     end
 
     def view
-        @tournament = Tournament.readonly.find_by_challonge_alphanumeric_id(params[:id])
-
         if @tournament.present?
             @user = @tournament.user
             render :show, layout: "tournament_view"
@@ -128,15 +126,15 @@ class TournamentsController < ApplicationController
 
     def set_tournament
         begin
-            @tournament = Tournament.find(params[:id])
-            @user = @tournament.user
+            @user = User.find(params[:user_id])
+            @tournament = @user.tournaments.find(params[:id])
         rescue ActiveRecord::RecordNotFound
             render_not_found_error(:tournament)
         end
     end
 
     def set_tournament_from_alphanumeric_id
-        @tournament = Tournament.find_by_challonge_alphanumeric_id(params[:id])
+        @tournament = Tournament.readonly.find_by_challonge_alphanumeric_id(params[:id])
         render_not_found_error(:tournament) if @tournament.blank?
     end
 
