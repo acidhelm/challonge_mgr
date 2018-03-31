@@ -234,7 +234,7 @@ class Match < ApplicationRecord
     end
 
     def switch_team_sides!
-        self.gold_team_id, self.blue_team_id = self.blue_team_id, self.gold_team_id
+        self.gold_team_id, self.blue_team_id = blue_team_id, gold_team_id
         save!
     end
 
