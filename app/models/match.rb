@@ -8,15 +8,14 @@ class Match < ApplicationRecord
     validates :challonge_id, numericality: { only_integer: true, greater_than: 0 } # , uniqueness: true
     validates :state, presence: true
     validates :round, numericality: { only_integer: true }
-    # `suggested_play_order` is normally positive, but in two-stage tournaments
-    # where the first stage is played in groups, it is null, so we have to
-    # allow nil.
-    validates :suggested_play_order, numericality: { only_integer: true, greater_than: 0 },
-                                     allow_nil: true
     validates :identifier, presence: true
     validate :scores_csv, :validate_scores_csv
 
     with_options numericality: { only_integer: true, greater_than: 0 }, allow_nil: true do |v|
+        # `suggested_play_order` is normally positive, but in two-stage tournaments
+        # where the first stage is played in groups, it is null.
+        v.validates :suggested_play_order
+
         # These are nil in an elimination tournament when the teams are TBD.
         v.validates :team1_id
         v.validates :team2_id
