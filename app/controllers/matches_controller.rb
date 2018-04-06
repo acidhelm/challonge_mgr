@@ -26,7 +26,7 @@ class MatchesController < ApplicationController
         end
 
         post_data = "match[scores_csv]=#{new_scores_csv}"
-        post_data << "&match[winner_id]=#{winner_id}" if winner_id.present?
+        post_data += "&match[winner_id]=#{winner_id}" if winner_id.present?
 
         match_hash = ApplicationHelper.update_match(@match, post_data)
         match_obj = OpenStruct.new(match_hash["match"])
