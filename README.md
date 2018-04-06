@@ -19,7 +19,11 @@ when their match is coming up.
 
 # Getting started
 
-To set up Challonge Mgr, clone the repo and set up gems and the initial database:
+If you want to run Challonge Mgr on your computer, or do development on it,
+follow the instructions in this section.  Instructions for running it on Heroku
+are later in this section.
+
+Clone the repo and set up gems and the initial database:
 
 ```sh
 $ git clone https://github.com/acidhelm/challonge_mgr.git
@@ -94,6 +98,63 @@ link in your list of tournaments.
 Open [the login page](http://localhost:3000/login) in a browser and enter the
 user name and password that you just set.  After logging in, you will see your
 list of tournaments.
+
+## Running Challonge Mgr on Heroku
+
+Challonge Mgr is ready to deploy to a Heroku app, so that the tournament info can
+be viewed by anyone.  These instructions assume that you have created a Heroku
+account, and that you have the [Heroku CLI app](https://devcenter.heroku.com/articles/heroku-cli)
+installed.  Challonge Mgr doesn't require any paid components, so you can do
+all this with a free Heroku account.
+
+After you clone the repo, run:
+
+```sh
+$ heroku create <heroku app name>
+```
+
+For example, run this command:
+
+```sh
+$ heroku create my-challonge-mgr
+```
+
+to create <tt>my-challonge-mgr.herokuapp.com</tt>.  Don't use this name, of
+course; use a name that's related to your scene or organization.  `heroku
+create` also creates a git remote with the default name of "heroku".  Then, push
+the app to that remote:
+
+```sh
+$ git push heroku master
+```
+
+You'll see a bunch of output as the app is compiled and installed.  Next,
+create the environment variables `ATTR_ENCRYPTED_KEY` and (if needed)
+`SLACK_TOKEN`.  Instead of creating an `.env` file, you add those variables
+to your Heroku app's configuration:
+
+```sh
+$ key=`ruby -e 'require "securerandom"; puts SecureRandom.hex(16)'`
+$ heroku config:set ATTR_ENCRYPTED_KEY=$key
+$ heroku config:set SLACK_TOKEN=[the Slack token]
+```
+
+Next, set up the database:
+
+```sh
+$ heroku run rails db:migrate
+```
+
+Run the Rails console:
+
+```sh
+$ heroku console
+```
+
+and create a Challonge Mgr account as described earlier.  You can then access
+Challonge Mgr at https://your-app-name.herokuapp.com.
+
+TODO: Write instructions for doing a deployment through the Heroku web site.
 
 # Create and manage a tournament
 
@@ -179,62 +240,6 @@ software to read those files.  The `scripts` directory contains scripts for doin
 this.  Currently, that directory has a PowerShell script.  You'll need to change
 two strings in the script before you run it; see the TODO comments in the file 
 for instructions.
-
-# Installing Challonge Mgr on Heroku
-
-Challonge Mgr is ready to deploy to a Heroku app, so that the tournament info can
-be viewed by anyone.  These instructions assume that you have created a Heroku
-account, and that you have the [Heroku CLI app](https://devcenter.heroku.com/articles/heroku-cli)
-installed.  Challonge Mgr doesn't require any paid components, so you can do
-all this with a free Heroku account.
-
-After you clone the repo, run:
-
-```sh
-$ heroku create <heroku app name>
-```
-
-For example, run this command:
-
-```sh
-$ heroku create my-challonge-mgr
-```
-
-to create <tt>my-challonge-mgr.herokuapp.com</tt>.  Don't use this name, of
-course; use a name that's related to your scene or organization.  `heroku
-create` also creates a git remote with the default name of "heroku".  Then, push
-the app to that remote:
-
-```sh
-$ git push heroku master
-```
-
-You'll see a bunch of output as the app is compiled and installed.  Next,
-create the environment variables `ATTR_ENCRYPTED_KEY` and (if needed)
-`SLACK_TOKEN`.  Instead of creating an `.env` file, you add those variables
-to your Heroku app's configuration:
-
-```sh
-$ key=`ruby -e 'require "securerandom"; puts SecureRandom.hex(16)'`
-$ heroku config:set ATTR_ENCRYPTED_KEY=$key
-$ heroku config:set SLACK_TOKEN=[the Slack token]
-```
-
-Next, set up the database:
-
-```sh
-$ heroku run rails db:migrate
-```
-
-Run the Rails console:
-
-```sh
-$ heroku console
-```
-
-and create a Challonge Mgr account as described in the first section of this
-document.  You can then access Challonge Mgr at
-https://your-app-name.herokuapp.com.
 
 # Known problems
 
