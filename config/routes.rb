@@ -5,13 +5,13 @@ Rails.application.routes.draw do
     post "/login", to: "sessions#create"
     delete "/logout",  to: "sessions#destroy"
 
-    resources :users, only: [ :show, :edit, :update ] do
+    resources :users, only: %i(show edit update) do
         get "tournaments/refresh", to: "tournaments#refresh_all"
 
-        resources :tournaments, only: [ :index, :show, :edit, :update ] do
+        resources :tournaments, only: %i(index show edit update) do
             get "refresh", on: :member
 
-            resources :matches , only: [ :update ] do
+            resources :matches , only: %i(update) do
                 post "switch", on: :member
                 post "start", on: :member
             end
