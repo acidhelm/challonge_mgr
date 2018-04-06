@@ -5,7 +5,7 @@ class UserTest < ActiveSupport::TestCase
         @user = users(:willow)
     end
 
-    test "Try to save a user with an illegal challonge_id" do
+    test "Try to save a user with an illegal user_name" do
         @user.user_name = ""
         assert_not @user.save
     end
