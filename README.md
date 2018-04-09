@@ -14,14 +14,14 @@ match -- can all be done with one click.  Challonge Mgr also shows other info,
 like the order of upcoming matches, that can be useful for your commentators.
 
 Challonge Mgr can also send notifications to a Slack channel.  That lets viewers
-see the results of matches right away, and players can monitor the channel to see
-when their match is coming up.
+see the results of matches, even if they're not watching the stream.  Players
+can also watch the channel to see when their match is coming up.
 
 # Getting started
 
 If you want to run Challonge Mgr on your computer, or do development on it,
 follow the instructions in this section.  Instructions for running it on Heroku
-are later in this section.
+are provided later on.
 
 Clone the repo and set up gems and the initial database:
 
@@ -40,7 +40,8 @@ $ ruby -e 'require "securerandom"; puts "ATTR_ENCRYPTED_KEY=#{SecureRandom.hex 1
 ```
 
 That creates an encryption key that only works on your computer.  You should not
-move that file to any other computer; generate a new one if you need to.
+copy that key to any other computer; generate a new key if you start using
+Challonge Mgr on another computer.
 
 The other key is for the Slack API.  If you don't plan on sending tournament
 updates to Slack, you can skip this step.
@@ -88,7 +89,7 @@ not have to be the same as your Challonge password.
 
 If your user belongs to an organization that has a subdomain on challonge.com,
 add a `subdomain: "your-subdomain"` parameter to the `create` call.  This lets
-you manage tournaments owned by other users in your organization.
+you manage tournaments that are owned by other users in your organization.
 
 You can change these settings later by clicking the _Edit this user's settings_
 link in your list of tournaments.
@@ -206,7 +207,7 @@ that's sent at the start of a match also says which teams are up next.  You
 can tell your players to watch the channel to help them know when their turn
 is coming up.
 
-# Features for spectators and streamers
+# Features for spectators and commentators
 
 Challonge Mgr also provides a read-only view of the match list.  Spectators
 can go to `/view/<tournament_id>` to see the list.  For example,
@@ -217,13 +218,15 @@ This view is also useful for your commentators, since it gives them an easy-to-r
 list of the upcoming matches, and the match history of the teams that are in the
 current match.
 
+# Features for streams
+
 If you use Xsplit for broadcasting, Challonge Mgr can automatically update the
 team names in your video.  The `/view/<tournament_id>/gold` and
 `/view/<tournament_id>/blue` URLs return the name of the team that is
 currently on that cabinet.  You can make your text labels get their text from
 those URLs, and the names will be updated when you start each match.  If there
 is parenthesized text at the end of the name, it will be removed from the text
-that these actions return.  This lets you have a team name like "The Bee's Knees
+that these URLs return.  This lets you have a team name like "The Bee's Knees
 (SF/PHX)" in Challonge, but the "(SF/PHX)" part won't appear in the stream, to
 save space on the screen.
 
@@ -232,7 +235,10 @@ Similarly, each team's score can be retrieved from the
 
 After a match finishes, those URLs return the team names and scores from the
 just-completed match, so your stream will continue to show those values until
-the next match begins.
+the next match begins.  You can see this feature in action in
+[the GDC 3 tournament video](https://www.youtube.com/watch?v=pF2hH9CPWGc&t=2h50m17s).
+Notice how both team names switch at the same time to show the teams in the next
+match, and that the scores reset to 0.
 
 If your streaming software can't poll a URL, you can run a script on the streaming
 computer that downloads the team names to text files, then set your streaming
