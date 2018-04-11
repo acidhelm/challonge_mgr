@@ -103,12 +103,15 @@ list of tournaments.
 ## Running Challonge Mgr on Heroku
 
 Challonge Mgr is ready to deploy to a Heroku app, so that the tournament info can
-be viewed by anyone.  These instructions assume that you have created a Heroku
-account, and that you have the [Heroku CLI app](https://devcenter.heroku.com/articles/heroku-cli)
-installed.  Challonge Mgr doesn't require any paid components, so you can do
-all this with a free Heroku account.
+be viewed by anyone.  These instructions assume that you have created accounts
+on Heroku and GitHub.  Challonge Mgr doesn't require any paid components, so you
+can use a free Heroku account.
 
-After you clone the repo, run:
+### Deploying to Heroku using the command line
+
+To use command-line tools, you must install the
+[Heroku CLI app](https://devcenter.heroku.com/articles/heroku-cli).  After you
+clone the repo, run:
 
 ```sh
 $ heroku create <heroku app name>
@@ -155,7 +158,35 @@ $ heroku console
 and create a Challonge Mgr account as described earlier.  You can then access
 Challonge Mgr at https://your-app-name.herokuapp.com.
 
-TODO: Write instructions for doing a deployment through the Heroku web site.
+### Deploying to Heroku using a Web browser
+
+On GitHub, fork the Challonge Mgr repo to make a copy of it in your GitHub account.
+On your Heroku dashboard, click _New_&rarr;_Create new app_, and give it a name.
+Click that app in the dashboard, then click _Deploy_.  In the _Deployment method_
+section, click _GitHub_, then _Connect to GitHub_.  That will show a popup window
+from GitHub asking you to allow Heroku to access your GitHub account.  Click the
+_Authorize_ button.
+
+The _Connect to GitHub_ page will now show your GitHub account and a search
+field.  Enter the name of your forked repo and click _Search_.  Click _Connect_
+next to your repo in the search results.
+
+The page will have a new _Manual deploy_ section at the bottom.  Click _Deploy
+branch_ to deploy the <tt>master</tt> branch to your Heroku app.  Once the
+deployment is done, the page will say "Your app was successfully deployed." <tt>\o/</tt>
+
+Click _Settings_, then in the top-right corner, click _More_&rarr;_Run console_.
+Type "bash", then click _Run_.  Run the Ruby command to generate an encryption key
+as described earlier, and copy the key.  Close the console.
+
+Click _Reveal config vars_ and create an <tt>ATTR_ENCRYPTED_KEY</tt> variable.
+Use the encryption key that you just created as the value for that variable.
+Create <tt>SLACK_TOKEN</tt> too if you want to send Slack notifications.
+
+Click _More_&rarr;_Run console_ again, and enter "rails db:migrate". When that
+finishes, click _Run another command_ at the bottom of the window, and enter
+"console".  Create a Challonge Mgr account as described earlier.  You can then
+access Challonge Mgr at https://your-app-name.herokuapp.com.
 
 # Create and manage a tournament
 
