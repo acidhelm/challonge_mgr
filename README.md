@@ -1,17 +1,17 @@
 # Challonge Mgr
 
-Challonge Mgr is a Rails 5 app that uses the Challonge API to update your
-tournament's bracket.  While you can update your bracket on Challonge
+Challonge Mgr is a Rails app that uses the Challonge API to update your Killer
+Queen tournament's bracket.  While you can update your bracket on Challonge
 directly, the UI can be a bit fiddly, some controls are small, and common
 tasks take several clicks.  My experience has been that unless there is a
 person dedicated to maintaining the bracket, the bracket tends to be forgotten
 about, which creates a worse viewing experience for folks who want to
 follow the progress of the tournament.
 
-My goal with Challonge Mgr is to make it super easy to update your bracket.  The
-actions that you need to do -- start a match, update the score, and end a
-match -- can all be done with one click.  Challonge Mgr also shows other info,
-like the order of upcoming matches, that can be useful for your commentators.
+Challonge Mgr makes it super-easy to update your bracket.  The actions that
+you need to do&nbsp;&mdash; start a match, update the score, and end a
+match&nbsp;&mdash; can all be done with one click.  Challonge Mgr also shows
+other info, like the list of upcoming matches, which is useful for your commentators.
 
 Challonge Mgr can also send notifications to a Slack channel.  That lets viewers
 see the results of matches, even if they're not watching the stream.  Players
