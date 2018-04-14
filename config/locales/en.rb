@@ -67,14 +67,16 @@
             index: {
                 page_title: "Tournament list for %{user_name}",
                 page_header: "Challonge tournaments owned by %{user_name}",
-                instructions1: "This list shows the tournaments that are underway" \
-                  " and owned by your user.  If the tournament that you want to" \
-                  " manage doesn't appear here, check that you have started the" \
+                instructions1_html: "This list shows the tournaments that are underway" \
+                  " and owned by your user.  Click the <i>Manage this tournament</i>" \
+                  " link next to the tournament that you want to manage.",
+                instructions2: "If the tournament that you want to manage isn't" \
+                  " listed here, check that you have started the" \
                   " tournament on the Challonge web site.  Challonge Mgr can only" \
                   " manage tournaments that have had their teams and seeds set up" \
                   " on the Challonge site.",
-                instructions2_html: "If the tournament has been started and doesn't" \
-                  " appear in this list, click the <i>Reload the tournament list" \
+                instructions3_html: "If the tournament has been started and isn't" \
+                  " listed here, click the <i>Reload the tournament list" \
                   " from Challonge</i> link below the list.",
                 name: "Name",
                 challonge_url: "Challonge URL",

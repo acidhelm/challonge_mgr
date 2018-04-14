@@ -1,7 +1,8 @@
 <% content_for :title, t(".page_title", user_name: @user.user_name) %>
 <h1><%= t(".page_header", user_name: @user.user_name) %></h1>
-<p><%= t(".instructions1") %></p>
-<p><%= t(".instructions2_html") %></p>
+<p><%= t(".instructions1_html") %></p>
+<p><%= t(".instructions2") %></p>
+<p><%= t(".instructions3_html") %></p>
 <% if @tournaments.present? %>
 <table>
   <thead>
