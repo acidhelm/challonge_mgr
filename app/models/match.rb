@@ -62,25 +62,16 @@ class Match < ApplicationRecord
         end
     end
 
-    def left_team_is_prereq_match_loser?
-        team_id = get_team_id(:left)
+    def team_is_prereq_match_loser?(side)
+        return false unless %i(left right).include?(side)
+
+        team_id = get_team_id(side)
 
         if team_id
             return (team_id == team1_id) ? team1_is_prereq_match_loser :
                                            team2_is_prereq_match_loser
         else
-            return team1_is_prereq_match_loser
-        end
-    end
-
-    def right_team_is_prereq_match_loser?
-        team_id = get_team_id(:right)
-
-        if team_id
-            return (team_id == team1_id) ? team1_is_prereq_match_loser :
-                                           team2_is_prereq_match_loser
-        else
-            return team2_is_prereq_match_loser
+            return (side == :left) ? team1_is_prereq_match_loser : team2_is_prereq_match_loser
         end
     end
 
@@ -157,25 +148,16 @@ class Match < ApplicationRecord
         end
     end
 
-    def left_team_prereq_match_id
-        team_id = get_team_id(:left)
+    def team_prereq_match_id(side)
+        return nil unless %i(left right).include?(side)
+
+        team_id = get_team_id(side)
 
         if team_id
             return (team_id == team1_id) ? team1_prereq_match_id :
                                            team2_prereq_match_id
         else
-            return team1_prereq_match_id
-        end
-    end
-
-    def right_team_prereq_match_id
-        team_id = get_team_id(:right)
-
-        if team_id
-            return (team_id == team1_id) ? team1_prereq_match_id :
-                                           team2_prereq_match_id
-        else
-            return team2_prereq_match_id
+            return (side == :left) ? team1_prereq_match_id : team2_prereq_match_id
         end
     end
 

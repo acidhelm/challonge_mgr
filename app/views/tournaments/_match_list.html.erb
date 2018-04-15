@@ -23,10 +23,10 @@
              left_team_class << " forfeited_team"
          end
      else
-         match_num = m.tournament.matches.find_by_challonge_id(m.left_team_prereq_match_id).number
+         match_num = m.tournament.matches.find_by_challonge_id(m.team_prereq_match_id(:left)).number
          left_team_class = "tbd_team"
 
-         if m.left_team_is_prereq_match_loser?
+         if m.team_is_prereq_match_loser?(:left)
              left_team_name = t(".loser_of_match", number: match_num)
          else
              left_team_name = t(".winner_of_match", number: match_num)
@@ -47,10 +47,10 @@
              right_team_class << " forfeited_team"
          end
      else
-         match_num = m.tournament.matches.find_by_challonge_id(m.right_team_prereq_match_id).number
+         match_num = m.tournament.matches.find_by_challonge_id(m.team_prereq_match_id(:right)).number
          right_team_class = "tbd_team"
 
-         if m.right_team_is_prereq_match_loser?
+         if m.team_is_prereq_match_loser?(:right)
              right_team_name = t(".loser_of_match", number: match_num)
          else
              right_team_name = t(".winner_of_match", number: match_num)
