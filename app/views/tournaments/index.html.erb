@@ -8,8 +8,8 @@
   <thead>
     <tr>
       <th><%= t(".name") %></th>
-      <th><%= t(".challonge_url") %></th>
       <th><%= t(".state") %></th>
+      <th><%= t(".challonge_url") %></th>
       <th><%= t(".actions") %></th>
     </tr>
   </thead>
@@ -18,8 +18,8 @@
     <% @tournaments.each do |tournament| %>
       <tr>
         <td><%= tournament.name %></td>
-        <td><%= link_to tournament.challonge_url, tournament.challonge_url, target: :_blank %></td>
         <td><%= tournament.state.gsub("_", " ") %></td>
+        <td><%= link_to tournament.challonge_url, tournament.challonge_url, target: :_blank %></td>
         <td>
           <%= link_to t(".manage_tournament"), [ :refresh, @user, tournament ] %> |
           <%= link_to t("tournaments.edit_tournament"), [ :edit, @user, tournament ] %>
