@@ -16,11 +16,28 @@ class TournamentsController < ApplicationController
 
     # GET /tournaments/refresh
     def refresh_all
-        ApplicationHelper.get_tournament_list(@user).map do |t|
+        known_tournaments = @user.tournaments.pluck(:challonge_id)
+        tournament_list = ApplicationHelper.get_tournament_list(@user)
+
+        # If `get_tournament_list` fails, it returns a hash instead of an array.
+        if tournament_list.is_a?(Hash)
+            err = tournament_list
+
+            if err.dig(:error, :http_code) == 401
+                msg = I18n.t("notices.auth_error")
+            else
+                msg = err.dig(:error, :message)
+            end
+
+            redirect_to({ action: "index" }, notice: msg)
+            return
+        end
+
+        tournament_list.map do |t|
             OpenStruct.new(t["tournament"])
         end.select do |t|
             Tournament.states_to_show.include?(t.state) ||
-              @user.tournaments.where(challonge_id: t.id).exists?
+              known_tournaments.include?(t.id)
         end.each do |t|
             @user.tournaments.find_or_initialize_by(challonge_id: t.id).update!(t)
         end

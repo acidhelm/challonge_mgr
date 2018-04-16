@@ -1,17 +1,26 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+    # On success, returns an array of `tournament` objects that represent the
+    # tournaments that are owned by the user.  If the user is in an organization,
+    # the array also contains the tournaments that are owned by that organization.
+    # On failure, returns an `error` object that describes the error.
     def self.get_tournament_list(user)
-        # If the user is in an organization, return the tournaments that are
-        # owned by the user and the organization.
         url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
                 "v1/tournaments.json"
 
         tournaments = send_get_request(url)
 
+        # If an error occured, `send_get_request` will return a hash instead of
+        # an array.
+        return tournaments unless tournaments.is_a?(Array)
+
         if user.subdomain.present?
             url += "?subdomain=#{user.subdomain}"
-            tournaments.concat send_get_request(url)
+
+            org_tournaments = send_get_request(url)
+
+            tournaments.concat(org_tournaments) if org_tournaments.is_a?(Array)
         end
 
         return tournaments
@@ -40,17 +49,27 @@ module ApplicationHelper
     protected
 
     # Sends a GET request on `url`, treats the returned data as JSON, and parses
-    # it into an object.  The return value is that object.
+    # it into an object.  On success, the return value is that object.  On
+    # failure, the return value is a hash that describes the error.
     def self.send_get_request(url)
         response = RestClient.get(url)
         return JSON.parse(response.body)
+    rescue RestClient::ExceptionWithResponse => e
+        return { error: { object: e, http_code: e.http_code, message: e.message } }
+    rescue => e
+        return { error: { object: e, message: e.message } }
     end
 
     # Sends a PUT request on `url`, passing the given data in the request.  It
-    # treats the returned data as JSON, and parses it into an object.  The return
-    # value is that object.
+    # treats the returned data as JSON, and parses it into an object.  On success,
+    # the return value is that object.  On failure, the return value is a hash
+    # that describes the error.
     def self.send_put_request(url, post_data, content_type)
         response = RestClient.put(url, post_data, content_type: content_type)
         return JSON.parse(response.body)
+    rescue RestClient::ExceptionWithResponse => e
+        return { error: { object: e, http_code: e.http_code, message: e.message } }
+    rescue => e
+        return { error: { object: e, message: e.message } }
     end
 end

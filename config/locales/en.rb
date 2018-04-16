@@ -15,7 +15,9 @@
         },
         notices: {
             user_updated: "The user was updated.",
-            tournament_updated: "The tournament was updated."
+            tournament_updated: "The tournament was updated.",
+            auth_error: "Authentication error. Check that your Challonge user name" \
+                          " and API key are correct."
         },
         slack: {
             tbd: "TBD",
