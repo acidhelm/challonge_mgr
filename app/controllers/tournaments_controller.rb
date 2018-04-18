@@ -19,18 +19,8 @@ class TournamentsController < ApplicationController
         known_tournaments = @user.tournaments.pluck(:challonge_id)
         tournament_list = ApplicationHelper.get_tournament_list(@user)
 
-        # If `get_tournament_list` fails, it returns a hash instead of an array.
-        if tournament_list.is_a?(Hash)
-            err = tournament_list
-
-            if err.dig(:error, :http_code) == 401
-                msg = I18n.t("notices.auth_error")
-            else
-                msg = err.dig(:error, :message)
-            end
-
+        return if api_failed?(tournament_list) do |msg|
             redirect_to({ action: "index" }, notice: msg)
-            return
         end
 
         tournament_list.map do |t|
@@ -56,6 +46,11 @@ class TournamentsController < ApplicationController
     def refresh
         # Re-read the info, matches, and teams for this tournament.
         tournament_hash = ApplicationHelper.get_tournament_info(@tournament)
+
+        return if api_failed?(tournament_hash) do |msg|
+            redirect_to({ action: "show" }, notice: msg)
+        end
+
         tournament_obj = OpenStruct.new(tournament_hash["tournament"])
 
         # Read the properties that we care about from the top level of the JSON,

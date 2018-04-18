@@ -29,6 +29,11 @@ class MatchesController < ApplicationController
         post_data += "&match[winner_id]=#{winner_id}" if winner_id.present?
 
         match_hash = ApplicationHelper.update_match(@match, post_data)
+
+        return if api_failed?(match_hash) do |msg|
+            redirect_to user_tournament_path(@user, @tournament), notice: msg
+        end
+
         match_obj = OpenStruct.new(match_hash["match"])
 
         @match.update!(match_obj)
