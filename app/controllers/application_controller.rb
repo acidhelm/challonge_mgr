@@ -31,4 +31,18 @@ class ApplicationController < ActionController::Base
 
         render plain: msg, status: :not_found
     end
+
+    protected
+    def api_failed?(response)
+        return false unless response.is_a?(Hash) && response.key?(:error)
+
+        if response.dig(:error, :http_code) == 401
+            msg = I18n.t("notices.auth_error")
+        else
+            msg = response.dig(:error, :message)
+        end
+
+        yield msg
+        return true
+    end
 end
