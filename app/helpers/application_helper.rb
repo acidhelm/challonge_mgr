@@ -54,10 +54,8 @@ module ApplicationHelper
     def self.send_get_request(url)
         response = RestClient.get(url)
         return JSON.parse(response.body)
-    rescue RestClient::ExceptionWithResponse => e
-        return { error: { object: e, http_code: e.http_code, message: e.message } }
     rescue => e
-        return { error: { object: e, message: e.message } }
+        return handle_request_error(e, "send_get_request")
     end
 
     # Sends a PUT request on `url`, passing the given data in the request.  It
@@ -67,9 +65,16 @@ module ApplicationHelper
     def self.send_put_request(url, post_data, content_type)
         response = RestClient.put(url, post_data, content_type: content_type)
         return JSON.parse(response.body)
-    rescue RestClient::ExceptionWithResponse => e
-        return { error: { object: e, http_code: e.http_code, message: e.message } }
     rescue => e
-        return { error: { object: e, message: e.message } }
+        return handle_request_error(e, "send_put_request")
+    end
+
+    def self.handle_request_error(e, method_name)
+        Rails.logger.error "Exception (#{e.class.name}) in #{method_name}: #{e.message}"
+
+        err = { error: { object: e, message: e.message } }
+        err[:error][:http_code] = e.http_code if e.respond_to?(:http_code)
+
+        return err
     end
 end
