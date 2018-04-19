@@ -6,6 +6,11 @@ class MatchesController < ApplicationController
     before_action :correct_user?
 
     def start
+        # We manually set `underway_at` because the Challonge API doesn't have
+        # a way to mark a match as being underway.  If they fix that, then we
+        # can remove this line.
+        @match.update_attributes(underway_at: Time.now)
+
         @tournament.set_current_match(@match)
         redirect_to user_tournament_path(@user, @tournament)
     end
