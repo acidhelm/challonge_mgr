@@ -9,7 +9,7 @@ class Match < ApplicationRecord
     validates :state, presence: true
     validates :round, numericality: { only_integer: true }
     validates :identifier, presence: true
-    validate :scores_csv, :validate_scores_csv
+    validate :scores_csv, :validate_scores_csv, unless: proc { |m| m.scores_csv.blank? }
 
     with_options numericality: { only_integer: true, greater_than: 0 }, allow_nil: true do |v|
         # `suggested_play_order` is normally positive, but in two-stage tournaments
