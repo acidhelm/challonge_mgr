@@ -41,13 +41,8 @@ class Tournament < ApplicationRecord
         update(current_match: match.id)
 
         if send_slack_notifications && slack_notifications_channel.present?
-            next_match = nil
-
-            if matches.upcoming.reject(&:current_match?).present?
-                next_match = matches.upcoming.reject(&:current_match?).first
-            end
-
-            TournamentsHelper.notify_match_starting(self, match, next_match)
+            TournamentsHelper.notify_match_starting(self, match,
+                                                    matches.upcoming.first)
         end
     end
 

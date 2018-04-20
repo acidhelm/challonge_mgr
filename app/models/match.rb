@@ -34,15 +34,13 @@ class Match < ApplicationRecord
                                       ids: team.all_challonge_ids) }
     scope :winner_is, ->(team) { complete.where(winner_id: team.all_challonge_ids) }
     scope :loser_is, ->(team) { complete.where(loser_id: team.all_challonge_ids) }
-    scope :upcoming, -> { where.not(state: "complete").order(suggested_play_order: :asc, identifier: :asc) }
+    scope :current_match, -> { where.not(state: "complete").where.not(underway_at: nil) }
+    scope :upcoming, -> { where.not(state: "complete").where(underway_at: nil).
+                            order(suggested_play_order: :asc, identifier: :asc) }
     scope :completed, -> { complete.order(suggested_play_order: :asc, identifier: :asc) }
 
     def complete?
         return state == "complete"
-    end
-
-    def current_match?
-        return state == "open" && id == tournament.current_match
     end
 
     def teams_are_tbd?
