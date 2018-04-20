@@ -22,4 +22,6 @@ Rails.application.routes.draw do
     get "view/:id/blue", to: "tournaments#blue"
     get "view/:id/gold_score", to: "tournaments#gold_score"
     get "view/:id/blue_score", to: "tournaments#blue_score"
+
+    get "/routes", to: redirect("/rails/info/routes") if Rails.env.development?
 end

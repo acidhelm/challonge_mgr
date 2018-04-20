@@ -5,4 +5,8 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
         get login_path
         assert_response :success
     end
+
+    test "Try to get the routes page" do
+        assert_raises(ActionController::RoutingError) { get "/routes" }
+    end
 end
