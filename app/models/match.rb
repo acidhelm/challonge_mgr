@@ -194,7 +194,17 @@ class Match < ApplicationRecord
         self.suggested_play_order = obj.suggested_play_order
         self.identifier = obj.identifier
         self.scores_csv = obj.scores_csv
-        self.underway_at = obj.underway_at
+
+        # Because the Challonge API doesn't have a way for us to mark a match
+        # as underway, we will usually get `nil` for `underway_at` in the JSON
+        # for a match.  If that's the case, don't update this Match's
+        # `underway_at` member, because we manually manage that field.
+        # However, if the `underway_at` field in the JSON is not `nil`, then we
+        # do save it, because that means that someone went to the bracket on the
+        # Challonge site and manually marked the match as underway, and we need
+        # to reflect that in the database.
+        self.underway_at = obj.underway_at if obj.underway_at.present?
+
         self.team1_prereq_match_id = obj.player1_prereq_match_id
         self.team2_prereq_match_id = obj.player2_prereq_match_id
         self.team1_is_prereq_match_loser = obj.player1_is_prereq_match_loser
