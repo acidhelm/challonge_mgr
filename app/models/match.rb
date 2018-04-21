@@ -35,9 +35,9 @@ class Match < ApplicationRecord
     scope :winner_is, ->(team) { complete.where(winner_id: team.all_challonge_ids) }
     scope :loser_is, ->(team) { complete.where(loser_id: team.all_challonge_ids) }
     scope :current_match, -> { where.not(state: "complete").where.not(underway_at: nil) }
-    scope :upcoming, -> { where.not(state: "complete").where(underway_at: nil).
-                            order(suggested_play_order: :asc, identifier: :asc) }
-    scope :completed, -> { complete.order(suggested_play_order: :asc, identifier: :asc) }
+    scope :upcoming, -> { where.not(state: "complete").where(underway_at: nil).play_order }
+    scope :completed, -> { complete.play_order }
+    scope :play_order, -> { order(suggested_play_order: :asc, identifier: :asc) }
 
     def complete?
         return state == "complete"
