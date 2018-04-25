@@ -1,6 +1,12 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  # Re-record VCR recordings every 7 days.
+  config.vcr_re_record_time = 7.days
+
+  # Use the inline adapter so that ActiveJobs run synchronously.
+  config.active_job.queue_adapter = :inline
+
   # The test environment is used exclusively to run your application's
   # test suite. You never need to work with it otherwise. Remember that
   # your test database is "scratch space" for the test suite and is wiped

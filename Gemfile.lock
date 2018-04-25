@@ -64,6 +64,8 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
+    crack (0.4.3)
+      safe_yaml (~> 1.0.0)
     crass (1.0.3)
     domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
@@ -77,6 +79,7 @@ GEM
     ffi (1.9.23)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
+    hashdiff (0.3.7)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (1.0.0)
@@ -150,6 +153,7 @@ GEM
       netrc (~> 0.8)
     ruby_dep (1.5.0)
     rubyzip (1.2.1)
+    safe_yaml (1.0.4)
     sass (3.5.6)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -193,11 +197,16 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.5)
+    vcr (4.0.0)
     web-console (3.5.1)
       actionview (>= 5.0)
       activemodel (>= 5.0)
       bindex (>= 0.4.0)
       railties (>= 5.0)
+    webmock (3.3.0)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
+      hashdiff
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
@@ -230,7 +239,9 @@ DEPENDENCIES
   turbolinks (~> 5)
   tzinfo-data
   uglifier (>= 1.3.0)
+  vcr
   web-console (>= 3.3.0)
+  webmock
 
 RUBY VERSION
    ruby 2.5.0p0
