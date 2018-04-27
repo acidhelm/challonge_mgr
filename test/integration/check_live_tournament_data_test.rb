@@ -10,9 +10,8 @@ class CheckLiveTournamentDataTest < ActionDispatch::IntegrationTest
         end
 
         if @user.api_key.blank?
-            flunk "You must set the \"CHALLONGE_MGR_TEST_USER_ENC_API_KEY\"" \
-                    " and \"CHALLONGE_MGR_TEST_USER_ENC_API_KEY_IV\"" \
-                    " environment variables to run tests against live data." \
+            flunk "You must set the \"CHALLONGE_MGR_TEST_USER_API_KEY\"" \
+                    " environment variable to run tests against live data." \
         end
     end
 

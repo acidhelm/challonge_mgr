@@ -1,20 +1,24 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+<% iv = "ab0123456789"
+   encoded_iv = Base64.encode64(iv)
+   password_digest = User.digest("password") %>
+
 willow:
   user_name: willow
-  encrypted_api_key: "HxTlg/hERdlScQ08X/JgHxV2pMGvjg=="
-  encrypted_api_key_iv: "CHKrEeUuj3D2Skit"
-  password_digest: <%= User.digest("password") %>
+  encrypted_api_key: "<%= User.encrypt_api_key('not_used', key: ENV['ATTR_ENCRYPTED_KEY'], iv: iv) %>"
+  encrypted_api_key_iv: "<%= encoded_iv %>"
+  password_digest: <%= password_digest %>
   subdomain: "sub1"
 
 buffy:
   user_name: buffy
-  encrypted_api_key: "HxTlg/hERdlScQ08X/JgHxV2pMGvjg=="
-  encrypted_api_key_iv: "CHKrEeUuj3D2Skit"
-  password_digest: <%= User.digest("password") %>
+  encrypted_api_key: "<%= User.encrypt_api_key('not_used', key: ENV['ATTR_ENCRYPTED_KEY'], iv: iv) %>"
+  encrypted_api_key_iv: "<%= encoded_iv %>"
+  password_digest: <%= password_digest %>
 
 test_user:
   user_name: <%= ENV["CHALLONGE_MGR_TEST_USER_NAME"] %>
-  encrypted_api_key: "<%= ENV["CHALLONGE_MGR_TEST_USER_ENC_API_KEY"] %>"
-  encrypted_api_key_iv: "<%= ENV["CHALLONGE_MGR_TEST_USER_ENC_API_KEY_IV"] %>"
-  password_digest: <%= User.digest("password") %>
+  encrypted_api_key: "<%= User.encrypt_api_key(ENV['CHALLONGE_MGR_TEST_USER_API_KEY'], key: ENV['ATTR_ENCRYPTED_KEY'], iv: iv) %>"
+  encrypted_api_key_iv: "<%= encoded_iv %>"
+  password_digest: <%= password_digest %>
