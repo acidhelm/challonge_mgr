@@ -55,3 +55,31 @@ eight:
   seed: 4
   group_team_ids: null
   tournament: two
+
+live_data_team_a:
+  challonge_id: 71427631
+  name: Team A
+  seed: 1
+  group_team_ids: null
+  tournament: live_data_tournament
+
+live_data_team_b:
+  challonge_id: 71427632
+  name: Team B
+  seed: 2
+  group_team_ids: null
+  tournament: live_data_tournament
+
+live_data_team_c:
+  challonge_id: 71427633
+  name: Team C
+  seed: 3
+  group_team_ids: null
+  tournament: live_data_tournament
+
+live_data_team_d:
+  challonge_id: 71427634
+  name: Team D
+  seed: 4
+  group_team_ids: null
+  tournament: live_data_tournament

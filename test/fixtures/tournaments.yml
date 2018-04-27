@@ -27,3 +27,11 @@ two:
   send_slack_notifications: false
   slack_notifications_channel: null
   user: buffy
+
+live_data_tournament:
+  challonge_id: 4424522
+  name: "Test #5 double-elim tourney"
+  challonge_alphanumeric_id: 80329jfi
+  state: complete
+  challonge_url: http://challonge.com/80329jfi
+  tournament_type: double elimination

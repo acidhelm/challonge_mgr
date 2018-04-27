@@ -119,3 +119,94 @@ six:
   blue_team_id: null
   identifier: C
   tournament: two
+
+live_data_match_1:
+  challonge_id: 115965807
+  state: complete
+  team1_id: 71427631
+  team2_id: 71427634
+  winner_id: 71427631
+  loser_id: 71427634
+  scores_csv: 1-0
+  identifier: A
+  round: 1
+  suggested_play_order: 1
+  tournament: live_data_tournament
+
+live_data_match_2:
+  challonge_id: 115965808
+  state: complete
+  team1_id: 71427632
+  team2_id: 71427633
+  winner_id: 71427632
+  loser_id: 71427633
+  scores_csv: 1-0
+  identifier: B
+  round: 1
+  suggested_play_order: 2
+  tournament: live_data_tournament
+
+live_data_match_3:
+  challonge_id: 115965810
+  state: complete
+  team1_id: 71427634
+  team2_id: 71427633
+  winner_id: 71427634
+  loser_id: 71427633
+  scores_csv: 1-0
+  identifier: F
+  round: -1
+  suggested_play_order: 3
+  tournament: live_data_tournament
+
+live_data_match_4:
+  challonge_id: 115965809
+  state: complete
+  team1_id: 71427631
+  team2_id: 71427632
+  winner_id: 71427631
+  loser_id: 71427632
+  scores_csv: 1-0
+  identifier: C
+  round: 2
+  suggested_play_order: 4
+  tournament: live_data_tournament
+
+live_data_match_5:
+  challonge_id: 115965811
+  state: complete
+  team1_id: 71427632
+  team2_id: 71427634
+  winner_id: 71427632
+  loser_id: 71427634
+  scores_csv: 1-0
+  identifier: G
+  round: -2
+  suggested_play_order: 5
+  tournament: live_data_tournament
+
+live_data_match_6:
+  challonge_id: 115965812
+  state: complete
+  team1_id: 71427631
+  team2_id: 71427632
+  winner_id: 71427632
+  loser_id: 71427631
+  scores_csv: 0-1
+  identifier: D
+  round: 3
+  suggested_play_order: 6
+  tournament: live_data_tournament
+
+live_data_match_7:
+  challonge_id: 115965813
+  state: complete
+  team1_id: 71427632
+  team2_id: 71427631
+  winner_id: 71427631
+  loser_id: 71427632
+  scores_csv: 0-1
+  identifier: E
+  round: 3
+  suggested_play_order: 7
+  tournament: live_data_tournament
