@@ -81,7 +81,7 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
         patch user_tournament_path(@user, @tournament),
                 params: {
                   tournament: {
-                    gold_on_left: @tournament.gold_on_left,
+                    gold_on_left: !@tournament.gold_on_left,
                     send_slack_notifications: @tournament.send_slack_notifications,
                     slack_notifications_channel: @tournament.slack_notifications_channel } }
 
@@ -95,7 +95,7 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
         patch user_tournament_path(@other_user, @other_tournament),
                 params: {
                   tournament: {
-                    gold_on_left: @other_tournament.gold_on_left,
+                    gold_on_left: !@other_tournament.gold_on_left,
                     send_slack_notifications: @other_tournament.send_slack_notifications,
                     slack_notifications_channel: @other_tournament.slack_notifications_channel } }
 
@@ -106,11 +106,36 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
         patch user_tournament_path(@user, @tournament),
                 params: {
                   tournament: {
-                    gold_on_left: @tournament.gold_on_left,
+                    gold_on_left: !@tournament.gold_on_left,
                     send_slack_notifications: @tournament.send_slack_notifications,
                     slack_notifications_channel: @tournament.slack_notifications_channel } }
 
         assert_redirected_to login_url
         assert_not flash.empty?
+    end
+
+    test "View a tournament" do
+        get view_tournament_path(@tournament.challonge_alphanumeric_id)
+        assert_response :success
+    end
+
+    test "View a tournament's gold team name" do
+        get view_tournament_gold_path(@tournament.challonge_alphanumeric_id)
+        assert_response :success
+    end
+
+    test "View a tournament's blue team name" do
+        get view_tournament_blue_path(@tournament.challonge_alphanumeric_id)
+        assert_response :success
+    end
+
+    test "View a tournament's gold team score" do
+        get view_tournament_gold_score_path(@tournament.challonge_alphanumeric_id)
+        assert_response :success
+    end
+
+    test "View a tournament's blue team score" do
+        get view_tournament_blue_score_path(@tournament.challonge_alphanumeric_id)
+        assert_response :success
     end
 end

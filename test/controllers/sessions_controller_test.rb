@@ -6,6 +6,12 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
         assert_response :success
     end
 
+    test "Try to get a user page without logging in" do
+        get user_path(users(:willow).id)
+        assert_redirected_to login_path
+        assert flash.present?
+    end
+
     test "Try to get the routes page" do
         assert_raises(ActionController::RoutingError) { get "/routes" }
     end
