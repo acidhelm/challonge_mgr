@@ -35,12 +35,12 @@ class MatchTest < ActiveSupport::TestCase
         assert_not @match.save
     end
 
-    test "Try to save a match with an illegal team1" do
+    test "Try to save a match with an illegal team1_id" do
         @match.team1_id = -1
         assert_not @match.save
     end
 
-    test "Try to save a match with an illegal team2" do
+    test "Try to save a match with an illegal team2_id" do
         @match.team2_id = -1
         assert_not @match.save
     end

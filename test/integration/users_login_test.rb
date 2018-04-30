@@ -5,7 +5,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
         @user = users(:willow)
     end
 
-    test "Log in with invalid credentials" do
+    test "Try to log in with invalid credentials" do
         get login_path
         assert_response :success
         assert_template "sessions/new"
