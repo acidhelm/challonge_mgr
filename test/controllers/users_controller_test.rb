@@ -6,6 +6,11 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         @other_user = users(:buffy)
     end
 
+    def update_user_params
+        return { user: { api_key: @user.api_key, subdomain: @user.subdomain,
+                         password: "password", password_confirmation: "password" } }
+    end
+
     test "Show a user" do
         log_in_as(@user)
         assert is_logged_in?
@@ -54,10 +59,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         log_in_as(@user)
         assert is_logged_in?
 
-        params = { user: { api_key: @user.api_key, subdomain: @user.subdomain,
-                           password: "password", password_confirmation: "password" } }
-
-        patch user_url(@user), params: params
+        patch user_url(@user), params: update_user_params
 
         assert_redirected_to user_url(@user)
     end
@@ -66,18 +68,12 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         log_in_as(@user)
         assert is_logged_in?
 
-        params = { user: { api_key: @user.api_key, subdomain: @user.subdomain,
-                           password: "password", password_confirmation: "password" } }
-
-        patch user_url(@other_user), params: params
+        patch user_url(@other_user), params: update_user_params
         assert_response :forbidden
     end
 
     test "Try to update a user without logging in" do
-        params = { user: { api_key: @user.api_key, subdomain: @user.subdomain,
-                           password: "password", password_confirmation: "password" } }
-
-        patch user_url(@user), params: params
+        patch user_url(@user), params: update_user_params
 
         assert_redirected_to login_url
         assert_not flash.empty?
