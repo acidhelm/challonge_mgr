@@ -147,7 +147,7 @@ class TournamentsController < ApplicationController
     end
 
     def current_match_team_name(side)
-        name = ""
+        name = nil
 
         begin
             if @tournament.current_match.present?
@@ -164,7 +164,7 @@ class TournamentsController < ApplicationController
         # name on the stream will be just "Bert's Bees".  That saves space on the
         # stream, which is espcially necessary with multi-scene teams that have
         # multiple cities in the name.
-        return name.sub(/\(.*?\)$/, '').strip
+        return name ? name.sub(/\(.*?\)$/, '').strip : ""
     end
 
     def current_match_team_score(side)
