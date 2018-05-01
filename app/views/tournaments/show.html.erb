@@ -6,21 +6,21 @@
 <% current_match = @tournament.matches.current_match.first %>
 <% if current_match.present? %>
 <hr>
-<%= render partial: "current_match", object: current_match %>
+<%= render partial: "tournaments/current_match", object: current_match %>
 <% end %>
 
 <% matches = @tournament.matches.upcoming %>
 <% if matches.present? %>
   <hr>
   <p><h2><%= t(".upcoming_matches") %></h2>
-  <p><%= render partial: "match_list", object: matches, locals: { readonly: @tournament.readonly? } %></p>
+  <p><%= render partial: "tournaments/match_list", object: matches, locals: { readonly: @tournament.readonly? } %></p>
 <% end %>
 
 <% matches = @tournament.matches.completed %>
 <% if matches.present? %>
   <hr>
   <p><h2><%= t(".completed_matches") %></h2>
-  <p><%= render partial: "match_list", object: matches, locals: { readonly: @tournament.readonly? } %></p>
+  <p><%= render partial: "tournaments/match_list", object: matches, locals: { readonly: @tournament.readonly? } %></p>
 <% end %>
 
 <hr>
