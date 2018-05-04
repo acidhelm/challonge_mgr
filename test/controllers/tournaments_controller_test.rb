@@ -8,6 +8,14 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
         @other_user = @other_tournament.user
     end
 
+    def update_tournament_params(tournament)
+        return { tournament: {
+                   gold_on_left: !tournament.gold_on_left,
+                   send_slack_notifications: tournament.send_slack_notifications,
+                   slack_notifications_channel: tournament.slack_notifications_channel } }
+
+    end
+
     test "Get the tournaments index" do
         log_in_as(@user)
         assert is_logged_in?
@@ -79,11 +87,7 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
         assert is_logged_in?
 
         patch user_tournament_path(@user, @tournament),
-                params: {
-                  tournament: {
-                    gold_on_left: !@tournament.gold_on_left,
-                    send_slack_notifications: @tournament.send_slack_notifications,
-                    slack_notifications_channel: @tournament.slack_notifications_channel } }
+              params: update_tournament_params(@tournament)
 
         assert_redirected_to user_tournament_path(@user, @tournament)
     end
@@ -93,22 +97,14 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
         assert is_logged_in?
 
         patch user_tournament_path(@other_user, @other_tournament),
-                params: {
-                  tournament: {
-                    gold_on_left: !@other_tournament.gold_on_left,
-                    send_slack_notifications: @other_tournament.send_slack_notifications,
-                    slack_notifications_channel: @other_tournament.slack_notifications_channel } }
+              params: update_tournament_params(@other_tournament)
 
         assert_response :forbidden
     end
 
     test "Try to update a tournament without logging in" do
         patch user_tournament_path(@user, @tournament),
-                params: {
-                  tournament: {
-                    gold_on_left: !@tournament.gold_on_left,
-                    send_slack_notifications: @tournament.send_slack_notifications,
-                    slack_notifications_channel: @tournament.slack_notifications_channel } }
+              params: update_tournament_params(@tournament)
 
         assert_redirected_to login_url
         assert_not flash.empty?
