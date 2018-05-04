@@ -8,7 +8,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     def update_user_params
         return { user: { api_key: @user.api_key, subdomain: @user.subdomain,
-                         password: "password", password_confirmation: "password" } }
+                         password: "B055man69", password_confirmation: "B055man69" } }
     end
 
     test "Show a user" do
