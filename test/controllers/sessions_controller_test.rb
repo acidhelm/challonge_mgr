@@ -6,6 +6,11 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
         assert_response :success
     end
 
+    test "Access the logout URL" do
+        delete logout_path
+        assert_redirected_to root_url
+    end
+
     test "Try to get a user page without logging in" do
         get user_path(users(:willow).id)
         assert_redirected_to login_path
