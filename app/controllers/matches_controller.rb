@@ -25,8 +25,20 @@ class MatchesController < ApplicationController
         # param, even if we're just setting the winner, so use the match's
         # current scores.
         if winner_id.present?
+            # We consider it an error if the caller passed scores and a `winner_id`.
+            if left_score.present? || right_score.present?
+                head :bad_request
+                return
+            end
+
             new_scores_csv = @match.scores_csv
         else
+            # Check that the caller passed scores for both sides.
+            if left_score.blank? || right_score.blank?
+                head :bad_request
+                return
+            end
+
             new_scores_csv = @match.make_scores_csv(left_score, right_score)
         end
 
