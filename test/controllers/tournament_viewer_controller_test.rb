@@ -31,8 +31,12 @@ class TournamentViewerControllerTest < ActionDispatch::IntegrationTest
     end
 
     test "View a tournament" do
-        get view_tournament_path(@tournament.challonge_alphanumeric_id)
-        assert_response :success
+        slug = @tournament.challonge_alphanumeric_id
+
+        [ slug, slug.upcase ].each do |id|
+            get view_tournament_path(id)
+            assert_response :success
+        end
     end
 
     test "View a tournament's gold team name" do

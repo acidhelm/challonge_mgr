@@ -28,7 +28,9 @@ class TournamentViewerController < ApplicationController
 
     protected
     def set_tournament
-        @tournament = Tournament.readonly.find_by_challonge_alphanumeric_id(params[:id])
+        @tournament = Tournament.readonly.where("lower(challonge_alphanumeric_id) = ?",
+                                                params[:id].downcase).first
+
         render_not_found_error(:tournament) if @tournament.blank?
     end
 
