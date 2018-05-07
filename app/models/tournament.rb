@@ -8,9 +8,11 @@ class Tournament < ApplicationRecord
     validates :challonge_id, numericality: { only_integer: true, greater_than: 0 },
                              uniqueness: { scope: :user_id }
     validates :name, presence: true
-    validates :challonge_alphanumeric_id, presence: true, uniqueness: { scope: :user_id }
+    validates :challonge_alphanumeric_id, presence: true,
+                                          uniqueness: { scope: :user_id, case_sensitive: false }
     validates :state, presence: true
-    validates :challonge_url, presence: true, uniqueness: { scope: :user_id }
+    validates :challonge_url, presence: true,
+                              uniqueness: { scope: :user_id, case_sensitive: false }
     validates :tournament_type, presence: true
     validates :view_gold_score, numericality: { only_integer: true,
                                                 greater_than_or_equal_to: 0 }

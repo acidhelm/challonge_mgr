@@ -20,6 +20,18 @@ class TournamentTest < ActiveSupport::TestCase
         assert_not @tournament.save
     end
 
+    test "Try to save a tournament with a duplicate challonge_alphanumeric_id" do
+        t2 = @tournament.dup
+        t2.challonge_alphanumeric_id.upcase!
+
+        # Make these fields different, so we only test the validation of
+        # `challonge_alphanumeric_id`.
+        t2.challonge_id += 1
+        t2.challonge_url += "giles"
+
+        assert_not t2.save
+    end
+
     test "Try to save a tournament with an illegal state" do
         @tournament.state = ""
         assert_not @tournament.save
@@ -28,6 +40,18 @@ class TournamentTest < ActiveSupport::TestCase
     test "Try to save a tournament with an illegal challonge_url" do
         @tournament.challonge_url = ""
         assert_not @tournament.save
+    end
+
+    test "Try to save a tournament with a duplicate challonge_url" do
+        t2 = @tournament.dup
+        t2.challonge_url.upcase!
+
+        # Make these fields different, so we only test the validation of
+        # `challonge_url`.
+        t2.challonge_id += 1
+        t2.challonge_alphanumeric_id += "wesley"
+
+        assert_not t2.save
     end
 
     test "Try to save a tournament with an illegal tournament_type" do
