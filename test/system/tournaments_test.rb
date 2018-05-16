@@ -1,11 +1,6 @@
 require "application_system_test_case"
 
 class TournamentsTest < ApplicationSystemTestCase
-    setup do
-        @user = users(:test_user)
-        log_in_as(@user)
-    end
-
     test "Check the tournament settings page" do
         begin
             # If the user has no tournaments, this call will throw an exception,

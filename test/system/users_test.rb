@@ -1,11 +1,6 @@
 require "application_system_test_case"
 
 class UsersTest < ApplicationSystemTestCase
-    setup do
-        @user = users(:test_user)
-        log_in_as(@user)
-    end
-
     test "Check the tournament list" do
         assert_selector "h1", text: /^Challonge tournaments owned by/
         assert_selector "a", text: "Reload the tournament list from Challonge"
