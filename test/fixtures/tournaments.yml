@@ -5,7 +5,7 @@ one:
   challonge_id: 1001
   name: Elbonia KQ Clash
   state: underway
-  challonge_url: http://challonge.com/elboniakq1
+  challonge_url: https://challonge.com/elboniakq1
   tournament_type: single elimination
   current_match: null
   challonge_alphanumeric_id: elboniakq1
@@ -19,7 +19,7 @@ two:
   challonge_id: 1002
   name: Sunnydale KQ Clash
   state: underway
-  challonge_url: http://challonge.com/sunnydalekq1
+  challonge_url: https://challonge.com/sunnydalekq1
   tournament_type: single elimination
   current_match: null
   challonge_alphanumeric_id: sunnydalekq1
@@ -33,5 +33,5 @@ live_data_tournament:
   name: "Test #5 double-elim tourney"
   challonge_alphanumeric_id: 80329jfi
   state: complete
-  challonge_url: http://challonge.com/80329jfi
+  challonge_url: https://challonge.com/80329jfi
   tournament_type: double elimination
