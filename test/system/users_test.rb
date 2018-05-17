@@ -3,11 +3,15 @@ require "application_system_test_case"
 class UsersTest < ApplicationSystemTestCase
     test "Check the tournament list" do
         assert_selector "h1", text: /^Challonge tournaments owned by/
-        assert_selector "a", text: "Reload the tournament list from Challonge"
-        assert_selector "a", text: "Edit this user's settings"
-        assert_selector "a", text: "Log out"
+
+        # The footer should have three links.
+        assert_link "Reload the tournament list from Challonge",
+                    href: user_tournaments_refresh_path(@user)
+        assert_link "Edit this user's settings", href: edit_user_path(@user)
+        assert_link "Log out", href: logout_path
 
         page.all("th").each do |th|
+            # Column headers should be present.
             assert th.text.present?
         end
 
@@ -15,12 +19,15 @@ class UsersTest < ApplicationSystemTestCase
             tr.all("td").each_with_index do |td, i|
                 case i
                     when 0, 1
+                        # The Name and State columns should have text.
                         assert td.text.present?
                     when 2
+                        # Assert that the text is a valid URL.
                         assert URI.parse(td.text)
                     when 3
-                        td.assert_selector "a", text: "Manage this tournament"
-                        td.assert_selector "a", text: "Edit this tournament's settings"
+                        # The Actions column should have two links.
+                        assert td.has_link? "Manage this tournament"
+                        assert td.has_link? "Edit this tournament's settings"
                 end
             end
         end
@@ -51,8 +58,8 @@ class UsersTest < ApplicationSystemTestCase
         assert_text "Subdomain:"
         assert_text @user.subdomain if @user.subdomain.present?
 
-        assert_selector "a", text: "Edit this user's settings"
-        assert_selector "a", text: "View this user's tournaments"
-        assert_selector "a", text: "Log out"
+        assert_link "Edit this user's settings", href: edit_user_path(@user)
+        assert_link "View this user's tournaments", href: user_tournaments(@user)
+        assert_link "Log out", href: logout_path
     end
 end
