@@ -40,4 +40,19 @@ class UsersTest < ApplicationSystemTestCase
 
         assert_current_path(user_path(@user))
     end
+
+    test "Check the user properties page" do
+        visit user_url(@user)
+
+        assert_text "User name:"
+        assert_text @user.user_name
+        assert_text "API key:"
+        assert_text @user.api_key
+        assert_text "Subdomain:"
+        assert_text @user.subdomain if @user.subdomain.present?
+
+        assert_selector "a", text: "Edit this user's settings"
+        assert_selector "a", text: "View this user's tournaments"
+        assert_selector "a", text: "Log out"
+    end
 end
