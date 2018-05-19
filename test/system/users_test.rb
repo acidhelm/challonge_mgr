@@ -59,7 +59,7 @@ class UsersTest < ApplicationSystemTestCase
         assert_text @user.subdomain if @user.subdomain.present?
 
         assert_link "Edit this user's settings", href: edit_user_path(@user)
-        assert_link "View this user's tournaments", href: user_tournaments(@user)
+        assert_link "View this user's tournaments", href: user_tournaments_path(@user)
         assert_link "Log out", href: logout_path
     end
 end
