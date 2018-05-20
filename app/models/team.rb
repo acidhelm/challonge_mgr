@@ -14,7 +14,9 @@ class Team < ApplicationRecord
     scope :from_id, ->(id) { select { |team| team.all_challonge_ids.include?(id) } }
 
     def update!(obj)
-        self.name = obj.name
+        # If a team has a Challonge account, its `name` field may be null or an
+        # empty string.  When that's the case, use `display_name` instead.
+        self.name = obj.name.present? ? obj.name : obj.display_name
         self.seed = obj.seed
         self.group_team_ids = obj.group_player_ids
         save!
