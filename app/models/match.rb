@@ -27,6 +27,9 @@ class Match < ApplicationRecord
         # These are nil in round-robin tournaments.
         v.validates :team1_prereq_match_id
         v.validates :team2_prereq_match_id
+
+        # This is nil in elimination tournaments.
+        v.validates :group_id
     end
 
     scope :complete, -> { where(state: "complete") }
@@ -37,7 +40,7 @@ class Match < ApplicationRecord
     scope :current_match, -> { where.not(state: "complete").where.not(underway_at: nil) }
     scope :upcoming, -> { where.not(state: "complete").where(underway_at: nil).play_order }
     scope :completed, -> { complete.play_order }
-    scope :play_order, -> { order(suggested_play_order: :asc, identifier: :asc) }
+    scope :play_order, -> { order(group_id: :asc, suggested_play_order: :asc, identifier: :asc) }
 
     def complete?
         return state == "complete"
@@ -189,6 +192,7 @@ class Match < ApplicationRecord
         self.loser_id = obj.loser_id
         self.forfeited = obj.forfeited
         self.round = obj.round
+        self.group_id = obj.group_id
         self.suggested_play_order = obj.suggested_play_order
         self.identifier = obj.identifier
         self.scores_csv = obj.scores_csv
