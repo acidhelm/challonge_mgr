@@ -64,4 +64,9 @@ class MatchTest < ActiveSupport::TestCase
         @match.team2_prereq_match_id = -1
         assert_not @match.save
     end
+
+    test "Try to save a match with an illegal group_id" do
+        @match.group_id = -1
+        assert_not @match.save
+    end
 end
