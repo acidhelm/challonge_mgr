@@ -56,19 +56,33 @@ class TournamentsController < ApplicationController
 
         # Read the "participants" array and create a Team object for each one,
         # or update the Team if it's already in the database.
+        # If a tournament is restarted on Challonge and a team is deleted, we
+        # we need to reflect that change in the database.  Keep track of the
+        # `challonge_id` of the Teams that are currently in the database, and
+        # delete the rows for teams that have been deleted from the tournament
+        # on Challonge.
+        old_team_ids = @tournament.teams.pluck(:challonge_id)
+
         tournament_obj.participants.map do |p|
             OpenStruct.new(p["participant"])
         end.each do |p|
             @tournament.teams.find_or_initialize_by(challonge_id: p.id).update!(p)
+            old_team_ids.delete p.id
+        end
+
+        # If `old_team_ids` is non-empty, then those matches were deleted from
+        # the tournament, so delete them from our database, too.
+        if old_team_ids.present?
+            @tournament.teams.where(challonge_id: old_team_ids).destroy_all
         end
 
         # Read the "matches" array and create a Match object for each one, or
         # update the Match if it's already in the database.
         # If a tournament is restarted on Challonge, the old matches are deleted
         # and new ones are made, so we need to reflect that change in the database.
-        # Keep track of the `challonge_id` values that are currently in the
-        # database, and delete those rows if they have been deleted from the
-        # tournament on Challonge.
+        # Keep track of the `challonge_id` of the Matches that are currently in
+        # the database, and delete the rows for Matches that have been deleted
+        # from the tournament on Challonge.
         old_match_ids = @tournament.matches.pluck(:challonge_id)
 
         tournament_obj.matches.map do |m|
