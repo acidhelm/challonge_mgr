@@ -163,7 +163,7 @@ class Match < ApplicationRecord
     end
 
     # The `suggested_play_order` field ranges from 1 to N, which is useful for
-    # identifying matches in the UI.  In the first stage of a two-stage
+    # identifying matches in the UI.  In the group stage of a two-stage
     # tournament, there is no `suggested_play_order` value, so use
     # `identifier` instead.
     def number
@@ -171,7 +171,17 @@ class Match < ApplicationRecord
     end
 
     def round_name(capitalized: true)
-        if tournament.tournament_type == "double elimination"
+        # If the tournament is double-elimination, then the round name says
+        # which half of the bracket the match is in.  But if the match is in the
+        # group stage of a two-stage tournament, that would be wrong.
+        # We tell the difference by looking at this match's `suggested_play_order`.
+        # It is blank for matches in the group stage.
+        #
+        # Note that since two-stage tournaments are not officially supported by
+        # the Challonge API, I'm relying on undocumented details of the JSON
+        # that could change at any time.
+        if tournament.tournament_type == "double elimination" &&
+           suggested_play_order.present?
             if round > 0
                 string_id = capitalized ? :winners_round_cap : :winners_round
             else
