@@ -195,17 +195,17 @@ class Match < ApplicationRecord
     end
 
     def update!(obj)
-        self.state = obj.state
-        self.team1_id = obj.player1_id
-        self.team2_id = obj.player2_id
-        self.winner_id = obj.winner_id
-        self.loser_id = obj.loser_id
-        self.forfeited = obj.forfeited
-        self.round = obj.round
-        self.group_id = obj.group_id
-        self.suggested_play_order = obj.suggested_play_order
-        self.identifier = obj.identifier
-        self.scores_csv = obj.scores_csv
+        # These attributes have the same names as in the JSON.
+        %w(state winner_id loser_id forfeited round group_id suggested_play_order
+           identifier scores_csv).each do |attr|
+            self.send("#{attr}=", obj.send(attr))
+        end
+
+        # These attributes use "team" in their names, but the JSON uses "player".
+        %w(team1_id team2_id team1_prereq_match_id team2_prereq_match_id
+           team1_is_prereq_match_loser team2_is_prereq_match_loser).each do |attr|
+            self.send("#{attr}=", obj.send(attr.sub("team", "player")))
+        end
 
         # Because the Challonge API doesn't have a way for us to mark a match
         # as underway, we will usually get `nil` for `underway_at` in the JSON
@@ -216,11 +216,6 @@ class Match < ApplicationRecord
         # Challonge site and manually marked the match as underway, and we need
         # to reflect that in the database.
         self.underway_at = obj.underway_at if obj.underway_at.present?
-
-        self.team1_prereq_match_id = obj.player1_prereq_match_id
-        self.team2_prereq_match_id = obj.player2_prereq_match_id
-        self.team1_is_prereq_match_loser = obj.player1_is_prereq_match_loser
-        self.team2_is_prereq_match_loser = obj.player2_is_prereq_match_loser
 
         # If this match's teams are not TBD, and the teams have not been
         # assigned cabs yet (which means that this match just switched from
