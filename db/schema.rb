@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180519213810) do
+ActiveRecord::Schema.define(version: 20180522182225) do
 
   create_table "matches", force: :cascade do |t|
     t.integer "tournament_id"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20180519213810) do
     t.integer "loser_id"
     t.boolean "forfeited"
     t.integer "group_id"
+    t.string "group_name"
     t.index ["tournament_id"], name: "index_matches_on_tournament_id"
   end
 
