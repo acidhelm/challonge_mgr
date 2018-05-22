@@ -62,4 +62,29 @@ class TournamentViewerControllerTest < ActionDispatch::IntegrationTest
         assert_response :success
         assert_equal "0", response.body
     end
+
+    test "Try to view a non-existant tournament" do
+        get view_tournament_path(@tournament.challonge_alphanumeric_id.reverse)
+        assert_response :not_found
+    end
+
+    test "Try to view a non-existant tournament's gold team name" do
+        get view_tournament_gold_path(@tournament.challonge_alphanumeric_id.reverse)
+        assert_response :not_found
+    end
+
+    test "Try to view a non-existant tournament's blue team name" do
+        get view_tournament_blue_path(@tournament.challonge_alphanumeric_id.reverse)
+        assert_response :not_found
+    end
+
+    test "Try to view a non-existant tournament's gold team score" do
+        get view_tournament_gold_score_path(@tournament.challonge_alphanumeric_id.reverse)
+        assert_response :not_found
+    end
+
+    test "Try to view a non-existant tournament's blue team score" do
+        get view_tournament_blue_score_path(@tournament.challonge_alphanumeric_id.reverse)
+        assert_response :not_found
+    end
 end
