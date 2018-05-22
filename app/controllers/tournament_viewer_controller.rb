@@ -2,12 +2,8 @@ class TournamentViewerController < ApplicationController
     before_action :set_tournament
 
     def view
-        if @tournament.present?
-            @user = @tournament.user
-            render "tournaments/show", layout: "tournament_view"
-        else
-            render_not_found_error(:tournament)
-        end
+        @user = @tournament.user
+        render "tournaments/show", layout: "tournament_view"
     end
 
     def gold
