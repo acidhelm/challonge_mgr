@@ -98,6 +98,8 @@ class TournamentsController < ApplicationController
             @tournament.matches.where(challonge_id: old_match_ids).destroy_all
         end
 
+        @tournament.update_group_names
+
         redirect_to action: "show"
     end
 

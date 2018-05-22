@@ -62,6 +62,26 @@ class Tournament < ApplicationRecord
         end
     end
 
+    def update_group_names
+        # Set `group_name` to nil for matches that aren't in a group.
+        matches.where(group_id: nil).update_all(group_name: nil)
+
+        # Group names aren't exposed through the API, so we have to determine
+        # the names ourselves.  Challonge appears to assign IDs that are consecutive
+        # numbers (although we don't depend on them being consecutive), and then
+        # names the groups in ascending order starting with "A".
+        next_group_name = "A"
+
+        group_names = matches.distinct.pluck(:group_id).compact.sort.each_with_object({}) do |id, names|
+            names[id] = next_group_name
+            next_group_name = next_group_name.succ
+        end
+
+        group_names.each do |id, name|
+            matches.where(group_id: id).update_all(group_name: name)
+        end
+    end
+
     def cabinet_color(side)
         string_id = case side
                         when :left
