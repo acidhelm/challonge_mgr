@@ -3,6 +3,8 @@ require "test_helper"
 class TournamentViewerControllerTest < ActionDispatch::IntegrationTest
     setup do
         @tournament = tournaments(:one)
+        @slug = @tournament.challonge_alphanumeric_id
+        @bad_slug = @slug.reverse
     end
 
     def team_names_in_match_test(team_name_url, match, side)
@@ -31,9 +33,7 @@ class TournamentViewerControllerTest < ActionDispatch::IntegrationTest
     end
 
     test "View a tournament" do
-        slug = @tournament.challonge_alphanumeric_id
-
-        [ slug, slug.upcase ].each do |id|
+        [ @slug, @slug.upcase ].each do |id|
             get view_tournament_path(id)
             assert_response :success
         end
@@ -41,50 +41,50 @@ class TournamentViewerControllerTest < ActionDispatch::IntegrationTest
 
     test "View a tournament's gold team name" do
         team_names_in_match_test(
-            view_tournament_gold_path(@tournament.challonge_alphanumeric_id),
+            view_tournament_gold_path(@slug),
             @tournament.matches.upcoming.first, :gold)
     end
 
     test "View a tournament's blue team name" do
         team_names_in_match_test(
-            view_tournament_blue_path(@tournament.challonge_alphanumeric_id),
+            view_tournament_blue_path(@slug),
             @tournament.matches.upcoming.first, :blue)
     end
 
     test "View a tournament's gold team score" do
-        get view_tournament_gold_score_path(@tournament.challonge_alphanumeric_id)
+        get view_tournament_gold_score_path(@slug)
         assert_response :success
         assert_equal "0", response.body
     end
 
     test "View a tournament's blue team score" do
-        get view_tournament_blue_score_path(@tournament.challonge_alphanumeric_id)
+        get view_tournament_blue_score_path(@slug)
         assert_response :success
         assert_equal "0", response.body
     end
 
     test "Try to view a non-existant tournament" do
-        get view_tournament_path(@tournament.challonge_alphanumeric_id.reverse)
+        get view_tournament_path(@bad_slug)
         assert_response :not_found
     end
 
     test "Try to view a non-existant tournament's gold team name" do
-        get view_tournament_gold_path(@tournament.challonge_alphanumeric_id.reverse)
+        get view_tournament_gold_path(@bad_slug)
         assert_response :not_found
     end
 
     test "Try to view a non-existant tournament's blue team name" do
-        get view_tournament_blue_path(@tournament.challonge_alphanumeric_id.reverse)
+        get view_tournament_blue_path(@bad_slug)
         assert_response :not_found
     end
 
     test "Try to view a non-existant tournament's gold team score" do
-        get view_tournament_gold_score_path(@tournament.challonge_alphanumeric_id.reverse)
+        get view_tournament_gold_score_path(@bad_slug)
         assert_response :not_found
     end
 
     test "Try to view a non-existant tournament's blue team score" do
-        get view_tournament_blue_score_path(@tournament.challonge_alphanumeric_id.reverse)
+        get view_tournament_blue_score_path(@bad_slug)
         assert_response :not_found
     end
 end
