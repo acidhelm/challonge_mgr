@@ -187,11 +187,14 @@ class Match < ApplicationRecord
             else
                 string_id = capitalized ? :losers_round_cap : :losers_round
             end
+        elsif group_name.present?
+            string_id = capitalized ? :round_with_group_cap : :round_with_group
         else
             string_id = capitalized ? :round_cap : :round
         end
 
-        return I18n.t(string_id, scope: "matches.round_names", round: round.abs)
+        return I18n.t(string_id, scope: "matches.round_names", round: round.abs,
+                      group: group_name)
     end
 
     def update!(obj)

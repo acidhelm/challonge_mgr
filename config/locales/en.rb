@@ -144,6 +144,8 @@
                 winners_round_cap: "Winners' round %{round}",
                 losers_round: "losers' round %{round}",
                 losers_round_cap: "Losers' round %{round}",
+                round_with_group_cap: "Group %{group}, round %{round}",
+                round_with_group: "group %{group}, round %{round}",
                 round: "round %{round}",
                 round_cap: "Round %{round}"
             }
