@@ -175,7 +175,7 @@ class Match < ApplicationRecord
         # which half of the bracket the match is in.  But if the match is in the
         # group stage of a two-stage tournament, that would be wrong.
         # We tell the difference by looking at this match's `suggested_play_order`.
-        # It is blank for matches in the group stage.
+        # It is present for matches in the elimination stage.
         #
         # Note that since two-stage tournaments are not officially supported by
         # the Challonge API, I'm relying on undocumented details of the JSON
