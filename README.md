@@ -29,7 +29,7 @@ Clone the repo and set up gems and the initial database:
 $ git clone https://github.com/acidhelm/challonge_mgr.git
 $ cd challonge_mgr
 $ bundle install --path vendor/bundle
-$ bin/rails db:create db:migrate
+$ bin/rails db:schema:load
 ```
 
 There are two configuration keys that you will need to set, but you'll only have
