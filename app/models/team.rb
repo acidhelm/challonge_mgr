@@ -10,6 +10,8 @@ class Team < ApplicationRecord
     validates :challonge_id, numericality: { only_integer: true, greater_than: 0 } # , uniqueness: true
     validates :name, presence: true
     validates :seed, numericality: { only_integer: true, greater_than: 0 }
+    validates :final_rank, numericality: { only_integer: true, greater_than: 0 },
+                           allow_nil: true
 
     scope :from_id, ->(id) { select { |team| team.all_challonge_ids.include?(id) } }
 
@@ -18,6 +20,7 @@ class Team < ApplicationRecord
         # empty string.  When that's the case, use `display_name` instead.
         self.name = obj.name.present? ? obj.name : obj.display_name
         self.seed = obj.seed
+        self.final_rank = obj.final_rank
         self.group_team_ids = obj.group_player_ids
         save!
     end
