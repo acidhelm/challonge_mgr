@@ -11,7 +11,9 @@
             match_not_found: "That match was not found.",
             tournament_not_found: "That tournament was not found.",
             user_not_found: "That user was not found.",
-            login_failed: "The user name or password was incorrect."
+            login_failed: "The user name or password was incorrect.",
+            cant_finalize_tournament: "The tournament still has unplayed matches" \
+                                        " and cannot be finalized yet."
         },
         notices: {
             user_updated: "The user was updated.",
@@ -91,7 +93,16 @@
                 upcoming_matches: "Upcoming matches:",
                 completed_matches: "Completed matches:",
                 team_records: "Team records:",
+                finalize_tournament: "Finalize the tournament:",
+                finalize_text_html: "All the matches in the tournament have been played." \
+                  " Click <i>Finalize the tournament</i> to complete the tournament" \
+                  " and show the final standings. Once you finalize the tournament," \
+                  " no more changes can be made to it.",
+                finalize_tournament_button: "Finalize the tournament",
+                final_standings: "Final standings:",
+                place: "Place",
                 seed: "Seed",
+                name: "Team",
                 record: "Team (W-L)",
                 team_record: "%{name} (%{wins} - %{losses})",
                 reload: "Reload this tournament from Challonge",

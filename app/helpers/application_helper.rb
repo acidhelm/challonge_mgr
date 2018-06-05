@@ -52,6 +52,15 @@ module ApplicationHelper
         return send_put_request(url, post_data, content_type)
     end
 
+    def self.finalize_tournament(tournament)
+        user = tournament.user
+
+        url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
+                "v1/tournaments/#{tournament.challonge_id}/finalize.json"
+
+        return send_post_request(url)
+    end
+
     protected
 
     # Sends a GET request on `url`, treats the returned data as JSON, and parses
@@ -73,6 +82,16 @@ module ApplicationHelper
         return JSON.parse(response.body)
     rescue => e
         return handle_request_error(e, "send_put_request")
+    end
+
+    # Sends a POST request on `url`.  It treats the returned data as JSON, and
+    # parses it into an object.  On success, the return value is that object.
+    # On failure, the return value is a hash that describes the error.
+    def self.send_post_request(url, post_data = "")
+        response = RestClient.post(url, post_data)
+        return JSON.parse(response.body)
+    rescue => e
+        return handle_request_error(e, "send_post_request")
     end
 
     def self.handle_request_error(e, method_name)

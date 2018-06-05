@@ -14,6 +14,29 @@
   <hr>
   <p><h2><%= t(".upcoming_matches") %></h2>
   <p><%= render partial: "tournaments/match_list", object: matches, locals: { readonly: @tournament.readonly? } %></p>
+<% elsif @tournament.state == "awaiting_review" && !@tournament.readonly? %>
+  <hr>
+  <h2><%= t(".finalize_tournament") %></h2>
+  <p><%= t(".finalize_text_html") %></p>
+  <p><%= button_to t(".finalize_tournament_button"),
+                   finalize_user_tournament_path(@user, @tournament) %></p>
+<% elsif @tournament.state == "complete" %>
+  <hr>
+  <h2><%= t(".final_standings") %></h2>
+  <table>
+    <tr>
+      <th><%= t(".place") %></th>
+      <th><%= t(".seed") %></th>
+      <th><%= t(".name") %></th>
+    </tr>
+    <% @tournament.teams.order(final_rank: :asc, seed: :asc).each do |t| %>
+      <tr>
+        <td><%= t.final_rank %></td>
+        <td><%= t.seed %></td>
+        <td><%= t.name %></td>
+      </tr>
+    <% end %>
+  </table>
 <% end %>
 
 <% matches = @tournament.matches.completed %>

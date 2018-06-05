@@ -115,6 +115,26 @@ class TournamentsController < ApplicationController
         end
     end
 
+    # POST /tournaments/1/finalize
+    def finalize
+        # A tournament can be finalized only if its state is "awaiting_review".
+        if @tournament.state != "awaiting_review"
+            render plain: I18n.t("errors.cant_finalize_tournament"), status: :bad_request
+            return
+        end
+
+        response = ApplicationHelper.finalize_tournament(@tournament)
+
+        return if api_failed?(response) do |msg|
+            redirect_to({ action: "show" }, notice: msg)
+        end
+
+        # Now that the tournament is finalized, Challonge will fill in the
+        # `final_rank` fields of the teams.  Refresh the tournament so we
+        # read those fields.
+        redirect_to action: "refresh"
+    end
+
     protected
     def set_user
         @user = User.find(params[:user_id])
