@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
         resources :tournaments, only: %i(index show edit update) do
             get "refresh", on: :member
+            post "finalize", on: :member
 
             resources :matches , only: %i(update) do
                 post "switch", on: :member
