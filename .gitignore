@@ -73,3 +73,6 @@ build-iPhoneSimulator/
 
 # Ignore VCR recordings.
 /test/vcr_cassettes
+
+# Ignore simplecov reports.
+/coverage
