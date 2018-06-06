@@ -42,10 +42,7 @@ class MatchesController < ApplicationController
             new_scores_csv = @match.make_scores_csv(left_score, right_score)
         end
 
-        post_data = "match[scores_csv]=#{new_scores_csv}"
-        post_data += "&match[winner_id]=#{winner_id}" if winner_id.present?
-
-        match_hash = ApplicationHelper.update_match(@match, post_data)
+        match_hash = ApplicationHelper.update_match(@match, new_scores_csv, winner_id)
 
         return if api_failed?(match_hash) do |msg|
             redirect_to user_tournament_path(@user, @tournament), notice: msg

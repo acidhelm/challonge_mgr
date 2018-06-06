@@ -42,14 +42,17 @@ module ApplicationHelper
         return send_get_request(url)
     end
 
-    def self.update_match(match, post_data, content_type = "application/x-www-form-urlencoded")
+    def self.update_match(match, new_scores_csv, winner_id)
         user = match.tournament.user
 
         url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
                 "v1/tournaments/#{match.tournament.challonge_id}/matches/" \
                 "#{match.challonge_id}.json"
 
-        return send_put_request(url, post_data, content_type)
+        params = { "match[scores_csv]" => new_scores_csv }
+        params["match[winner_id]"] = winner_id if winner_id.present?
+
+        return send_put_request(url, params)
     end
 
     def self.finalize_tournament(tournament)
@@ -77,8 +80,8 @@ module ApplicationHelper
     # treats the returned data as JSON, and parses it into an object.  On success,
     # the return value is that object.  On failure, the return value is a hash
     # that describes the error.
-    def self.send_put_request(url, post_data, content_type)
-        response = RestClient.put(url, post_data, content_type: content_type)
+    def self.send_put_request(url, params)
+        response = RestClient.put(url, params)
         return JSON.parse(response.body)
     rescue => e
         return handle_request_error(e, "send_put_request")
