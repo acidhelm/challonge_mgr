@@ -27,6 +27,14 @@ class Tournament < ApplicationRecord
         return %w(underway group_stages_underway awaiting_review).freeze
     end
 
+    def complete?
+        return state == "complete"
+    end
+
+    def finalizable?
+        return state == "awaiting_review"
+    end
+
     def update!(obj)
         self.description = obj.description
         self.name = obj.name

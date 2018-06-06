@@ -14,13 +14,13 @@
   <hr>
   <p><h2><%= t(".upcoming_matches") %></h2>
   <p><%= render partial: "tournaments/match_list", object: matches, locals: { readonly: @tournament.readonly? } %></p>
-<% elsif @tournament.state == "awaiting_review" && !@tournament.readonly? %>
+<% elsif @tournament.finalizable? && !@tournament.readonly? %>
   <hr>
   <h2><%= t(".finalize_tournament") %></h2>
   <p><%= t(".finalize_text_html") %></p>
   <p><%= button_to t(".finalize_tournament_button"),
                    finalize_user_tournament_path(@user, @tournament) %></p>
-<% elsif @tournament.state == "complete" %>
+<% elsif @tournament.complete? %>
   <hr>
   <h2><%= t(".final_standings") %></h2>
   <table>

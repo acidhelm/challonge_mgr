@@ -117,8 +117,8 @@ class TournamentsController < ApplicationController
 
     # POST /tournaments/1/finalize
     def finalize
-        # A tournament can be finalized only if its state is "awaiting_review".
-        if @tournament.state != "awaiting_review"
+        # Bail out if the tournament can't be finalized now.
+        if !@tournament.finalizable?
             render plain: I18n.t("errors.cant_finalize_tournament"), status: :bad_request
             return
         end
