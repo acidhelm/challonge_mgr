@@ -99,10 +99,30 @@ module ApplicationHelper
 
     def self.handle_request_error(e, method_name)
         Rails.logger.error "Exception (#{e.class.name}) in #{method_name}: #{e.message}"
+        message = nil
 
-        err = { error: { object: e, message: e.message } }
-        err[:error][:http_code] = e.http_code if e.respond_to?(:http_code)
+        # When an API call fails, Challonge returns a list of errors in the body.
+        # Look for that list in the response.
+        if e.is_a?(RestClient::ExceptionWithResponse)
+            Rails.logger.error "Response body: #{e.response}"
 
-        return err
+            # Swallow exceptions if the response isn't JSON.  This happens when
+            # the user name or API key is wrong, because the server returns
+            # "HTTP Basic: Access denied."
+            # This isn't a problem, because `ApplicationController#api_failed?`
+            # special-cases 401 responses and shows a custom error message.
+            resp = JSON.parse(e.response.to_s) rescue JSON::ParserError;
+
+            if resp.is_a?(Hash) && resp.key?("errors")
+                message = [ e.message, resp["errors"] ].join("; ")
+            end
+        end
+
+        message ||= e.message
+
+        err = { object: e, message: message }
+        err[:http_code] = e.http_code if e.respond_to?(:http_code)
+
+        return { error: err }
     end
 end
