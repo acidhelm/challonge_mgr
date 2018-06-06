@@ -94,7 +94,7 @@
                 completed_matches: "Completed matches:",
                 team_records: "Team records:",
                 finalize_tournament: "Finalize the tournament:",
-                finalize_text_html: "All the matches in the tournament have been played." \
+                finalize_text_html: "All of the matches in the tournament have been played." \
                   " Click <i>Finalize the tournament</i> to complete the tournament" \
                   " and show the final standings. Once you finalize the tournament," \
                   " no more changes can be made to it.",
