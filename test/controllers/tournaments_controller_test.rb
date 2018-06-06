@@ -109,4 +109,18 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
         assert_redirected_to login_url
         assert_not flash.empty?
     end
+
+    test "Try to finalize a tournament without logging in" do
+        post finalize_user_tournament_path(@user, @tournament)
+        assert_redirected_to login_url
+        assert_not flash.empty?
+    end
+
+    test "Try to finalize a tournament before it's allowed" do
+        log_in_as(@user)
+        assert is_logged_in?
+
+        post finalize_user_tournament_path(@user, @tournament)
+        assert_response :bad_request
+    end
 end
