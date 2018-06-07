@@ -102,4 +102,15 @@ class Tournament < ApplicationRecord
 
         return string_id ? I18n.t(string_id) : ""
     end
+
+    def cabinet_color_invariant(side, prefix = "")
+        return prefix + case side
+                            when :left
+                                gold_on_left ? "gold" : "blue"
+                            when :right
+                                gold_on_left ? "blue" : "gold"
+                            else
+                                ""
+                        end
+    end
 end
