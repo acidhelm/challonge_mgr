@@ -66,12 +66,12 @@
   <% end %>
   <tr>
     <td colspan='2' valign="top">
-      <br><br><%= render partial: "previous_matches", locals: { team: match.get_team(:left) } %>
+      <br><br><%= render partial: "tournaments/previous_matches", locals: { team: match.get_team(:left) } %>
     </td>
     <td></td>
     <td></td>
     <td valign="top" style="float:right">
-      <br><br><%= render partial: "previous_matches", locals: { team: match.get_team(:right) } %>
+      <br><br><%= render partial: "tournaments/previous_matches", locals: { team: match.get_team(:right) } %>
     </td>
   </tr>
 </table></p>
