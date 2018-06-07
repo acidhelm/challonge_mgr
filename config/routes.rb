@@ -25,5 +25,7 @@ Rails.application.routes.draw do
     get "view/:id/gold_score", to: "tournament_viewer#gold_score", as: :view_tournament_gold_score
     get "view/:id/blue_score", to: "tournament_viewer#blue_score", as: :view_tournament_blue_score
 
+    get "kiosk/:id", to: "kiosk#show", as: :tournament_kiosk
+
     get "/routes", to: redirect("/rails/info/routes") if Rails.env.development?
 end

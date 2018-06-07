@@ -1,0 +1,36 @@
+// Place all the styles related to the Kiosk controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.kioskbody
+{
+  background-color: black;
+  color: white;
+}
+
+.kiosktitle
+{
+  background-color: black;
+  color: white;
+}
+
+.kioskname
+{
+    font-weight: bold
+}
+
+.kioskheader
+{
+    font-style: italic;
+    vertical-align: top;
+}
+
+.kioskcurrentgold, .kioskondeckgold, .kioskintheholegold
+{
+    color: gold;
+}
+
+.kioskcurrentblue, .kioskondeckblue, .kioskintheholeblue
+{
+    color: dodgerblue;
+}
