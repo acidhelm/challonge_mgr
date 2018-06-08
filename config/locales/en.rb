@@ -164,7 +164,10 @@
         },
         kiosk: {
             show: {
-                tbd: "TBD"
+                tbd: "TBD",
+                current_match: "Current match:",
+                on_deck: "On deck:",
+                in_the_hole: "After that:"
             }
         }
     }

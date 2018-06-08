@@ -4,7 +4,7 @@
 <table><tbody>
   <% current_match = @tournament.matches.current_match.first %>
     <tr>
-      <td class="kioskheader">Current match:</td>
+      <td class="kioskheader"><%= t(".current_match") %></td>
       <td>
         <% if current_match.present? %>
           <span class="<%= @tournament.cabinet_color_invariant(:left, 'kioskcurrent') %>"><%= current_match.team_name(:left) %></span><br>
@@ -15,7 +15,7 @@
 
   <% on_deck_match = @tournament.matches.upcoming.first %>
   <tr>
-    <td class="kioskheader">On deck:</td>
+    <td class="kioskheader"><%= t(".on_deck") %></td>
     <td>
       <% if on_deck_match.present? %>
         <span class="<%= @tournament.cabinet_color_invariant(:left, 'kioskondeck') %>"><%= on_deck_match.team_name(:left) || tbd %></span><br>
@@ -26,7 +26,7 @@
 
   <% in_the_hole_match = @tournament.matches.upcoming.second %>
   <tr>
-    <td class="kioskheader">In the hole:</td>
+    <td class="kioskheader"><%= t(".in_the_hole") %></td>
     <td>
       <% if in_the_hole_match.present? %>
         <span class="<%= @tournament.cabinet_color_invariant(:left, 'kioskinthehole') %>"><%= in_the_hole_match.team_name(:left) || tbd %></span><br>
