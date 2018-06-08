@@ -249,6 +249,11 @@ This view is also useful for your commentators, since it gives them an easy-to-r
 list of the upcoming matches, and the match history of the teams that are in the
 current match.
 
+There is also a kiosk mode, which you can have up on another screen so players
+can see which teams will be playing soon.  Go to the `/kiosk/<tournament_id>`
+URL to see the kiosk, which shows the teams in the current match and the next two
+upcoming matches.
+
 # Features for streams
 
 If you use Xsplit for broadcasting, Challonge Mgr can automatically update the
