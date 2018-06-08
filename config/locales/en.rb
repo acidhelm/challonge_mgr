@@ -3,6 +3,7 @@
         blue_cab_name: "Blue",
         browser_title: "%{title} - Challonge Mgr",
         browser_title_view: "Viewing %{title}",
+        browser_title_kiosk: "Kiosk for %{title}",
         cancel_link: "Cancel",
         gold_cab_name: "Gold",
         errors: {
@@ -159,6 +160,11 @@
                 round_with_group: "group %{group}, round %{round}",
                 round: "round %{round}",
                 round_cap: "Round %{round}"
+            }
+        },
+        kiosk: {
+            show: {
+                tbd: "TBD"
             }
         }
     }

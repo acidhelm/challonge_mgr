@@ -1,0 +1,37 @@
+<% content_for :title, @tournament.name %>
+<% tbd = t(".tbd") %>
+<h1 class="kioskname"><%= @tournament.name %><h1>
+<table><tbody>
+  <% current_match = @tournament.matches.current_match.first %>
+    <tr>
+      <td class="kioskheader">Current match:</td>
+      <td>
+        <% if current_match.present? %>
+          <span class="<%= @tournament.cabinet_color_invariant(:left, 'kioskcurrent') %>"><%= current_match.team_name(:left) %></span><br>
+          <span class="<%= @tournament.cabinet_color_invariant(:right, 'kioskcurrent') %>"><%= current_match.team_name(:right) %></span>
+        <% end %>
+      </td>
+    </tr>
+
+  <% on_deck_match = @tournament.matches.upcoming.first %>
+  <tr>
+    <td class="kioskheader">On deck:</td>
+    <td>
+      <% if on_deck_match.present? %>
+        <span class="<%= @tournament.cabinet_color_invariant(:left, 'kioskondeck') %>"><%= on_deck_match.team_name(:left) || tbd %></span><br>
+        <span class="<%= @tournament.cabinet_color_invariant(:right, 'kioskondeck') %>"><%= on_deck_match.team_name(:right) || tbd %></span>
+      <% end %>
+    </td>
+  </tr>
+
+  <% in_the_hole_match = @tournament.matches.upcoming.second %>
+  <tr>
+    <td class="kioskheader">In the hole:</td>
+    <td>
+      <% if in_the_hole_match.present? %>
+        <span class="<%= @tournament.cabinet_color_invariant(:left, 'kioskinthehole') %>"><%= in_the_hole_match.team_name(:left) || tbd %></span><br>
+        <span class="<%= @tournament.cabinet_color_invariant(:right, 'kioskinthehole') %>"><%= in_the_hole_match.team_name(:right) || tbd %></span>
+      <% end %>
+    </td>
+  </tr>
+</tbody></table>
