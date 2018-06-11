@@ -2,6 +2,7 @@ class KioskController < ApplicationController
     before_action :set_tournament
 
     def show
+        @refresh_time = params[:t] || Rails.configuration.kiosk_refresh_time
     end
 
     protected

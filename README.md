@@ -254,6 +254,11 @@ can see which teams will be playing soon.  Go to the `/kiosk/<tournament_id>`
 URL to see the kiosk, which shows the teams in the current match and the next two
 upcoming matches.
 
+The kiosk view automatically refreshes itself.  You can set how often it refreshes
+with the `Rails.configuration.kiosk_refresh_time` config variable.  You can also
+override that value by passing the time in seconds in the URL, for example
+`/kiosk/<tournament_id>&t=30`.
+
 # Features for streams
 
 If you use Xsplit for broadcasting, Challonge Mgr can automatically update the

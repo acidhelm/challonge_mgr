@@ -16,5 +16,6 @@ module ChallongeMgr
     # -- all .rb files in that directory are automatically loaded.
 
     config.gold_on_left_default = true
+    config.kiosk_refresh_time = 10.seconds
   end
 end
