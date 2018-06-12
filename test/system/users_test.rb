@@ -1,6 +1,8 @@
 require "application_system_test_case"
 
 class UsersTest < ApplicationSystemTestCase
+    setup :setup_log_in
+
     test "Check the tournament list" do
         assert_selector "h1", text: /^Challonge tournaments owned by/
 

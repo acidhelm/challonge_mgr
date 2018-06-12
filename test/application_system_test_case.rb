@@ -3,7 +3,10 @@ require "test_helper"
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     driven_by :selenium, using: :chrome, screen_size: [800, 1000]
 
-    setup do
+    # System test classes that need to log in must call this function in their
+    # setup step.  The simplest way to do that is:
+    #   setup :setup_log_in
+    def setup_log_in
         @user = users(:test_user)
 
         if @user.user_name.blank?
@@ -19,10 +22,6 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
         log_in_as(@user)
     end
 
-    def take_failed_screenshot
-        false
-    end
-
     def log_in_as(user, password = "password")
         visit login_url
 
@@ -33,5 +32,9 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
             click_on "Log in"
             assert_current_path(user_tournaments_path(user))
         end
+    end
+
+    def take_failed_screenshot
+        false
     end
 end

@@ -1,6 +1,8 @@
 require "application_system_test_case"
 
 class TournamentsTest < ApplicationSystemTestCase
+    setup :setup_log_in
+
     test "Check the tournament settings page" do
         begin
             # If the user has no tournaments, this call will throw an exception,
