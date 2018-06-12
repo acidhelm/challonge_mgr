@@ -4,7 +4,7 @@ class TournamentViewerTest < ApplicationSystemTestCase
     test "Check the view-tournament page" do
         tournament = tournaments(:one)
 
-        visit "/view/#{tournament.challonge_alphanumeric_id}"
+        visit view_tournament_url(tournament.challonge_alphanumeric_id)
 
         assert_selector "h1", text: tournament.name
         assert_link tournament.challonge_url, href: tournament.challonge_url
