@@ -11,11 +11,11 @@
     <td colspan='2' align="center"><h2><%= @tournament.cabinet_color(:right) %></h2></td>
   </tr>
   <tr>
-    <td><h1><%= match.team_name(:left) %><h1></td>
-    <td><h1><%= left_score %><h1></td>
+    <td><h1><%= match.team_name(:left) %></h1></td>
+    <td><h1><%= left_score %></h1></td>
     <td align="center"><h1>&mdash;</h1></td>
-    <td align="right"><h1><%= right_score %><h1></td>
-    <td align="right"><h1><%= match.team_name(:right) %><h1></td>
+    <td align="right"><h1><%= right_score %></h1></td>
+    <td align="right"><h1><%= match.team_name(:right) %></h1></td>
   </tr>
   <% if !@tournament.readonly? %>
     <tr>
