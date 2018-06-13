@@ -8,15 +8,18 @@ class UsersTest < ApplicationSystemTestCase
 
         # The footer should have three links.
         assert_link "Reload the tournament list from Challonge",
-                    href: user_tournaments_refresh_path(@user)
-        assert_link "Edit this user's settings", href: edit_user_path(@user)
-        assert_link "Log out", href: logout_path
+                    href: user_tournaments_refresh_path(@user), exact: true
+        assert_link "Edit this user's settings", href: edit_user_path(@user), exact: true
+        assert_link "Log out", href: logout_path, exact: true
 
-        page.all("th").each do |th|
-            # Column headers should be present.
-            assert th.text.present?
+        # Check the column headers in the tournament table.
+        header_text = %w(Name State Challonge\ URL Actions)
+
+        page.all("th").each_with_index do |th, i|
+            assert th.text == header_text[i]
         end
 
+        # Check the list of tournaments.
         page.all("tbody tr").each do |tr|
             tr.all("td").each_with_index do |td, i|
                 case i
@@ -25,11 +28,12 @@ class UsersTest < ApplicationSystemTestCase
                         assert td.text.present?
                     when 2
                         # Assert that the text is a valid URL.
+                        assert td.text.present?
                         assert URI.parse(td.text)
                     when 3
                         # The Actions column should have two links.
-                        assert td.has_link? "Manage this tournament"
-                        assert td.has_link? "Edit this tournament's settings"
+                        assert td.has_link? "Manage this tournament", exact: true
+                        assert td.has_link? "Edit this tournament's settings", exact: true
                 end
             end
         end
@@ -53,15 +57,15 @@ class UsersTest < ApplicationSystemTestCase
     test "Check the user properties page" do
         visit user_url(@user)
 
-        assert_text "User name:"
+        assert_selector "strong", exact_text: "User name:"
         assert_text @user.user_name
-        assert_text "API key:"
+        assert_selector "strong", exact_text: "API key:"
         assert_text @user.api_key
-        assert_text "Subdomain:"
+        assert_selector "strong", exact_text: "Subdomain:"
         assert_text @user.subdomain if @user.subdomain.present?
 
-        assert_link "Edit this user's settings", href: edit_user_path(@user)
-        assert_link "View this user's tournaments", href: user_tournaments_path(@user)
-        assert_link "Log out", href: logout_path
+        assert_link "Edit this user's settings", href: edit_user_path(@user), exact: true
+        assert_link "View this user's tournaments", href: user_tournaments_path(@user), exact: true
+        assert_link "Log out", href: logout_path, exact: true
     end
 end

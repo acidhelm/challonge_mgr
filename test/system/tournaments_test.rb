@@ -21,11 +21,11 @@ class TournamentsTest < ApplicationSystemTestCase
             edit_settings_link.click
 
             assert_selector "h1", text: /^Edit settings for/
-            assert_selector "label", text: "The Gold cabinet is on the left side"
+            assert_selector "label", exact_text: "The Gold cabinet is on the left side"
             assert_field id: "tournament_gold_on_left", type: "checkbox"
-            assert_selector "label", text: "Send Slack notifications when matches begin and end"
+            assert_selector "label", exact_text: "Send Slack notifications when matches begin and end"
             assert_field id: "tournament_send_slack_notifications", type: "checkbox"
-            assert_selector "label", text: "Slack channel"
+            assert_selector "label", exact_text: "Slack channel"
             assert_field name: "tournament[slack_notifications_channel]", type: "text"
 
             page.find_by_id("tournament_gold_on_left").click
@@ -60,29 +60,32 @@ class TournamentsTest < ApplicationSystemTestCase
                 # This call has to be within the use_cassette block, because
                 # `click` returns right away.  `assert_selector` spins, looking
                 # for the element, and the HTTP request happens during that loop.
-                assert_selector "h1", text: tournament.name
+                assert_selector "h1", exact_text: tournament.name
             end
 
-            assert_link tournament.challonge_url, href: tournament.challonge_url
+            assert_link tournament.challonge_url, href: tournament.challonge_url,
+                        exact: true
 
             # Since this is using live data from Challonge, we can't predict
             # what the Upcoming Matches, Completed Matches, and Team Records
             # sections will contain.  The Team Records section will always exist,
             # so we can look for that.
-            assert_selector "h2", text: "Team records:"
-            assert_selector "th", text: "Seed"
-            assert_selector "th", text: "Team (W-L)"
+            assert_selector "h2", exact_text: "Team records:"
+            assert_selector "th", exact_text: "Seed"
+            assert_selector "th", exact_text: "Team (W-L)"
 
             assert_link "Reload this tournament from Challonge",
-                        href: refresh_user_tournament_path(@user, tournament)
+                        href: refresh_user_tournament_path(@user, tournament),
+                        exact: true
 
             assert_link "Edit this tournament's settings",
-                        href: edit_user_tournament_path(@user, tournament)
+                        href: edit_user_tournament_path(@user, tournament),
+                        exact: true
 
             assert_link "Back to the tournament list",
-                        href: user_tournaments_path(@user)
+                        href: user_tournaments_path(@user), exact: true
 
-            assert_link "Log Out", href: logout_path
+            assert_link "Log Out", href: logout_path, exact: true
         end
     end
 end
