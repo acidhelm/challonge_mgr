@@ -69,7 +69,7 @@ module ApplicationHelper
         response = RestClient.get(url)
         return JSON.parse(response.body)
     rescue => e
-        return handle_request_error(e, "send_get_request")
+        return handle_request_error(e, __method__)
     end
 
     # Sends a PUT request on `url`, passing `params` with the request.  It treats
@@ -80,7 +80,7 @@ module ApplicationHelper
         response = RestClient.put(url, params)
         return JSON.parse(response.body)
     rescue => e
-        return handle_request_error(e, "send_put_request")
+        return handle_request_error(e, __method__)
     end
 
     # Sends a POST request on `url`.  It treats the returned data as JSON, and
@@ -90,7 +90,7 @@ module ApplicationHelper
         response = RestClient.post(url, post_data)
         return JSON.parse(response.body)
     rescue => e
-        return handle_request_error(e, "send_post_request")
+        return handle_request_error(e, __method__)
     end
 
     def self.handle_request_error(e, method_name)
