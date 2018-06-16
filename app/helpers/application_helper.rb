@@ -6,8 +6,7 @@ module ApplicationHelper
     # the array also contains the tournaments that are owned by that organization.
     # On failure, returns an `error` object that describes the error.
     def self.get_tournament_list(user)
-        url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
-                "v1/tournaments.json"
+        url = "#{api_url_prefix(user)}tournaments.json"
 
         tournaments = send_get_request(url)
 
@@ -33,21 +32,16 @@ module ApplicationHelper
     end
 
     def self.get_tournament_info(tournament)
-        user = tournament.user
-
-        url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
-                "v1/tournaments/#{tournament.challonge_id}.json?" \
+        url = "#{api_url_prefix(tournament.user)}tournaments/" \
+                "#{tournament.challonge_id}.json?" \
                 "include_participants=1&include_matches=1"
 
         return send_get_request(url)
     end
 
     def self.update_match(match, new_scores_csv, winner_id)
-        user = match.tournament.user
-
-        url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
-                "v1/tournaments/#{match.tournament.challonge_id}/matches/" \
-                "#{match.challonge_id}.json"
+        url = "#{api_url_prefix(match.tournament.user)}tournaments/" \
+                "#{match.tournament.challonge_id}/matches/#{match.challonge_id}.json"
 
         params = { "match[scores_csv]" => new_scores_csv }
         params["match[winner_id]"] = winner_id if winner_id.present?
@@ -56,15 +50,17 @@ module ApplicationHelper
     end
 
     def self.finalize_tournament(tournament)
-        user = tournament.user
-
-        url = "https://#{user.user_name}:#{user.api_key}@api.challonge.com/" \
-                "v1/tournaments/#{tournament.challonge_id}/finalize.json"
+        url = "#{api_url_prefix(tournament.user)}tournaments/" \
+                "#{tournament.challonge_id}/finalize.json"
 
         return send_post_request(url)
     end
 
     protected
+
+    def self.api_url_prefix(user)
+        return "https://#{user.user_name}:#{user.api_key}@api.challonge.com/v1/"
+    end
 
     # Sends a GET request on `url`, treats the returned data as JSON, and parses
     # it into an object.  On success, the return value is that object.  On
@@ -76,8 +72,8 @@ module ApplicationHelper
         return handle_request_error(e, "send_get_request")
     end
 
-    # Sends a PUT request on `url`, passing the given data in the request.  It
-    # treats the returned data as JSON, and parses it into an object.  On success,
+    # Sends a PUT request on `url`, passing `params` with the request.  It treats
+    # the returned data as JSON, and parses it into an object.  On success,
     # the return value is that object.  On failure, the return value is a hash
     # that describes the error.
     def self.send_put_request(url, params)
