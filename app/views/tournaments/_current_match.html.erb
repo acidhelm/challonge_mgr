@@ -1,21 +1,21 @@
 <% match = current_match
    left_score = match.team_score(:left)
    right_score = match.team_score(:right) %>
-<h1>
+<h1 class="currentmatchheader">
 <%= t(".header", number: match.number, round_name: match.round_name(capitalized: false)) %>
 </h1>
 <p><table>
   <tr>
-    <td colspan='2' align="center"><h2><%= @tournament.cabinet_color(:left) %></h2></td>
+    <td colspan='2' align="center"><h2 class="currentmatchcolor"><%= @tournament.cabinet_color(:left) %></h2></td>
     <td></td>
-    <td colspan='2' align="center"><h2><%= @tournament.cabinet_color(:right) %></h2></td>
+    <td colspan='2' align="center"><h2 class="currentmatchcolor"><%= @tournament.cabinet_color(:right) %></h2></td>
   </tr>
   <tr>
-    <td><h1><%= match.team_name(:left) %></h1></td>
-    <td><h1><%= left_score %></h1></td>
-    <td align="center"><h1>&mdash;</h1></td>
-    <td align="right"><h1><%= right_score %></h1></td>
-    <td align="right"><h1><%= match.team_name(:right) %></h1></td>
+    <td><h1 class="currentmatchname"><%= match.team_name(:left) %></h1></td>
+    <td><h1 class="currentmatchscore"><%= left_score %></h1></td>
+    <td align="center"><h1 class="currentmatchscore">&mdash;</h1></td>
+    <td align="right"><h1 class="currentmatchscore"><%= right_score %></h1></td>
+    <td align="right"><h1 class="currentmatchname"><%= match.team_name(:right) %></h1></td>
   </tr>
   <% if !@tournament.readonly? %>
     <tr>
@@ -66,12 +66,18 @@
   <% end %>
   <tr>
     <td colspan='2' valign="top">
-      <br><br><%= render partial: "tournaments/previous_matches", locals: { team: match.get_team(:left) } %>
+    <% if !@tournament.readonly? %>
+      <br>
+    <% end %>
+      <%= render partial: "tournaments/previous_matches", locals: { team: match.get_team(:left) } %>
     </td>
     <td></td>
     <td></td>
     <td valign="top" style="float:right">
-      <br><br><%= render partial: "tournaments/previous_matches", locals: { team: match.get_team(:right) } %>
+    <% if !@tournament.readonly? %>
+      <br>
+    <% end %>
+      <%= render partial: "tournaments/previous_matches", locals: { team: match.get_team(:right) } %>
     </td>
   </tr>
 </table></p>
