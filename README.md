@@ -257,7 +257,7 @@ upcoming matches.
 The kiosk view automatically refreshes itself.  You can set how often it refreshes
 with the `Rails.configuration.kiosk_refresh_time` config variable.  You can also
 override that value by passing the time in seconds in the URL, for example
-`/kiosk/<tournament_id>&t=30`.
+`/kiosk/<tournament_id>?t=30`.
 
 # Features for streams
 
