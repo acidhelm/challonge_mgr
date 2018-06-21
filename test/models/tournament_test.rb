@@ -80,4 +80,9 @@ class TournamentTest < ActiveSupport::TestCase
         @tournament.slack_notifications_channel = "buzz"
         assert @tournament.save
     end
+
+    test "Try to save a tournament with an illegal started_at" do
+        @tournament.started_at = 37.minutes.from_now
+        assert_not @tournament.save
+    end
 end

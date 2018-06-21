@@ -19,6 +19,7 @@ class Tournament < ApplicationRecord
     validates :view_blue_score, numericality: { only_integer: true,
                                                 greater_than_or_equal_to: 0 }
     validates :slack_notifications_channel, presence: true, if: :send_slack_notifications
+    validate :validate_datetimes
 
     scope :underway, -> { where(state: Tournament.states_to_show) }
     scope :complete, -> { where(state: "complete") }
@@ -112,5 +113,12 @@ class Tournament < ApplicationRecord
                             else
                                 ""
                         end
+    end
+
+    protected
+    def validate_datetimes
+        if started_at.present? && started_at > Time.now
+            errors.add(:started_at, "cannot be in the future")
+        end
     end
 end

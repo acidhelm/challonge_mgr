@@ -68,7 +68,7 @@ class CheckLiveTournamentDataTest < ActionDispatch::IntegrationTest
         # that the format of the JSON that Challonge returns hasn't changed.
         expected_tournament = tournaments(:live_data_tournament)
         fields = %i(challonge_id name challonge_alphanumeric_id state
-                    challonge_url tournament_type)
+                    challonge_url tournament_type started_at)
 
         fields.each do |field|
             assert_equal expected_tournament[field], tournament[field]

@@ -12,6 +12,7 @@ one:
   gold_on_left: true
   send_slack_notifications: false
   slack_notifications_channel: null
+  started_at: <%= 1.hour.ago %>
   user: willow
 
 two:
@@ -26,6 +27,7 @@ two:
   gold_on_left: false
   send_slack_notifications: false
   slack_notifications_channel: null
+  started_at: <%= 37.minutes.ago %>
   user: buffy
 
 live_data_tournament:
@@ -35,3 +37,4 @@ live_data_tournament:
   state: complete
   challonge_url: https://challonge.com/80329jfi
   tournament_type: double elimination
+  started_at: "2018-03-26T18:19:21.072-07:00"
