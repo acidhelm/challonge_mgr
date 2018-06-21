@@ -108,8 +108,15 @@ class TournamentsController < ApplicationController
 
     def update
         if @tournament.update(tournament_params)
-            redirect_to user_tournament_path(@user, @tournament),
-                        notice: I18n.t("notices.tournament_updated")
+            # If the user creates a tournament and clicks the "Edit settings"
+            # link in the tournaments/index view, before they ever click the
+            # "Manage this tournament" link, then we need to redirect to the
+            # refresh action so the teams and matches are filled in.
+            # Otherwise, redirect to the show action.
+            action = @tournament.matches.blank? ? "refresh" : "show"
+            msg = I18n.t("notices.tournament_updated")
+
+            redirect_to({ action: action }, notice: msg)
         else
             render :edit
         end
