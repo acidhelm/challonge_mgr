@@ -13,13 +13,22 @@ class TournamentsController < ApplicationController
 
     # GET /tournaments/refresh
     def refresh_all
+        # Make a list of the tournaments that are currently in the database.
+        # We will delete any tournaments whose state has changed to complete.
         known_tournaments = @user.tournaments.pluck(:challonge_id)
+
+        # Get the user's tournaments from Challonge.
         tournament_list = ApplicationHelper.get_tournament_list(@user)
 
         return if api_failed?(tournament_list) do |msg|
             redirect_to({ action: "index" }, notice: msg)
         end
 
+        # - Make a struct for each tournaments in the response.
+        # - Select only the tournaments that are not complete, or are already in
+        #   the database.
+        # - Create or update those tournaments with the properties that were
+        #   in the response.
         tournament_list.map do |t|
             OpenStruct.new(t["tournament"])
         end.select do |t|
@@ -50,8 +59,7 @@ class TournamentsController < ApplicationController
 
         tournament_obj = OpenStruct.new(tournament_hash["tournament"])
 
-        # Read the properties that we care about from the top level of the JSON,
-        # and update the Tournament object.
+        # Update the tournament with the properties that were in the response.
         @tournament.update!(tournament_obj)
 
         # Read the "participants" array and create a Team object for each one,
@@ -71,7 +79,7 @@ class TournamentsController < ApplicationController
         end
 
         # If `old_team_ids` is non-empty, then those matches were deleted from
-        # the tournament, so delete them from our database, too.
+        # the Challonge tournament, so delete them from our database, too.
         if old_team_ids.present?
             @tournament.teams.where(challonge_id: old_team_ids).destroy_all
         end
@@ -82,7 +90,7 @@ class TournamentsController < ApplicationController
         # and new ones are made, so we need to reflect that change in the database.
         # Keep track of the `challonge_id` of the Matches that are currently in
         # the database, and delete the rows for Matches that have been deleted
-        # from the tournament on Challonge.
+        # from the Challonge tournament.
         old_match_ids = @tournament.matches.pluck(:challonge_id)
 
         tournament_obj.matches.map do |m|

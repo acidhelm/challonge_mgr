@@ -24,6 +24,8 @@ class TournamentViewerController < ApplicationController
 
     protected
     def set_tournament
+        # Challonge treats tournament slugs as case-insensitive, so we use a
+        # case-insensitive search, too.
         @tournament = Tournament.readonly.where("lower(challonge_alphanumeric_id) = ?",
                                                 params[:id].downcase).first
 
@@ -34,6 +36,8 @@ class TournamentViewerController < ApplicationController
         name = nil
 
         begin
+            # If a match is in progress, query the team name from that match.
+            # Otherwise, use the team name that we stored when the match finished.
             if @tournament.current_match.present?
                 name = Match.find(@tournament.current_match).team_name(side)
             else
@@ -41,6 +45,7 @@ class TournamentViewerController < ApplicationController
                                          @tournament.view_blue_name
             end
         rescue ActiveRecord::RecordNotFound
+            # Do nothing, we'll return an empty string.
         end
 
         # Remove a parenthesized part from the end of the team name.  This lets
@@ -55,6 +60,8 @@ class TournamentViewerController < ApplicationController
         score = 0
 
         begin
+            # If a match is in progress, query the score from that match.
+            # Otherwise, use the score that we stored when the match finished.
             if @tournament.current_match.present?
                 score = Match.find(@tournament.current_match).team_score(side)
             else
@@ -62,6 +69,7 @@ class TournamentViewerController < ApplicationController
                                           @tournament.view_blue_score
             end
         rescue ActiveRecord::RecordNotFound
+            # Do nothing, we'll return 0.
         end
 
         return score

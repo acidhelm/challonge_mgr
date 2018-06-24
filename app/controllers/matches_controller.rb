@@ -11,7 +11,9 @@ class MatchesController < ApplicationController
         # can remove this line.
         @match.update_attributes(underway_at: Time.now)
 
+        # Tell the tournament that a new match is starting.
         @tournament.set_current_match(@match)
+
         redirect_to user_tournament_path(@user, @tournament)
     end
 
@@ -42,12 +44,15 @@ class MatchesController < ApplicationController
             new_scores_csv = @match.make_scores_csv(left_score, right_score)
         end
 
+        # Send the new scores or the winner to Challonge.
         match_hash = ApplicationHelper.update_match(@match, new_scores_csv, winner_id)
 
         return if api_failed?(match_hash) do |msg|
             redirect_to user_tournament_path(@user, @tournament), notice: msg
         end
 
+        # Challonge responds with the updated JSON for the match.  Read it and
+        # update our `Match` object.
         match_obj = OpenStruct.new(match_hash["match"])
 
         @match.update!(match_obj)
