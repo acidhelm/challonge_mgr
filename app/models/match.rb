@@ -42,14 +42,19 @@ class Match < ApplicationRecord
     scope :completed, -> { complete.play_order }
     scope :play_order, -> { order(group_id: :asc, suggested_play_order: :asc, identifier: :asc) }
 
+    # Tests if this Match is complete.
     def complete?
         return state == "complete"
     end
 
+    # Returns true if this Match has at least one Team that has not been
+    # assigned yet.
     def teams_are_tbd?
         return team1_id.nil? || team2_id.nil?
     end
 
+    # Tests whether a team has won this Match.  `side` can be `:left`, `:right`,
+    # or a `Team` object.
     def team_won?(side)
         return false if !complete?
 
@@ -63,6 +68,9 @@ class Match < ApplicationRecord
         end
     end
 
+    # Tests whether a side is the loser of the prerequisite match for this Match.
+    # We use this to build the "Winner of match N" and "Loser of match M" strings.
+    # `side` can be `:left` or `:right`.
     def team_is_prereq_match_loser?(side)
         return false unless %i(left right).include?(side)
 
@@ -80,6 +88,7 @@ class Match < ApplicationRecord
     # been assigned to that side yet, returns `team1_id` for the left side, and
     # `team2_id` for the right side.  If _that_ ID hasn't been set yet, because
     # prereq matches need to be played still, then this function returns nil.
+    # `side` can be `:left` or `:right`.
     def get_team_id(side)
         case side
             when :left
@@ -94,6 +103,7 @@ class Match < ApplicationRecord
     end
 
     # This returns nil if no team has been assigned to the side yet.
+    # `side` can be `:left` or `:right`.
     def get_team(side)
         case side
             when :left, :right
@@ -103,7 +113,9 @@ class Match < ApplicationRecord
         end
     end
 
-    # This returns nil if no team has been assigned to `location` yet.
+    # Returns the name of the team in a given location, or nil if no team
+    # has been assigned there yet.
+    # `location` can be `:left`, `:right`, `:gold`, `:blue`, `:winner`, or `:loser`.
     def team_name(location)
         case location
             when :left, :right
@@ -123,9 +135,10 @@ class Match < ApplicationRecord
         end
     end
 
-    # When the caller passes `:left` or `:right`, this returns 0 if the match
-    # has not begun yet.  When the caller passes `:winner` or `:loser`, this
-    # returns 0 if the match is not complete.
+    # Returns the score of the team in a given location, or 0 if the match has
+    # not started yet.  Also returns 0 if the caller passes `:winner` or `:loser`
+    # and the match is not complete.
+    # `location` can be `:left`, `:right`, `:gold`, `:blue`, `:winner`, or `:loser`.
     def team_score(location)
         case location
             when :left, :right
@@ -149,6 +162,10 @@ class Match < ApplicationRecord
         end
     end
 
+    # Returns the `challonge_id` of the Match that is the prerequisite match
+    # for the team on a given side.  We use this to build the "Winner of match N"
+    # and "Loser of match M" strings.
+    # `side` can be `:left` or `:right`.
     def team_prereq_match_id(side)
         return nil unless %i(left right).include?(side)
 
@@ -162,14 +179,23 @@ class Match < ApplicationRecord
         end
     end
 
-    # The `suggested_play_order` field ranges from 1 to N, which is useful for
-    # identifying matches in the UI.  In the group stage of a two-stage
-    # tournament, there is no `suggested_play_order` value, so use
-    # `identifier` instead.
+    # The `suggested_play_order` field ranges from 1 to the number of matches
+    # in the bracket, which is useful for identifying matches in the UI.  In the
+    # group stage of a two-stage tournament, there is no `suggested_play_order`
+    # value, so use `identifier` instead.
     def number
         return suggested_play_order || identifier
     end
 
+    # Returns a description of the round that this Match is in.  It can be one
+    # of these forms:
+    #   Round N
+    #   Winners' round N
+    #   Losers' round N
+    #   Group X, round N
+    #
+    # The `capitalized` parameter controls whether the first word of the name
+    # is capitalized.
     def round_name(capitalized: true)
         # If the tournament is double-elimination, then the round name says
         # which half of the bracket the match is in.  But if the match is in the
@@ -251,6 +277,8 @@ class Match < ApplicationRecord
     end
 
     protected
+
+    # Tests whether teams have been assigned to both cabinets for this Match.
     def cabinets_assigned?
         return gold_team_id.present? && blue_team_id.present?
     end

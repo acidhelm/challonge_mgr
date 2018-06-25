@@ -24,14 +24,18 @@ class Tournament < ApplicationRecord
     scope :underway, -> { where(state: Tournament.states_to_show) }
     scope :complete, -> { where(state: "complete") }
 
+    # We show a tournament in the tournaments/index view only if its state is
+    # one of these values.
     def self.states_to_show
         return %w(underway group_stages_underway awaiting_review).freeze
     end
 
+    # Tests if this Tournament is complete.
     def complete?
         return state == "complete"
     end
 
+    # Tests if this Tournament can be finalized.
     def finalizable?
         return state == "awaiting_review"
     end
@@ -48,6 +52,8 @@ class Tournament < ApplicationRecord
         save!
     end
 
+    # Stores the ID of the given Match in the Tournament table, and sends a
+    # Slack notification if they are turned on for this Tournament.
     def set_current_match(match)
         update(current_match: match.id)
 
@@ -57,9 +63,10 @@ class Tournament < ApplicationRecord
         end
     end
 
+    # Stores the names and scores of the given Match in the Tournament table, so
+    # the TournamentViewer actions can return them until the next match begins.
+    # Also sends a Slack  notification if they are turned on for this Tournament.
     def set_match_complete(match)
-        # Store the team names and scores from the just-completed match, so that
-        # the viewing APIs return those values until the next match begins.
         update(current_match: nil,
                view_gold_name: match.team_name(:gold),
                view_blue_name: match.team_name(:blue),
@@ -71,6 +78,10 @@ class Tournament < ApplicationRecord
         end
     end
 
+    # Assigns group names to matches that are in a group stage.  This may not be
+    # perfect; see the comments below for more info.
+    # This should be called every time the Tournament's properties are re-read
+    # from Challonge.
     def update_group_names
         # Set `group_name` to nil for matches that aren't in a group.
         matches.where(group_id: nil).update_all(group_name: nil)
@@ -91,6 +102,9 @@ class Tournament < ApplicationRecord
         end
     end
 
+    # Returns the color of the cabinet on the given side.  This string is suitable
+    # for use in the UI.
+    # `side` can be `:left` or `:right`.
     def cabinet_color(side)
         string_id = case side
                         when :left
@@ -104,6 +118,11 @@ class Tournament < ApplicationRecord
         return string_id ? I18n.t(string_id) : ""
     end
 
+    # Returns the color of the cabinet on the given side.  If `prefix` is passed,
+    # that string is prepended to the color.
+    # This string is *not* suitable for use in the UI, since it is never
+    # translated.  It should be used only for internal identifiers.
+    # `side` can be `:left` or `:right`.
     def cabinet_color_invariant(side, prefix = "")
         return prefix + case side
                             when :left
