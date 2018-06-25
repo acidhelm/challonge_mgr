@@ -31,6 +31,9 @@ module ApplicationHelper
         return tournaments
     end
 
+    # On success, returns a `tournament` object that contains the properties,
+    # teams, and matches of the given tournament.
+    # On failure, returns an `error` object that describes the error.
     def self.get_tournament_info(tournament)
         url = "#{api_url_prefix(tournament.user)}tournaments/" \
                 "#{tournament.challonge_id}.json?" \
@@ -39,6 +42,10 @@ module ApplicationHelper
         return send_get_request(url)
     end
 
+    # Sets the scores and optionally the winning team for a match.
+    # On success, returns a `match` object that contains the updated properties
+    # of the match.
+    # On failure, returns an `error` object that describes the error.
     def self.update_match(match, new_scores_csv, winner_id)
         url = "#{api_url_prefix(match.tournament.user)}tournaments/" \
                 "#{match.tournament.challonge_id}/matches/#{match.challonge_id}.json"
@@ -49,6 +56,10 @@ module ApplicationHelper
         return send_put_request(url, params)
     end
 
+    # Sets the scores and optionally the winning team for a match.
+    # On success, returns... something.  The API's response isn't documented.
+    # TODO: Finalize a test match and see what it returns.
+    # On failure, returns an `error` object that describes the error.
     def self.finalize_tournament(tournament)
         url = "#{api_url_prefix(tournament.user)}tournaments/" \
                 "#{tournament.challonge_id}/finalize.json"
@@ -62,7 +73,7 @@ module ApplicationHelper
         return "https://#{user.user_name}:#{user.api_key}@api.challonge.com/v1/"
     end
 
-    # Sends a GET request on `url`, treats the returned data as JSON, and parses
+    # Sends a GET request to `url`, treats the returned data as JSON, and parses
     # it into an object.  On success, the return value is that object.  On
     # failure, the return value is a hash that describes the error.
     def self.send_get_request(url)
@@ -72,7 +83,7 @@ module ApplicationHelper
         return handle_request_error(e, __method__)
     end
 
-    # Sends a PUT request on `url`, passing `params` with the request.  It treats
+    # Sends a PUT request to `url`, passing `params` with the request.  It treats
     # the returned data as JSON, and parses it into an object.  On success,
     # the return value is that object.  On failure, the return value is a hash
     # that describes the error.
@@ -83,7 +94,7 @@ module ApplicationHelper
         return handle_request_error(e, __method__)
     end
 
-    # Sends a POST request on `url`.  It treats the returned data as JSON, and
+    # Sends a POST request to `url`.  It treats the returned data as JSON, and
     # parses it into an object.  On success, the return value is that object.
     # On failure, the return value is a hash that describes the error.
     def self.send_post_request(url, post_data = "")
@@ -93,6 +104,11 @@ module ApplicationHelper
         return handle_request_error(e, __method__)
     end
 
+    # Returns a hash in this form:
+    # { error: { object: <the exception>,
+    #            message: <error messages, separated by semicolons>,
+    #            http_code: <the HTTP response code, if known>
+    # } }
     def self.handle_request_error(e, method_name)
         Rails.logger.error "Exception (#{e.class.name}) in #{method_name}: #{e.message}"
         message = nil
@@ -104,7 +120,7 @@ module ApplicationHelper
 
             # Swallow exceptions if the response isn't JSON.  This happens when
             # the user name or API key is wrong, because the server returns
-            # "HTTP Basic: Access denied."
+            # just the string "HTTP Basic: Access denied."
             # This isn't a problem, because `ApplicationController#api_failed?`
             # special-cases 401 responses and shows a custom error message.
             resp = JSON.parse(e.response.to_s) rescue JSON::ParserError;

@@ -12,27 +12,29 @@ module SessionsHelper
         @current_user = nil
     end
 
+    # Returns the currently-logged-in user, or nil if no user is logged in.
     def current_user
         @current_user ||= User.find_by(id: session[:user_id])
         return @current_user
     end
 
-    # Returns true if the user is logged in, false otherwise.
+    # Returns true if a user is logged in, false otherwise.
     def logged_in?
         return current_user.present?
     end
 
-    # Returns true if the given user is the current user.
+    # Returns true if the given user is the currently-logged-in user.
     def current_user?(user)
         return user == current_user
     end
 
-    # Stores the URL trying to be accessed.
+    # Stores the URL trying to be accessed in the `session` object.
     def store_location
         session[:forwarding_url] = request.original_url if request.get?
     end
 
-    # Redirects to the stored location (or to the default).
+    # Redirects to the stored URL, or to a default URL if the session has no
+    # stored URL.
     def redirect_back_or(default)
         redirect_to session[:forwarding_url] || default
         session.delete(:forwarding_url)
