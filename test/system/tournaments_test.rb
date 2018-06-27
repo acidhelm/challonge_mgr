@@ -32,9 +32,11 @@ class TournamentsTest < ApplicationSystemTestCase
             page.find_by_id("tournament_send_slack_notifications").click
             fill_in "tournament[slack_notifications_channel]", with: "ucsunnydale"
 
-            click_on "Update Tournament"
+            VCR.use_cassette("get_tournament_info") do
+                click_on "Update Tournament"
 
-            assert_current_path(tournament_url)
+                assert_current_path(tournament_url)
+            end
         end
     end
 
