@@ -32,6 +32,10 @@ $ bundle install --path vendor/bundle
 $ bin/rails db:schema:load
 ```
 
+(If you don't want to set up a GitHub account, you can also 
+[download the source code](https://github.com/acidhelm/challonge_mgr/archive/master.zip)
+and unzip it.)
+
 There are two configuration keys that you will need to set, but you'll only have
 to do this once.  In the `challonge_mgr` directory, run:
 
