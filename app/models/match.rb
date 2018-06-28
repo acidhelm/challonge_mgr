@@ -3,13 +3,12 @@
 class Match < ApplicationRecord
     belongs_to :tournament
 
-    # FIXME: The uniqueness constraint should be scoped to just the ID of the
-    #        user that's accessing the records.
-    validates :challonge_id, numericality: { only_integer: true, greater_than: 0 } # , uniqueness: true
+    validates :challonge_id, numericality: { only_integer: true, greater_than: 0 }
     validates :state, presence: true
     validates :round, numericality: { only_integer: true }
     validates :identifier, presence: true
     validate :validate_scores_csv, if: proc { |m| m.scores_csv.present? }
+    validate :validate_challonge_id_uniqueness
 
     with_options numericality: { only_integer: true, greater_than: 0 }, allow_nil: true do |v|
         # `suggested_play_order` is normally positive, but in two-stage tournaments
@@ -24,7 +23,8 @@ class Match < ApplicationRecord
         v.validates :winner_id
         v.validates :loser_id
 
-        # These are nil in round-robin tournaments.
+        # These are nil in round-robin tournaments, and in matches that are a
+        # team's first match in an elimination tournament.
         v.validates :team1_prereq_match_id
         v.validates :team2_prereq_match_id
 
@@ -286,6 +286,19 @@ class Match < ApplicationRecord
     def validate_scores_csv
         if scores_csv.split(",").map { |s| s !~ /\d+-\d+/ }.any?
             errors.add(:scores_csv, "is not a valid list of scores")
+        end
+    end
+
+    # This method checks that there are no other Matches in this Tournament with
+    # this Match's `challonge_id`.  We can't use the built-in `uniqueness`
+    # validator, because the same tournament might be in the database under
+    # multiple users, and that would make the `uniqueness` validator fail.
+    #
+    # There `where.not(id: id)` check is necessary so that we don't find our
+    # own `challonge_id` when an existing Match is being updated.
+    def validate_challonge_id_uniqueness
+        if tournament.matches.where.not(id: id).where(challonge_id: challonge_id).any?
+            errors.add(:challonge_id, "is not unique")
         end
     end
 end

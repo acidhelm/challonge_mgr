@@ -5,6 +5,18 @@ class MatchTest < ActiveSupport::TestCase
         @match = matches(:one)
     end
 
+    test "Update a match" do
+        @match.scores_csv = "4-2"
+        @match.winner_id = @match.team1_id
+        @match.loser_id = @match.team2_id
+        assert @match.save
+    end
+
+    test "Try to save a match with an duplicate challonge_id" do
+        m2 = @match.dup
+        assert_not m2.save
+    end
+
     test "Try to save a match with an illegal challonge_id" do
         @match.challonge_id = -1
         assert_not @match.save
