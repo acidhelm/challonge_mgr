@@ -92,7 +92,9 @@ class Tournament < ApplicationRecord
         # names the groups in ascending order starting with "A".
         next_group_name = "A"
 
-        group_names = matches.distinct.pluck(:group_id).compact.sort.each_with_object({}) do |id, names|
+        group_names = matches.distinct.where.not(group_id: nil).
+                        order(group_id: :asc).pluck(:group_id).
+                        each_with_object({}) do |id, names|
             names[id] = next_group_name
             next_group_name = next_group_name.succ
         end
