@@ -1,4 +1,5 @@
 <% content_for :title, @tournament.name %>
+<% readonly = @tournament.readonly? %>
 <p id="notice"><%= notice %></p>
 <h1><%= @tournament.name %></h1>
 <h3><%= link_to @tournament.challonge_url, @tournament.challonge_url, target: :_blank %></h3>
@@ -13,8 +14,8 @@
 <% if matches.present? %>
   <hr>
   <p><h2><%= t(".upcoming_matches") %></h2>
-  <p><%= render partial: "tournaments/match_list", object: matches, locals: { readonly: @tournament.readonly? } %></p>
-<% elsif @tournament.finalizable? && !@tournament.readonly? %>
+  <p><%= render partial: "tournaments/match_list", object: matches, locals: { readonly: readonly } %></p>
+<% elsif @tournament.finalizable? && !readonly %>
   <hr>
   <h2><%= t(".finalize_tournament") %></h2>
   <p><%= t(".finalize_text_html") %></p>
@@ -43,7 +44,7 @@
 <% if matches.present? %>
   <hr>
   <p><h2><%= t(".completed_matches") %></h2>
-  <p><%= render partial: "tournaments/match_list", object: matches, locals: { readonly: @tournament.readonly? } %></p>
+  <p><%= render partial: "tournaments/match_list", object: matches, locals: { readonly: readonly } %></p>
 <% end %>
 
 <hr>
@@ -65,8 +66,8 @@
 </table>
 </p>
 
-<hr>
-<% if !@tournament.readonly? %>
+<% if !readonly %>
+  <hr>
   <%= link_to t(".reload"), [ :refresh, @user, @tournament ] %> |
   <%= link_to t("tournaments.edit_tournament"), [ :edit, @user, @tournament ] %> |
   <%= link_to t(".tournament_list"), user_tournaments_path(@user) %> |
