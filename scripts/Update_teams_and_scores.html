@@ -1,0 +1,201 @@
+<html>
+<head>
+<script>
+// **** TODO: Set this array to the list of team names.
+// You can put a name in parentheses after the team name, for example the queen's name,
+// to make it easier to remember which team is which. The parenthesized part will not be
+// shown in the stream.
+var team_names = [ "Team 1 (Queen 1)", "Team 2 (Queen 2)",
+                   "Team 3" ];
+
+// Other globals
+var fso;  // Scripting.FileSystemObject
+var wsh;  // WScript.Shell
+var team_names_for_stream = new Array();
+var gold_team_name_file = "gold team.txt";
+var blue_team_name_file = "blue team.txt";
+var gold_team_score_file = "gold score.txt";
+var blue_team_score_file = "blue score.txt";
+
+// This is called when the page loads.  It sets up the lists of team names.
+function FillLists()
+{
+    try
+        {
+        fso = new ActiveXObject("Scripting.FileSystemObject");
+        wsh = new ActiveXObject("WScript.Shell");
+        }
+    catch (e)
+        {
+        alert("You must open this file in Internet Explorer.");
+        return;
+        }
+
+    // Sort the team names so they'll be in order in the list boxes.
+    team_names.sort(
+        function (lhs, rhs)
+        {
+            return lhs.toLowerCase().localeCompare(rhs.toLowerCase());
+        });
+
+    // Remove the last parenthesized part from each team name.
+    for (var i = 0; i < team_names.length; i++)
+        team_names_for_stream.push(team_names[i].replace(/\([^)]*\)$/, "").trim());
+
+    // Fill the <select> elements with the team names.
+    var sel1 = document.getElementById("gold_list");
+    var sel2 = document.getElementById("blue_list");
+
+    for (var i = 0; i < team_names.length; i++)
+        {
+        var opt1 = document.createElement("option");
+        var opt2 = document.createElement("option");
+
+        opt1.text = team_names[i].trim();
+        opt2.text = team_names[i].trim();
+
+        sel1.appendChild(opt1);
+        sel2.appendChild(opt2);
+        }
+}
+
+// Writes `content` to a file named `file_name` on the desktop.
+function WriteToFile(file_name, content)
+{
+    if (fso === undefined)
+        {
+        alert("You must open this file in Internet Explorer.");
+        return;
+        }
+
+    try
+        {
+        var desktop_dir = wsh.SpecialFolders("desktop");
+        var file_path = fso.BuildPath(desktop_dir, file_name);
+        var text_stream = fso.CreateTextFile(file_path, true); // true = overwrite
+
+        text_stream.WriteLine(content);
+        text_stream.Close();
+        }
+    catch (e)
+        {
+        alert(e.toString());
+        }
+}
+
+// Writes `team_name` to the team name file that corresponds to `team_color`.
+function WriteTeamName(team_color, team_name)
+{
+var file_name = team_color == "gold" ? gold_team_name_file : blue_team_name_file;
+
+    WriteToFile(file_name, team_name);
+}
+
+// Writes `score` to the score file that corresponds to `team_color`.
+function WriteScore(team_color, score)
+{
+var file_name = team_color == "gold" ? gold_team_score_file : blue_team_score_file;
+
+    WriteToFile(file_name, score)
+}
+
+// This is called when the selection changes in one of the team lists.
+function OnSelChanged(team_color, ctrl_id)
+{
+var selectElement = document.getElementById(ctrl_id);
+
+    WriteTeamName(team_color, team_names_for_stream[selectElement.selectedIndex]);
+}
+
+// This is called when a "Set [team] name" button is clicked.
+function OnSubmit(team_color, ctrl_id)
+{
+var inputElement = document.getElementById(ctrl_id);
+
+    WriteTeamName(team_color, inputElement.value);
+}
+
+// This is called when a "Set [team] score" button is clicked.
+function OnScoreSubmit(team_color, ctrl_id)
+{
+var inputElement = document.getElementById(ctrl_id);
+
+    WriteScore(team_color, inputElement.value);
+}
+
+// This is called when the "+1" and "-1" buttons are clicked.
+function ChangeScore(team_name, ctrl_id, diff)
+{
+var inputElement = document.getElementById(ctrl_id);
+var score = parseInt(inputElement.value) || 0;
+var new_score = Math.max(0, score + diff);
+
+    inputElement.value = new_score;
+    WriteScore(team_name, new_score);
+}
+
+function ResetScores()
+{
+    document.getElementById("gold_score").value = 0;
+    document.getElementById("blue_score").value = 0;
+    WriteScore("gold", 0);
+    WriteScore("blue", 0);
+}
+</script>
+</head>
+<body onload="FillLists()">
+<table>
+<tr>
+    <th><large>Gold team</large></th>
+    <th><large>Blue team</large></th>
+</tr>
+
+<tr>
+    <td><select multiple style="height:200px;width:300px" id="gold_list" onchange="OnSelChanged('gold', 'gold_list')"></select></td>
+    <td><select multiple style="height:200px;width:300px" id="blue_list" onchange="OnSelChanged('blue', 'blue_list')"></select></td>
+</tr>
+
+<tr>
+    <td colspan='2'><br>Or enter custom team names:</td>
+</tr>
+
+<tr>
+    <td><form onsubmit="OnSubmit('gold', 'gold_name');return false;">
+          <input id="gold_name" type="text"><input type="submit" value="Set gold name">
+    </form></td>
+
+    <td><form onsubmit="OnSubmit('blue', 'blue_name');return false;">
+          <input id="blue_name" type="text"><input type="submit" value="Set blue name">
+    </form></td>
+</tr>
+
+<tr>
+    <td><br><br></td>
+</tr>
+
+<tr>
+    <td><form onsubmit="OnScoreSubmit('gold', 'gold_score');return false;">
+          <input id="gold_score" type="text" value="0">
+          <input type="submit" value="Set gold score">
+        </form>
+        <button onclick="ChangeScore('gold', 'gold_score', 1)">+1</button>
+        <button onclick="ChangeScore('gold', 'gold_score', -1);">-1</button>
+    </td>
+
+    <td><form onsubmit="OnScoreSubmit('blue', 'blue_score');return false;">
+          <input id="blue_score" type="text" value="0">
+          <input type="submit" value="Set blue score">
+        </form>
+        <button onclick="ChangeScore('blue', 'blue_score', 1)">+1</button>
+        <button onclick="ChangeScore('blue', 'blue_score', -1);">-1</button>
+    </td>
+</tr>
+
+<tr>
+    <td colspan='2'><br><form onsubmit="ResetScores(); return false;">
+        <input type="submit" value="Reset scores"/>
+    </form></td>
+</tr>
+</table>
+</body>
+</html>
