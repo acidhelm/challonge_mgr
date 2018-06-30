@@ -24,18 +24,18 @@ class TournamentsController < ApplicationController
             redirect_to({ action: "index" }, notice: msg)
         end
 
-        # - Make a struct for each tournaments in the response.
-        # - Select only the tournaments that are not complete, or are already in
+        # - Make a struct for each tournament in the response.
+        # - Find the tournaments that are not complete, or are already in
         #   the database.
         # - Create or update those tournaments with the properties that were
         #   in the response.
-        tournament_list.map do |t|
-            OpenStruct.new(t["tournament"])
-        end.select do |t|
-            Tournament.states_to_show.include?(t.state) ||
-              known_tournaments.include?(t.id)
-        end.each do |t|
-            @user.tournaments.find_or_initialize_by(challonge_id: t.id).update!(t)
+        tournament_list.each do |t|
+            s = OpenStruct.new(t["tournament"])
+
+            if Tournament.states_to_show.include?(s.state) ||
+               known_tournaments.include?(s.id)
+                @user.tournaments.find_or_initialize_by(challonge_id: s.id).update!(s)
+            end
         end
 
         # Delete completed tournaments from the database.
@@ -71,11 +71,11 @@ class TournamentsController < ApplicationController
         # on Challonge.
         old_team_ids = @tournament.teams.pluck(:challonge_id)
 
-        tournament_obj.participants.map do |p|
-            OpenStruct.new(p["participant"])
-        end.each do |p|
-            @tournament.teams.find_or_initialize_by(challonge_id: p.id).update!(p)
-            old_team_ids.delete p.id
+        tournament_obj.participants.each do |p|
+            s = OpenStruct.new(p["participant"])
+
+            @tournament.teams.find_or_initialize_by(challonge_id: s.id).update!(s)
+            old_team_ids.delete s.id
         end
 
         # If `old_team_ids` is non-empty, then those matches were deleted from
@@ -93,11 +93,11 @@ class TournamentsController < ApplicationController
         # from the Challonge tournament.
         old_match_ids = @tournament.matches.pluck(:challonge_id)
 
-        tournament_obj.matches.map do |m|
-            OpenStruct.new(m["match"])
-        end.each do |m|
-            @tournament.matches.find_or_initialize_by(challonge_id: m.id).update!(m)
-            old_match_ids.delete m.id
+        tournament_obj.matches.each do |m|
+            s = OpenStruct.new(m["match"])
+
+            @tournament.matches.find_or_initialize_by(challonge_id: s.id).update!(s)
+            old_match_ids.delete s.id
         end
 
         # If `old_match_ids` is non-empty, then those matches were deleted from
