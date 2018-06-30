@@ -9,6 +9,8 @@ class Match < ApplicationRecord
     validates :identifier, presence: true
     validate :validate_scores_csv, if: proc { |m| m.scores_csv.present? }
     validate :validate_challonge_id_uniqueness
+    validate :validate_team_ids
+    validate :validate_winner_loser_ids
 
     with_options numericality: { only_integer: true, greater_than: 0 }, allow_nil: true do |v|
         # `suggested_play_order` is normally positive, but in two-stage tournaments
@@ -299,6 +301,42 @@ class Match < ApplicationRecord
     def validate_challonge_id_uniqueness
         if tournament.matches.where.not(id: id).where(challonge_id: challonge_id).any?
             errors.add(:challonge_id, "is not unique")
+        end
+    end
+
+    # This method checks that `team1_id` and `team2_id` are IDs of teams that
+    # are in this tournament.
+    def validate_team_ids
+        if team1_id && tournament.teams.from_id(team1_id).empty?
+            errors.add(:team1_id, "is not a valid team ID")
+        end
+
+        if team2_id && tournament.teams.from_id(team2_id).empty?
+            errors.add(:team2_id, "is not a valid team ID")
+        end
+    end
+
+    def validate_winner_loser_ids
+        # `winner_id` and `loser_id` must be nil if the match is not complete,
+        # and they must be non-nil if the match is complete.
+        if complete?
+            errors.add(:winner_id, "cannot be nil in a completed match") if winner_id.nil?
+            errors.add(:loser_id, "cannot be nil in a completed match") if loser_id.nil?
+        else
+            errors.add(:winner_id, "must be nil in an uncompleted match") if winner_id.present?
+            errors.add(:loser_id, "must be nil in an uncompleted match") if loser_id.present?
+        end
+
+        # If `winner_id` and `loser_id` are set, they must equal the ID of one
+        # of the teams in this match.
+        team_ids = [ team1_id, team2_id ]
+
+        if winner_id && !team_ids.include?(winner_id)
+            errors.add(:winner_id, "is not a valid team ID")
+        end
+
+        if loser_id && !team_ids.include?(loser_id)
+            errors.add(:loser_id, "is not a valid team ID")
         end
     end
 end

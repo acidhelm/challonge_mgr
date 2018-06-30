@@ -81,4 +81,30 @@ class MatchTest < ActiveSupport::TestCase
         @match.group_id = -1
         assert_not @match.save
     end
+
+    test "Try to save a match with an invalid winner_id and loser_id" do
+        # Set winner_id and loser_id to nil in a completed match.
+        @match.winner_id = nil
+        assert_not @match.save
+
+        @match.winner_id, @match.loser_id = @match.loser_id, @match.winner_id
+        assert_not @match.save
+
+        # Set winner_id and loser_id to non-nil in an uncompleted match.
+        @match = matches(:three)
+
+        @match.winner_id = @match.team1_id
+        assert_not @match.save
+
+        @match.winner_id, @match.loser_id = @match.loser_id, @match.winner_id
+        assert_not @match.save
+    end
+
+    test "Try to save a match where winner_id and loser_id are not in the match" do
+        @match.winner_id *= 2
+        assert_not @match.save
+
+        @match.winner_id, @match.loser_id = @match.loser_id, @match.winner_id
+        assert_not @match.save
+    end
 end
