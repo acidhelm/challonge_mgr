@@ -5,15 +5,12 @@ class UsersController < ApplicationController
     before_action :require_login
     before_action :correct_user?
 
-    # GET /users/1
     def show
     end
 
-    # GET /users/1/edit
     def edit
     end
 
-    # PATCH/PUT /users/1
     def update
         if @user.update(user_params)
             redirect_to @user, notice: I18n.t("notices.user_updated")

@@ -6,12 +6,10 @@ class TournamentsController < ApplicationController
     before_action :require_login
     before_action :correct_user?
 
-    # GET /tournaments
     def index
         @tournaments = @user.tournaments.underway.order(started_at: :desc)
     end
 
-    # GET /tournaments/refresh
     def refresh_all
         # Make a list of the tournaments that are currently in the database.
         # We will delete any tournaments whose state has changed to complete.
@@ -44,11 +42,9 @@ class TournamentsController < ApplicationController
         redirect_to action: "index"
     end
 
-    # GET /tournaments/1
     def show
     end
 
-    # GET /tournaments/1/refresh
     def refresh
         # Re-read the info, matches, and teams for this tournament.
         tournament_hash = ApplicationHelper.get_tournament_info(@tournament)
@@ -130,7 +126,6 @@ class TournamentsController < ApplicationController
         end
     end
 
-    # POST /tournaments/1/finalize
     def finalize
         # Bail out if the tournament can't be finalized now.
         if !@tournament.finalizable?
