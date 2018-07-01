@@ -50,17 +50,15 @@ class CheckLiveTournamentDataTest < ActionDispatch::IntegrationTest
         tournament_obj = OpenStruct.new(info["tournament"])
         tournament.update!(tournament_obj)
 
-        tournament_obj.participants.map do |p|
-            OpenStruct.new(p["participant"])
-        end.each do |p|
-            tournament.teams.new(challonge_id: p.id).update!(p)
+        tournament_obj.participants.each do |p|
+            s = OpenStruct.new(p["participant"])
+            tournament.teams.new(challonge_id: s.id).update!(s)
         end
 
         # Read the "matches" array and create a `Match` object for each one.
-        tournament_obj.matches.map do |m|
-            OpenStruct.new(m["match"])
-        end.each do |m|
-            tournament.matches.new(challonge_id: m.id).update!(m)
+        tournament_obj.matches.each do |m|
+            s = OpenStruct.new(m["match"])
+            tournament.matches.new(challonge_id: s.id).update!(s)
         end
 
         # These tests aren't very interesting; we compare the tournament, teams,
