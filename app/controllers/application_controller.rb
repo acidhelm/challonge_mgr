@@ -43,6 +43,15 @@ class ApplicationController < ActionController::Base
 
     protected
 
+    def set_tournament_from_slug
+        # Challonge treats tournament slugs as case-insensitive, so we use a
+        # case-insensitive search, too.
+        @tournament = Tournament.readonly.where("lower(challonge_alphanumeric_id) = ?",
+                                                params[:id].downcase).first
+
+        render_not_found_error(:tournament) if @tournament.blank?
+    end
+
     # Takes a response object from a Challonge API call, and returns true if
     # the response indicates an error.  In that case, the function yields an
     # error message, which the caller should use to render an error.
