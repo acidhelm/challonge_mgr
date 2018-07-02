@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+    class << self
     # On success, returns an array of `tournament` objects that represent the
     # tournaments that are owned by the user.  If the user is in an organization,
     # the array also contains the tournaments that are owned by that organization.
     # On failure, returns an `error` object that describes the error.
-    def self.get_tournament_list(user)
+    def get_tournament_list(user)
         url = "#{api_url_prefix(user)}tournaments.json"
 
         tournaments = send_get_request(url)
@@ -34,7 +35,7 @@ module ApplicationHelper
     # On success, returns a `tournament` object that contains the properties,
     # teams, and matches of the given tournament.
     # On failure, returns an `error` object that describes the error.
-    def self.get_tournament_info(tournament)
+    def get_tournament_info(tournament)
         url = "#{api_url_prefix(tournament.user)}tournaments/" \
                 "#{tournament.challonge_id}.json?" \
                 "include_participants=1&include_matches=1"
@@ -46,7 +47,7 @@ module ApplicationHelper
     # On success, returns a `match` object that contains the updated properties
     # of the match.
     # On failure, returns an `error` object that describes the error.
-    def self.update_match(match, new_scores_csv, winner_id)
+    def update_match(match, new_scores_csv, winner_id)
         url = "#{api_url_prefix(match.tournament.user)}tournaments/" \
                 "#{match.tournament.challonge_id}/matches/#{match.challonge_id}.json"
 
@@ -60,7 +61,7 @@ module ApplicationHelper
     # On success, returns... something.  The API's response isn't documented.
     # TODO: Finalize a test match and see what it returns.
     # On failure, returns an `error` object that describes the error.
-    def self.finalize_tournament(tournament)
+    def finalize_tournament(tournament)
         url = "#{api_url_prefix(tournament.user)}tournaments/" \
                 "#{tournament.challonge_id}/finalize.json"
 
@@ -69,14 +70,14 @@ module ApplicationHelper
 
     protected
 
-    def self.api_url_prefix(user)
+    def api_url_prefix(user)
         return "https://#{user.user_name}:#{user.api_key}@api.challonge.com/v1/"
     end
 
     # Sends a GET request to `url`, treats the returned data as JSON, and parses
     # it into an object.  On success, the return value is that object.  On
     # failure, the return value is a hash that describes the error.
-    def self.send_get_request(url)
+    def send_get_request(url)
         response = RestClient.get(url)
         return JSON.parse(response.body)
     rescue => e
@@ -87,7 +88,7 @@ module ApplicationHelper
     # the returned data as JSON, and parses it into an object.  On success,
     # the return value is that object.  On failure, the return value is a hash
     # that describes the error.
-    def self.send_put_request(url, params)
+    def send_put_request(url, params)
         response = RestClient.put(url, params)
         return JSON.parse(response.body)
     rescue => e
@@ -97,7 +98,7 @@ module ApplicationHelper
     # Sends a POST request to `url`.  It treats the returned data as JSON, and
     # parses it into an object.  On success, the return value is that object.
     # On failure, the return value is a hash that describes the error.
-    def self.send_post_request(url, post_data = "")
+    def send_post_request(url, post_data = "")
         response = RestClient.post(url, post_data)
         return JSON.parse(response.body)
     rescue => e
@@ -109,7 +110,7 @@ module ApplicationHelper
     #            message: <error messages, separated by semicolons>,
     #            http_code: <the HTTP response code, if known>
     # } }
-    def self.handle_request_error(e, method_name)
+    def handle_request_error(e, method_name)
         Rails.logger.error "Exception (#{e.class.name}) in #{method_name}: #{e.message}"
         message = nil
 
@@ -123,7 +124,7 @@ module ApplicationHelper
             # just the string "HTTP Basic: Access denied."
             # This isn't a problem, because `ApplicationController#api_failed?`
             # special-cases 401 responses and shows a custom error message.
-            resp = JSON.parse(e.response.to_s) rescue JSON::ParserError;
+            resp = JSON.parse(e.response.to_s) rescue JSON::ParserError
 
             if resp.is_a?(Hash) && resp.key?("errors")
                 message = [ e.message, resp["errors"] ].join("; ")
@@ -137,4 +138,5 @@ module ApplicationHelper
 
         return { error: err }
     end
+    end # class << self
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class KioskController < ApplicationController
     before_action :set_tournament_from_slug
 

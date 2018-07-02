@@ -95,10 +95,10 @@ class Match < ApplicationRecord
         case side
             when :left
                 left_team_id = tournament.gold_on_left ? gold_team_id : blue_team_id
-                return left_team_id ? left_team_id : team1_id
+                return left_team_id || team1_id
             when :right
                 right_team_id = tournament.gold_on_left ? blue_team_id : gold_team_id
-                return right_team_id ? right_team_id : team2_id
+                return right_team_id || team2_id
             else
                 return nil
         end
@@ -229,13 +229,13 @@ class Match < ApplicationRecord
         # These attributes have the same names as in the JSON.
         %w(state winner_id loser_id forfeited round group_id suggested_play_order
            identifier scores_csv).each do |attr|
-            self.send("#{attr}=", obj.send(attr))
+            send("#{attr}=", obj.send(attr))
         end
 
         # These attributes use "team" in their names, but the JSON uses "player".
         %w(team1_id team2_id team1_prereq_match_id team2_prereq_match_id
            team1_is_prereq_match_loser team2_is_prereq_match_loser).each do |attr|
-            self.send("#{attr}=", obj.send(attr.sub("team", "player")))
+            send("#{attr}=", obj.send(attr.sub("team", "player")))
         end
 
         # Because the Challonge API doesn't have a way for us to mark a match
