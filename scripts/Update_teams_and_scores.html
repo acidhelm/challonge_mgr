@@ -100,37 +100,35 @@ var file_name = team_color == "gold" ? gold_team_score_file : blue_team_score_fi
 }
 
 // This is called when the selection changes in one of the team lists.
-function OnSelChanged(team_color, ctrl_id)
+function OnSelChanged(team_color, ctrl)
 {
-var selectElement = document.getElementById(ctrl_id);
-
-    WriteTeamName(team_color, team_names_for_stream[selectElement.selectedIndex]);
+    WriteTeamName(team_color, team_names_for_stream[ctrl.selectedIndex]);
 }
 
 // This is called when a "Set [team] name" button is clicked.
 function OnSubmit(team_color, ctrl_id)
 {
-var inputElement = document.getElementById(ctrl_id);
+var input_element = document.getElementById(ctrl_id);
 
-    WriteTeamName(team_color, inputElement.value);
+    WriteTeamName(team_color, input_element.value);
 }
 
 // This is called when a "Set [team] score" button is clicked.
 function OnScoreSubmit(team_color, ctrl_id)
 {
-var inputElement = document.getElementById(ctrl_id);
+var input_element = document.getElementById(ctrl_id);
 
-    WriteScore(team_color, inputElement.value);
+    WriteScore(team_color, input_element.value);
 }
 
 // This is called when the "+1" and "-1" buttons are clicked.
 function ChangeScore(team_name, ctrl_id, diff)
 {
-var inputElement = document.getElementById(ctrl_id);
-var score = parseInt(inputElement.value) || 0;
+var input_element = document.getElementById(ctrl_id);
+var score = parseInt(input_element.value) || 0;
 var new_score = Math.max(0, score + diff);
 
-    inputElement.value = new_score;
+    input_element.value = new_score;
     WriteScore(team_name, new_score);
 }
 
@@ -151,8 +149,8 @@ function ResetScores()
 </tr>
 
 <tr>
-    <td><select multiple style="height:200px;width:300px" id="gold_list" onchange="OnSelChanged('gold', 'gold_list')"></select></td>
-    <td><select multiple style="height:200px;width:300px" id="blue_list" onchange="OnSelChanged('blue', 'blue_list')"></select></td>
+    <td><select multiple style="height:200px;width:300px" id="gold_list" onchange="OnSelChanged('gold', this)"></select></td>
+    <td><select multiple style="height:200px;width:300px" id="blue_list" onchange="OnSelChanged('blue', this)"></select></td>
 </tr>
 
 <tr>
