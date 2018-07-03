@@ -17,7 +17,7 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
 
     test "Get the tournaments index" do
         log_in_as(@user)
-        assert is_logged_in?
+        assert logged_in?
 
         get user_tournaments_path(@user)
         assert_response :success
@@ -25,7 +25,7 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
 
     test "Try to get the tournaments index for a different user" do
         log_in_as(@user)
-        assert is_logged_in?
+        assert logged_in?
 
         get user_tournaments_path(@other_user)
         assert_response :forbidden
@@ -39,7 +39,7 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
 
     test "Show a tournament" do
         log_in_as(@user)
-        assert is_logged_in?
+        assert logged_in?
 
         get user_tournament_path(@user, @tournament)
         assert_response :success
@@ -47,7 +47,7 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
 
     test "Try to show a tournament for a different user" do
         log_in_as(@user)
-        assert is_logged_in?
+        assert logged_in?
 
         get user_tournament_path(@other_user, @other_tournament)
         assert_response :forbidden
@@ -61,7 +61,7 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
 
     test "Get the tournament settings page" do
         log_in_as(@user)
-        assert is_logged_in?
+        assert logged_in?
 
         get edit_user_tournament_path(@user, @tournament)
         assert_response :success
@@ -69,7 +69,7 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
 
     test "Try to get the tournament settings page for a different user" do
         log_in_as(@user)
-        assert is_logged_in?
+        assert logged_in?
 
         get edit_user_tournament_path(@other_user, @other_tournament)
         assert_response :forbidden
@@ -83,7 +83,7 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
 
     test "Update a tournament" do
         log_in_as(@user)
-        assert is_logged_in?
+        assert logged_in?
 
         patch user_tournament_path(@user, @tournament),
               params: update_tournament_params(@tournament)
@@ -93,7 +93,7 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
 
     test "Try to update a tournament for a different user" do
         log_in_as(@user)
-        assert is_logged_in?
+        assert logged_in?
 
         patch user_tournament_path(@other_user, @other_tournament),
               params: update_tournament_params(@other_tournament)
@@ -117,7 +117,7 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
 
     test "Try to finalize a tournament before it's allowed" do
         log_in_as(@user)
-        assert is_logged_in?
+        assert logged_in?
 
         post finalize_user_tournament_path(@user, @tournament)
         assert_response :bad_request

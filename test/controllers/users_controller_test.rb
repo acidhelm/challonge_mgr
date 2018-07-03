@@ -13,7 +13,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     test "Show a user" do
         log_in_as(@user)
-        assert is_logged_in?
+        assert logged_in?
 
         get user_url(@user)
         assert_response :success
@@ -21,7 +21,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     test "Try to show a different user" do
         log_in_as(@user)
-        assert is_logged_in?
+        assert logged_in?
 
         get user_url(@other_user)
         assert_response :forbidden
@@ -35,7 +35,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     test "Get the edit user page" do
         log_in_as(@user)
-        assert is_logged_in?
+        assert logged_in?
 
         get edit_user_url(@user)
         assert_response :success
@@ -43,7 +43,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     test "Try to get the edit user page for a different user" do
         log_in_as(@user)
-        assert is_logged_in?
+        assert logged_in?
 
         get edit_user_url(@other_user)
         assert_response :forbidden
@@ -57,7 +57,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     test "Update a user" do
         log_in_as(@user)
-        assert is_logged_in?
+        assert logged_in?
 
         patch user_url(@user), params: update_user_params
 
@@ -66,7 +66,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     test "Try to update a different user" do
         log_in_as(@user)
-        assert is_logged_in?
+        assert logged_in?
 
         patch user_url(@other_user), params: update_user_params
         assert_response :forbidden

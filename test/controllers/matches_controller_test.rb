@@ -9,7 +9,7 @@ class MatchesControllerTest < ActionDispatch::IntegrationTest
 
     test "Start a match" do
         log_in_as(@user)
-        assert is_logged_in?
+        assert logged_in?
 
         post start_user_tournament_match_url(@user, @tournament, @match)
         assert_redirected_to user_tournament_path(@user, @tournament)
@@ -27,7 +27,7 @@ class MatchesControllerTest < ActionDispatch::IntegrationTest
 
     test "Switch the sides of the teams in a match" do
         log_in_as(@user)
-        assert is_logged_in?
+        assert logged_in?
 
         post switch_user_tournament_match_url(@user, @tournament, @match)
         assert_redirected_to user_tournament_path(@user, @tournament)
@@ -48,7 +48,7 @@ class MatchesControllerTest < ActionDispatch::IntegrationTest
 
     test "Try to update the winner and scores of a match, passing invalid params" do
         log_in_as(@user)
-        assert is_logged_in?
+        assert logged_in?
 
         put user_tournament_match_url(@user, @tournament, @match,
             winner_id: @match.team1_id, left_score: 1, right_score: 2)
