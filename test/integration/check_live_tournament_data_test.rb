@@ -16,13 +16,15 @@ class CheckLiveTournamentDataTest < ActionDispatch::IntegrationTest
     end
 
     test "Read a user's list of tournaments" do
+        tournament_list = nil
+
         VCR.use_cassette("get_tournament_list") do
-            tournaments = ApplicationHelper.get_tournament_list(@user)
+            tournament_list = ApplicationHelper.get_tournament_list(@user)
         end
 
         assert_instance_of Array, tournaments
 
-        tournaments.each do |t|
+        tournament_list.each do |t|
             assert_instance_of Hash, t
             assert t.key?("tournament")
         end
