@@ -13,7 +13,6 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
                    gold_on_left: !tournament.gold_on_left,
                    send_slack_notifications: tournament.send_slack_notifications,
                    slack_notifications_channel: tournament.slack_notifications_channel } }
-
     end
 
     test "Get the tournaments index" do

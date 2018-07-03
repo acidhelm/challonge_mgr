@@ -18,5 +18,4 @@ class KioskControllerTest < ActionDispatch::IntegrationTest
         get view_tournament_path(@bad_slug)
         assert_response :not_found
     end
-
 end
