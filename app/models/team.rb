@@ -18,7 +18,7 @@ class Team < ApplicationRecord
     def update!(obj)
         # If a team has a Challonge account, its `name` field may be null or an
         # empty string.  When that's the case, use `display_name` instead.
-        self.name = obj.name.present? ? obj.name : obj.display_name
+        self.name = obj.name.presence || obj.display_name
         self.seed = obj.seed
         self.final_rank = obj.final_rank
         self.group_team_ids = obj.group_player_ids

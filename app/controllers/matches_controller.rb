@@ -9,7 +9,7 @@ class MatchesController < ApplicationController
         # We manually set `underway_at` because the Challonge API doesn't have
         # a way to mark a match as being underway.  If they fix that, then we
         # can remove this line.
-        @match.update_attributes(underway_at: Time.now)
+        @match.update(underway_at: Time.current)
 
         # Tell the tournament that a new match is starting.
         @tournament.set_current_match(@match)

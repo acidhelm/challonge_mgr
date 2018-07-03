@@ -12,26 +12,26 @@ class Match < ApplicationRecord
     validate :validate_team_ids
     validate :validate_winner_loser_ids
 
-    with_options numericality: { only_integer: true, greater_than: 0 }, allow_nil: true do |v|
+    with_options numericality: { only_integer: true, greater_than: 0 }, allow_nil: true do
         # `suggested_play_order` is normally positive, but in two-stage tournaments
         # where the first stage is played in groups, it is null.
-        v.validates :suggested_play_order
+        validates :suggested_play_order
 
         # These are nil in an elimination tournament when the teams are TBD.
-        v.validates :team1_id
-        v.validates :team2_id
+        validates :team1_id
+        validates :team2_id
 
         # These are nil when the match is not complete.
-        v.validates :winner_id
-        v.validates :loser_id
+        validates :winner_id
+        validates :loser_id
 
         # These are nil in round-robin tournaments, and in matches that are a
         # team's first match in an elimination tournament.
-        v.validates :team1_prereq_match_id
-        v.validates :team2_prereq_match_id
+        validates :team1_prereq_match_id
+        validates :team2_prereq_match_id
 
         # This is nil in elimination tournaments.
-        v.validates :group_id
+        validates :group_id
     end
 
     scope :complete, -> { where(state: "complete") }

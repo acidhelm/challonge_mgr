@@ -47,7 +47,7 @@ class TournamentViewerController < ApplicationController
         # name on the stream will be just "Bert's Bees".  That saves space on the
         # stream, which is espcially necessary with multi-scene teams that have
         # multiple cities in the name.
-        return name ? name.sub(/\(.*?\)$/, '').strip : ""
+        return name ? name.sub(/\(.*?\)$/, "").strip : ""
     end
 
     def current_match_team_score(side)

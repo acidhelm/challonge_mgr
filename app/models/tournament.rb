@@ -84,7 +84,7 @@ class Tournament < ApplicationRecord
     # from Challonge.
     def update_group_names
         # Set `group_name` to nil for matches that aren't in a group.
-        matches.where(group_id: nil).update_all(group_name: nil)
+        matches.where(group_id: nil).update(group_name: nil)
 
         # Group names aren't exposed through the API, so we have to determine
         # the names ourselves.  Challonge appears to assign IDs that are consecutive
@@ -100,7 +100,7 @@ class Tournament < ApplicationRecord
         end
 
         group_names.each do |id, name|
-            matches.where(group_id: id).update_all(group_name: name)
+            matches.where(group_id: id).update(group_name: name)
         end
     end
 
@@ -138,7 +138,7 @@ class Tournament < ApplicationRecord
 
     protected
     def validate_datetimes
-        if started_at.present? && started_at > Time.now
+        if started_at.present? && started_at > Time.current
             errors.add(:started_at, "cannot be in the future")
         end
     end
