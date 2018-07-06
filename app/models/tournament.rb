@@ -108,16 +108,16 @@ class Tournament < ApplicationRecord
     # for use in the UI.
     # `side` can be `:left` or `:right`.
     def cabinet_color(side)
+        return "" unless %i(left right).include?(side)
+
         string_id = case side
                         when :left
                             gold_on_left ? :gold_cab_name : :blue_cab_name
                         when :right
                             gold_on_left ? :blue_cab_name : :gold_cab_name
-                        else
-                            nil
                     end
 
-        return string_id ? I18n.t(string_id) : ""
+        return I18n.t(string_id)
     end
 
     # Returns the color of the cabinet on the given side.  If `prefix` is passed,
@@ -126,13 +126,13 @@ class Tournament < ApplicationRecord
     # translated.  It should be used only for internal identifiers.
     # `side` can be `:left` or `:right`.
     def cabinet_color_invariant(side, prefix = "")
+        return prefix unless %i(left right).include?(side)
+
         return prefix + case side
                             when :left
                                 gold_on_left ? "gold" : "blue"
                             when :right
                                 gold_on_left ? "blue" : "gold"
-                            else
-                                ""
                         end
     end
 

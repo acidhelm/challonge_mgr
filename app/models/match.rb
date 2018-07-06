@@ -59,14 +59,13 @@ class Match < ApplicationRecord
     # or a `Team` object.
     def team_won?(side)
         return false if !complete?
+        return false unless %i(left right).include?(side) || side.is_a?(Team)
 
         case side
             when :left, :right
                 return get_team_id(side) == winner_id
             when Team
                 return side.all_challonge_ids.include?(winner_id)
-            else
-                return false
         end
     end
 
@@ -92,6 +91,8 @@ class Match < ApplicationRecord
     # prereq matches need to be played still, then this function returns nil.
     # `side` can be `:left` or `:right`.
     def get_team_id(side)
+        return nil unless %i(left right).include?(side)
+
         case side
             when :left
                 left_team_id = tournament.gold_on_left ? gold_team_id : blue_team_id
@@ -99,26 +100,24 @@ class Match < ApplicationRecord
             when :right
                 right_team_id = tournament.gold_on_left ? blue_team_id : gold_team_id
                 return right_team_id || team2_id
-            else
-                return nil
         end
     end
 
-    # This returns nil if no team has been assigned to the side yet.
+    # Returns a `Team` object for the team that is on the given side, or nil
+    # if no team has been assigned to that side yet.
     # `side` can be `:left` or `:right`.
     def get_team(side)
-        case side
-            when :left, :right
-                return tournament.teams.from_id(get_team_id(side)).first
-            else
-                return nil
-        end
+        return nil unless %i(left right).include?(side)
+
+        return tournament.teams.from_id(get_team_id(side)).first
     end
 
     # Returns the name of the team in a given location, or nil if no team
     # has been assigned there yet.
     # `location` can be `:left`, `:right`, `:gold`, `:blue`, `:winner`, or `:loser`.
     def team_name(location)
+        return nil unless %i(left right gold blue winner loser).include?(location)
+
         case location
             when :left, :right
                 return get_team(location)&.name
@@ -132,8 +131,6 @@ class Match < ApplicationRecord
             when :loser
                 return nil if !complete?
                 return team_won?(:left) ? team_name(:right) : team_name(:left)
-            else
-                return nil
         end
     end
 
@@ -142,6 +139,8 @@ class Match < ApplicationRecord
     # and the match is not complete.
     # `location` can be `:left`, `:right`, `:gold`, `:blue`, `:winner`, or `:loser`.
     def team_score(location)
+        return 0 unless %i(left right gold blue winner loser).include?(location)
+
         case location
             when :left, :right
                 return 0 if scores_csv.blank?
@@ -159,8 +158,6 @@ class Match < ApplicationRecord
             when :loser
                 return 0 if !complete?
                 return team_won?(:left) ? team_score(:right) : team_score(:left)
-            else
-                return 0
         end
     end
 
