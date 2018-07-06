@@ -127,12 +127,3 @@ software to read those files.  The `scripts` directory contains scripts for doin
 this.  Currently, that directory has a PowerShell script.  You'll need to change
 two strings in the script before you run it; see the TODO comments in the file 
 for instructions.
-
-# Known problems
-
-When you start a match, the bracket on Challonge does not indicate that the
-match is in progress.  The Challonge API does not provide a way to mark a match
-as being in progress, so I cannot fix this problem.  You will need to manually
-mark matches as being in progress for now.  You should add a comment to
-[this feedback page](http://feedback.challonge.com/forums/44455-feature-requests/suggestions/11251128-api-support-to-mark-an-match-in-progress)
-if you would like this to be fixed.
