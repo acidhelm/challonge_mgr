@@ -27,19 +27,15 @@ class TournamentViewerController < ApplicationController
     protected
 
     def current_match_team_name(side)
-        name = nil
+        return "" unless %i(gold blue).include?(side)
 
-        begin
-            # If a match is in progress, query the team name from that match.
-            # Otherwise, use the team name that we stored when the match finished.
-            if @tournament.current_match.present?
-                name = Match.find(@tournament.current_match).team_name(side)
-            else
-                name = (side == :gold) ? @tournament.view_gold_name :
-                                         @tournament.view_blue_name
-            end
-        rescue ActiveRecord::RecordNotFound
-            # Do nothing, we'll return an empty string.
+        # If a match is in progress, query the team name from that match.
+        # Otherwise, use the team name that we stored when the match finished.
+        if @tournament.current_match.present?
+            name = Match.find_by(id: @tournament.current_match)&.team_name(side)
+        else
+            name = (side == :gold) ? @tournament.view_gold_name :
+                                     @tournament.view_blue_name
         end
 
         # Remove a parenthesized part from the end of the team name.  This lets
@@ -47,25 +43,21 @@ class TournamentViewerController < ApplicationController
         # name on the stream will be just "Bert's Bees".  That saves space on the
         # stream, which is espcially necessary with multi-scene teams that have
         # multiple cities in the name.
-        return name ? name.sub(/\(.*?\)$/, "").strip : ""
+        return name&.sub(/\(.*?\)$/, "")&.strip || ""
     end
 
     def current_match_team_score(side)
-        score = 0
+        return 0 unless %i(gold blue).include?(side)
 
-        begin
-            # If a match is in progress, query the score from that match.
-            # Otherwise, use the score that we stored when the match finished.
-            if @tournament.current_match.present?
-                score = Match.find(@tournament.current_match).team_score(side)
-            else
-                score = (side == :gold) ? @tournament.view_gold_score :
-                                          @tournament.view_blue_score
-            end
-        rescue ActiveRecord::RecordNotFound
-            # Do nothing, we'll return 0.
+        # If a match is in progress, query the score from that match.
+        # Otherwise, use the score that we stored when the match finished.
+        if @tournament.current_match.present?
+            score = Match.find_by(id: @tournament.current_match)&.team_score(side)
+        else
+            score = (side == :gold) ? @tournament.view_gold_score :
+                                      @tournament.view_blue_score
         end
 
-        return score
+        return score || 0
     end
 end
