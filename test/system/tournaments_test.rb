@@ -23,7 +23,8 @@ class TournamentsTest < ApplicationSystemTestCase
             assert_selector "h1", text: /^Edit settings for/
             assert_selector "label", exact_text: "The Gold cabinet is on the left side"
             assert_field id: "tournament_gold_on_left", type: "checkbox"
-            assert_selector "label", exact_text: "Send Slack notifications when matches begin and end"
+            assert_selector "label", exact_text: "Send Slack notifications when " \
+                                                   "matches begin and end"
             assert_field id: "tournament_send_slack_notifications", type: "checkbox"
             assert_selector "label", exact_text: "Slack channel"
             assert_field name: "tournament[slack_notifications_channel]", type: "text"
