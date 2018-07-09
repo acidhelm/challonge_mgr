@@ -31,12 +31,12 @@ class TournamentViewerController < ApplicationController
 
         # If a match is in progress, query the team name from that match.
         # Otherwise, use the team name that we stored when the match finished.
-        if @tournament.current_match.present?
-            name = Match.find_by(id: @tournament.current_match)&.team_name(side)
-        else
-            name = (side == :gold) ? @tournament.view_gold_name :
+        name = if @tournament.current_match.present?
+                   Match.find_by(id: @tournament.current_match)&.team_name(side)
+               else
+                   (side == :gold) ? @tournament.view_gold_name :
                                      @tournament.view_blue_name
-        end
+               end
 
         # Remove a parenthesized part from the end of the team name.  This lets
         # the Challonge bracket have names like "Bert's Bees (PHX)", but the
@@ -51,12 +51,12 @@ class TournamentViewerController < ApplicationController
 
         # If a match is in progress, query the score from that match.
         # Otherwise, use the score that we stored when the match finished.
-        if @tournament.current_match.present?
-            score = Match.find_by(id: @tournament.current_match)&.team_score(side)
-        else
-            score = (side == :gold) ? @tournament.view_gold_score :
+        score = if @tournament.current_match.present?
+                    Match.find_by(id: @tournament.current_match)&.team_score(side)
+                else
+                    (side == :gold) ? @tournament.view_gold_score :
                                       @tournament.view_blue_score
-        end
+                end
 
         return score || 0
     end

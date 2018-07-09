@@ -29,16 +29,16 @@ class ApplicationController < ActionController::Base
     # Renders a 404 error with a message saying that an object was not found.
     # The parameter can be `:match`, `:tournament`, or `:user`.
     def render_not_found_error(type)
-        case type
-            when :match
-                msg = I18n.t("errors.match_not_found")
-            when :tournament
-                msg = I18n.t("errors.tournament_not_found")
-            when :user
-                msg = I18n.t("errors.user_not_found")
-        end
+        string_id = case type
+                        when :match
+                            "errors.match_not_found"
+                        when :tournament
+                            "errors.tournament_not_found"
+                        when :user
+                            "errors.user_not_found"
+                    end
 
-        render plain: msg, status: :not_found
+        render plain: I18n.t(string_id), status: :not_found
     end
 
     protected
@@ -64,11 +64,11 @@ class ApplicationController < ActionController::Base
     def api_failed?(response)
         return false unless response.is_a?(Hash) && response.key?(:error)
 
-        if response.dig(:error, :http_code) == 401
-            msg = I18n.t("notices.auth_error")
-        else
-            msg = response.dig(:error, :message)
-        end
+        msg = if response.dig(:error, :http_code) == 401
+                  I18n.t("notices.auth_error")
+              else
+                  response.dig(:error, :message)
+              end
 
         yield msg
         return true

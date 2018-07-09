@@ -205,18 +205,18 @@ class Match < ApplicationRecord
         # Note that since two-stage tournaments are not officially supported by
         # the Challonge API, I'm relying on undocumented details of the JSON
         # that could change at any time.
-        if tournament.tournament_type == "double elimination" &&
-           suggested_play_order.present?
-            if round > 0
-                string_id = capitalized ? :winners_round_cap : :winners_round
-            else
-                string_id = capitalized ? :losers_round_cap : :losers_round
-            end
-        elsif group_name.present?
-            string_id = capitalized ? :round_with_group_cap : :round_with_group
-        else
-            string_id = capitalized ? :round_cap : :round
-        end
+        string_id = if tournament.tournament_type == "double elimination" &&
+                       suggested_play_order.present?
+                        if round > 0
+                            capitalized ? :winners_round_cap : :winners_round
+                        else
+                            capitalized ? :losers_round_cap : :losers_round
+                        end
+                    elsif group_name.present?
+                        capitalized ? :round_with_group_cap : :round_with_group
+                    else
+                        capitalized ? :round_cap : :round
+                    end
 
         return I18n.t(string_id, scope: "matches.round_names", round: round.abs,
                       group: group_name)
