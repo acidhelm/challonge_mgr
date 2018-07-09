@@ -108,33 +108,34 @@ module ApplicationHelper
     # Returns a hash in this form:
     # { error: { object: <the exception>,
     #            message: <error messages, separated by semicolons>,
-    #            http_code: <the HTTP response code, if known>
+    #            http_code: <the HTTP response code, if it's known>
     # } }
-    def handle_request_error(e, method_name)
-        Rails.logger.error "Exception (#{e.class.name}) in #{method_name}: #{e.message}"
+    def handle_request_error(exception, method_name)
+        Rails.logger.error "Exception (#{exception.class.name}) in " \
+                             "#{method_name}: #{exception.message}"
         message = nil
 
         # When an API call fails, Challonge returns a list of errors in the body.
         # Look for that list in the response.
-        if e.is_a?(RestClient::ExceptionWithResponse)
-            Rails.logger.error "Response body: #{e.response}"
+        if exception.is_a?(RestClient::ExceptionWithResponse)
+            Rails.logger.error "Response body: #{exception.response}"
 
             # Swallow exceptions if the response isn't JSON.  This happens when
             # the user name or API key is wrong, because the server returns
             # just the string "HTTP Basic: Access denied."
             # This isn't a problem, because `ApplicationController#api_failed?`
             # special-cases 401 responses and shows a custom error message.
-            resp = JSON.parse(e.response.to_s) rescue JSON::ParserError
+            resp = JSON.parse(exception.response.to_s) rescue JSON::ParserError
 
             if resp.is_a?(Hash) && resp.key?("errors")
-                message = [ e.message, resp["errors"] ].join("; ")
+                message = [ exception.message, resp["errors"] ].join("; ")
             end
         end
 
-        message ||= e.message
+        message ||= exception.message
 
-        err = { object: e, message: message }
-        err[:http_code] = e.http_code if e.respond_to?(:http_code)
+        err = { object: exception, message: message }
+        err[:http_code] = exception.http_code if exception.respond_to?(:http_code)
 
         return { error: err }
     end
