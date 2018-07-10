@@ -3,6 +3,8 @@
 class TournamentViewerController < ApplicationController
     before_action :set_tournament_from_slug
 
+    SYMBOLS_GB = %i(gold blue).freeze
+
     def view
         @user = @tournament.user
         render "tournaments/show", layout: "tournament_view"
@@ -27,7 +29,7 @@ class TournamentViewerController < ApplicationController
     protected
 
     def current_match_team_name(side)
-        return "" unless %i(gold blue).include?(side)
+        ApplicationHelper.validate_param(side, SYMBOLS_GB)
 
         # If a match is in progress, query the team name from that match.
         # Otherwise, use the team name that we stored when the match finished.
@@ -47,7 +49,7 @@ class TournamentViewerController < ApplicationController
     end
 
     def current_match_team_score(side)
-        return 0 unless %i(gold blue).include?(side)
+        ApplicationHelper.validate_param(side, SYMBOLS_GB)
 
         # If a match is in progress, query the score from that match.
         # Otherwise, use the score that we stored when the match finished.

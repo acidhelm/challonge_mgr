@@ -68,6 +68,14 @@ module ApplicationHelper
         return send_post_request(url)
     end
 
+    # Checks that `param` is one of the elements in `legal_values`, and if not,
+    # throws an `ArgumentError`.
+    def validate_param(param, legal_values)
+        raise ArgumentError,
+              "Invalid parameter: #{param}. " \
+                "Legal values are: #{legal_values}" unless legal_values.include?(param)
+    end
+
     protected
 
     def api_url_prefix(user)

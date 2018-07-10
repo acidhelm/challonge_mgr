@@ -58,8 +58,9 @@ class Match < ApplicationRecord
     # Tests whether a team has won this Match.  `side` can be `:left`, `:right`,
     # or a `Team` object.
     def team_won?(side)
+        raise ArgumentError unless SYMBOLS_LR.include?(side) || side.is_a?(Team)
+
         return false if !complete?
-        return false unless %i(left right).include?(side) || side.is_a?(Team)
 
         case side
             when :left, :right
@@ -73,7 +74,7 @@ class Match < ApplicationRecord
     # We use this to build the "Winner of match N" and "Loser of match M" strings.
     # `side` can be `:left` or `:right`.
     def team_is_prereq_match_loser?(side)
-        return false unless %i(left right).include?(side)
+        ApplicationHelper.validate_param(side, SYMBOLS_LR)
 
         team_id = get_team_id(side)
 
@@ -91,7 +92,7 @@ class Match < ApplicationRecord
     # prereq matches need to be played still, then this function returns nil.
     # `side` can be `:left` or `:right`.
     def get_team_id(side)
-        return nil unless %i(left right).include?(side)
+        ApplicationHelper.validate_param(side, SYMBOLS_LR)
 
         case side
             when :left
@@ -107,7 +108,7 @@ class Match < ApplicationRecord
     # if no team has been assigned to that side yet.
     # `side` can be `:left` or `:right`.
     def get_team(side)
-        return nil unless %i(left right).include?(side)
+        ApplicationHelper.validate_param(side, SYMBOLS_LR)
 
         return tournament.teams.from_id(get_team_id(side)).first
     end
@@ -116,7 +117,7 @@ class Match < ApplicationRecord
     # has been assigned there yet.
     # `location` can be `:left`, `:right`, `:gold`, `:blue`, `:winner`, or `:loser`.
     def team_name(location)
-        return nil unless %i(left right gold blue winner loser).include?(location)
+        ApplicationHelper.validate_param(location, SYMBOLS_LRGBWL)
 
         case location
             when :left, :right
@@ -139,7 +140,7 @@ class Match < ApplicationRecord
     # and the match is not complete.
     # `location` can be `:left`, `:right`, `:gold`, `:blue`, `:winner`, or `:loser`.
     def team_score(location)
-        return 0 unless %i(left right gold blue winner loser).include?(location)
+        ApplicationHelper.validate_param(location, SYMBOLS_LRGBWL)
 
         case location
             when :left, :right
@@ -166,7 +167,7 @@ class Match < ApplicationRecord
     # and "Loser of match M" strings.
     # `side` can be `:left` or `:right`.
     def team_prereq_match_id(side)
-        return nil unless %i(left right).include?(side)
+        ApplicationHelper.validate_param(side, SYMBOLS_LR)
 
         team_id = get_team_id(side)
 

@@ -108,7 +108,7 @@ class Tournament < ApplicationRecord
     # for use in the UI.
     # `side` can be `:left` or `:right`.
     def cabinet_color(side)
-        return "" unless %i(left right).include?(side)
+        ApplicationHelper.validate_param(side, SYMBOLS_LR)
 
         string_id = case side
                         when :left
@@ -126,7 +126,7 @@ class Tournament < ApplicationRecord
     # translated.  It should be used only for internal identifiers.
     # `side` can be `:left` or `:right`.
     def cabinet_color_invariant(side, prefix = "")
-        return prefix unless %i(left right).include?(side)
+        ApplicationHelper.validate_param(side, SYMBOLS_LR)
 
         return prefix + case side
                             when :left
