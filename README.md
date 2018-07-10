@@ -1,3 +1,5 @@
+[![Build status](https://travis-ci.com/acidhelm/challonge_mgr.svg?branch=master)](https://travis-ci.com/acidhelm/challonge_mgr)
+
 # Challonge Mgr
 
 Challonge Mgr is a Rails app that uses the Challonge API to update your Killer
