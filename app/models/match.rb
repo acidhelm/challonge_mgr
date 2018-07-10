@@ -58,7 +58,9 @@ class Match < ApplicationRecord
     # Tests whether a team has won this Match.  `side` can be `:left`, `:right`,
     # or a `Team` object.
     def team_won?(side)
-        raise ArgumentError unless SYMBOLS_LR.include?(side) || side.is_a?(Team)
+        ApplicationHelper.validate_param(side) do |s|
+            SYMBOLS_LR.include?(s) || s.is_a?(Team)
+        end
 
         return false if !complete?
 
