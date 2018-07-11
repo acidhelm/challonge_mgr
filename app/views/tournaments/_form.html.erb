@@ -12,17 +12,23 @@
 
   <div class="field">
     <%= form.check_box :gold_on_left, id: :tournament_gold_on_left, autofocus: true %>
-    <%= form.label :gold_on_left, t(".gold_on_left") %>
+    <%= form.label :gold_on_left, t(".gold_on_left_html"),
+                   for: :tournament_gold_on_left, accesskey: t(".gold_on_left_accesskey") %>
   </div>
 
   <div class="field">
     <%= form.check_box :send_slack_notifications, id: :tournament_send_slack_notifications %>
-    <%= form.label :send_slack_notifications, t(".send_slack_notifications") %>
+    <%= form.label :send_slack_notifications, t(".send_slack_notifications_html"),
+                   for: :tournament_send_slack_notifications,
+                   accesskey: t(".send_slack_notifications_accesskey") %>
   </div>
 
   <div class="field">
-    <%= form.label :slack_notifications_channel, t(".slack_notifications_channel") %>
-    <%= form.text_field :slack_notifications_channel %>
+    <%= form.label :slack_notifications_channel, t(".slack_notifications_channel_html"),
+                   for: :tournament_slack_notifications_channel,
+                   accesskey: t(".slack_notifications_channel_accesskey") %>
+    <%= form.text_field :slack_notifications_channel,
+                        id: :tournament_slack_notifications_channel %>
   </div>
 
   <div class="actions">

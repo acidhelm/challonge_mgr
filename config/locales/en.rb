@@ -122,9 +122,12 @@
                     one: "1 error prevented this tournament from being saved:",
                     other: "%{count} errors prevented this tournament from being saved:"
                 },
-                gold_on_left: "The Gold cabinet is on the left side",
-                send_slack_notifications: "Send Slack notifications when matches begin and end",
-                slack_notifications_channel: "Slack channel"
+                gold_on_left_html: "The <u>G</u>old cabinet is on the left side",
+                send_slack_notifications_html: "<u>S</u>end Slack notifications when matches begin and end",
+                slack_notifications_channel_html: "Sl<u>a</u>ck channel",
+                gold_on_left_accesskey: "g",
+                send_slack_notifications_accesskey: "s",
+                slack_notifications_channel_accesskey: "a"
             },
             current_match: {
                 header: "Current match: #%{number} in %{round_name}",
