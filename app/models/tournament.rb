@@ -27,7 +27,8 @@ class Tournament < ApplicationRecord
     # We show a tournament in the tournaments/index view only if its state is
     # one of these values.
     def self.states_to_show
-        return %w(underway group_stages_underway awaiting_review).freeze
+        return %w(underway group_stages_underway group_stages_finalized
+                  awaiting_review).freeze
     end
 
     # Tests if this Tournament is complete.
@@ -38,6 +39,11 @@ class Tournament < ApplicationRecord
     # Tests if this Tournament can be finalized.
     def finalizable?
         return state == "awaiting_review"
+    end
+
+    # Tests whether this Tournament is in the first stage of a two-stage tournament.
+    def in_group_stage?
+        return state == "group_stages_underway" || state == "group_stages_finalized"
     end
 
     def update!(obj)

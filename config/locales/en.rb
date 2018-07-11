@@ -105,6 +105,13 @@
                   " no more changes can be made to it.",
                 finalize_tournament_button: "Finalize the tournament",
                 final_standings: "Final standings:",
+                group_stage_end: "The group stage of this tournament has ended.",
+                group_stage_end_text_html: "Click the \"End the group stage\" button " \
+                  "on <a href='%{bracket_url}' target='_blank'>the Challonge bracket</a>, " \
+                  "set up the bracket for the final stage, then " \
+                  "<a href='%{refresh_url}'>refresh this tournament</a> " \
+                  "to manage the second stage.",
+                group_stage_end_text_readonly: "The second stage will begin shortly.",
                 place: "Place",
                 seed: "Seed",
                 name: "Team",

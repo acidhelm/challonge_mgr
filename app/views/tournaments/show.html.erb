@@ -15,12 +15,14 @@
   <hr>
   <p><h2><%= t(".upcoming_matches") %></h2>
   <p><%= render partial: "tournaments/match_list", object: matches, locals: { readonly: readonly } %></p>
-<% elsif @tournament.finalizable? && !readonly %>
-  <hr>
-  <h2><%= t(".finalize_tournament") %></h2>
-  <p><%= t(".finalize_text_html") %></p>
-  <p><%= button_to t(".finalize_tournament_button"),
-                   finalize_user_tournament_path(@user, @tournament) %></p>
+<% elsif @tournament.finalizable? %>
+  <% if !readonly %>
+    <hr>
+    <h2><%= t(".finalize_tournament") %></h2>
+    <p><%= t(".finalize_text_html") %></p>
+    <p><%= button_to t(".finalize_tournament_button"),
+                     finalize_user_tournament_path(@user, @tournament) %></p>
+  <% end %>
 <% elsif @tournament.complete? %>
   <hr>
   <h2><%= t(".final_standings") %></h2>
@@ -38,6 +40,15 @@
       </tr>
     <% end %>
   </table>
+<% elsif @tournament.in_group_stage? %>
+  <hr>
+  <h2><%= t(".group_stage_end") %></h2>
+  <% if readonly %>
+    <p><%= t(".group_stage_end_text_readonly") %></p>
+  <% else %>
+    <p><%= t(".group_stage_end_text_html", bracket_url: @tournament.challonge_url,
+             refresh_url: refresh_user_tournament_path(@user, @tournament)) %></p>
+  <% end %>
 <% end %>
 
 <% matches = @tournament.matches.completed %>
