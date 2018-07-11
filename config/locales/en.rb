@@ -60,10 +60,14 @@
                     one: "1 error prevented this user from being saved:",
                     other: "%{count} errors prevented this user from being saved:"
                 },
-                api_key: "API key",
-                subdomain: "Subdomain (leave this blank if you don't have one)",
-                password: "Password (leave this blank to keep your current password)",
-                password_confirmation: "Confirm the new password"
+                api_key_html: "<u>A</u>PI key",
+                subdomain_html: "<u>S</u>ubdomain (leave this blank if you don't have one)",
+                password_html: "<u>P</u>assword (leave this blank to keep your current password)",
+                password_confirmation_html: "<u>C</u>onfirm the new password",
+                api_key_accesskey: "a",
+                subdomain_accesskey: "s",
+                password_accesskey: "p",
+                confirm_password_accesskey: "c"
             },
             edit_user: "Edit this user's settings",
             log_out: "Log out"

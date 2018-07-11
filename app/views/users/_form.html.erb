@@ -11,23 +11,27 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :api_key, t(".api_key") %>
+    <%= form.label :api_key, t(".api_key_html"), for: :user_api_key,
+                   accesskey: t(".api_key_accesskey") %>
     <%= form.text_field :api_key, id: :user_api_key, autofocus: true %>
   </div>
 
   <div class="field">
-    <%= form.label :subdomain, t(".subdomain") %>
-    <%= form.text_field :subdomain %>
+    <%= form.label :subdomain, t(".subdomain_html"), for: :user_subdomain,
+                   accesskey: t(".subdomain_accesskey") %>
+    <%= form.text_field :subdomain, id: :user_subdomain %>
   </div>
 
   <div class="field">
-    <%= form.label :password, t(".password") %>
-    <%= form.password_field :password %>
+    <%= form.label :password, t(".password_html"), for: :user_password,
+                   accesskey: t(".password_accesskey") %>
+    <%= form.password_field :password, id: :user_password %>
   </div>
 
   <div class="field">
-    <%= form.label :password_confirmation, t(".password_confirmation") %>
-    <%= form.password_field :password_confirmation %>
+    <%= form.label :password_confirmation, t(".password_confirmation_html"),
+                   for: :user_password_confirmation, accesskey: t(".confirm_password_accesskey") %>
+    <%= form.password_field :password_confirmation, id: :user_password_confirmation %>
   </div>
 
   <div class="actions">
