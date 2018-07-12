@@ -46,8 +46,15 @@ class TournamentsController < ApplicationController
     end
 
     def refresh
-        # Re-read the info, matches, and teams for this tournament.
-        tournament_hash = ApplicationHelper.get_tournament_info(@tournament)
+        # Re-read the info for this tournament.  By default, we also get the
+        # teams and matches, but the caller can prevent us from getting that
+        # info by passing query string params.
+        get_teams = (params[:get_teams] || "1").to_i > 0
+        get_matches = (params[:get_matches] || "1").to_i > 0
+
+        tournament_hash = ApplicationHelper.get_tournament_info(
+                            @tournament, get_teams: get_teams,
+                            get_matches: get_matches)
 
         return if api_failed?(tournament_hash) do |msg|
             redirect_to({ action: "show" }, notice: msg)
@@ -65,19 +72,21 @@ class TournamentsController < ApplicationController
         # `challonge_id` of the Teams that are currently in the database, and
         # delete the rows for teams that have been deleted from the tournament
         # on Challonge.
-        old_team_ids = @tournament.teams.pluck(:challonge_id)
+        if tournament_obj.participants
+            old_team_ids = @tournament.teams.pluck(:challonge_id)
 
-        tournament_obj.participants.each do |p|
-            s = OpenStruct.new(p["participant"])
+            tournament_obj.participants.each do |p|
+                s = OpenStruct.new(p["participant"])
 
-            @tournament.teams.find_or_initialize_by(challonge_id: s.id).update!(s)
-            old_team_ids.delete s.id
-        end
+                @tournament.teams.find_or_initialize_by(challonge_id: s.id).update!(s)
+                old_team_ids.delete s.id
+            end
 
-        # If `old_team_ids` is non-empty, then those matches were deleted from
-        # the Challonge tournament, so delete them from our database, too.
-        if old_team_ids.present?
-            @tournament.teams.where(challonge_id: old_team_ids).destroy_all
+            # If `old_team_ids` is non-empty, then those matches were deleted from
+            # the Challonge tournament, so delete them from our database, too.
+            if old_team_ids.present?
+                @tournament.teams.where(challonge_id: old_team_ids).destroy_all
+            end
         end
 
         # Read the "matches" array and create a Match object for each one, or
@@ -87,22 +96,24 @@ class TournamentsController < ApplicationController
         # Keep track of the `challonge_id` of the Matches that are currently in
         # the database, and delete the rows for Matches that have been deleted
         # from the Challonge tournament.
-        old_match_ids = @tournament.matches.pluck(:challonge_id)
+        if tournament_obj.matches
+            old_match_ids = @tournament.matches.pluck(:challonge_id)
 
-        tournament_obj.matches.each do |m|
-            s = OpenStruct.new(m["match"])
+            tournament_obj.matches.each do |m|
+                s = OpenStruct.new(m["match"])
 
-            @tournament.matches.find_or_initialize_by(challonge_id: s.id).update!(s)
-            old_match_ids.delete s.id
+                @tournament.matches.find_or_initialize_by(challonge_id: s.id).update!(s)
+                old_match_ids.delete s.id
+            end
+
+            # If `old_match_ids` is non-empty, then those matches were deleted from
+            # the tournament, so delete them from our database, too.
+            if old_match_ids.present?
+                @tournament.matches.where(challonge_id: old_match_ids).destroy_all
+            end
+
+            @tournament.update_group_names
         end
-
-        # If `old_match_ids` is non-empty, then those matches were deleted from
-        # the tournament, so delete them from our database, too.
-        if old_match_ids.present?
-            @tournament.matches.where(challonge_id: old_match_ids).destroy_all
-        end
-
-        @tournament.update_group_names
 
         redirect_to action: "show"
     end

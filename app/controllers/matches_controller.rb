@@ -65,7 +65,7 @@ class MatchesController < ApplicationController
         # in future matches.  If we're just updating the score of the current
         # match, there's no need to refresh the tournament.
         if winner_id.present?
-            redirect_to refresh_user_tournament_path(@user, @tournament)
+            redirect_to refresh_user_tournament_path(@user, @tournament, get_teams: 0)
         else
             redirect_to user_tournament_path(@user, @tournament)
         end

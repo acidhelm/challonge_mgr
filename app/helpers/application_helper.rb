@@ -22,9 +22,7 @@ module ApplicationHelper
         return tournaments unless tournaments.is_a?(Array)
 
         if user.subdomain.present?
-            url += "?subdomain=#{user.subdomain}"
-
-            org_tournaments = send_get_request(url)
+            org_tournaments = send_get_request(url, subdomain: user.subdomain)
 
             tournaments.concat(org_tournaments) if org_tournaments.is_a?(Array)
         end
@@ -32,15 +30,17 @@ module ApplicationHelper
         return tournaments
     end
 
-    # On success, returns a `tournament` object that contains the properties,
-    # teams, and matches of the given tournament.
+    # On success, returns a `tournament` object that contains the properties of
+    # the given tournament. The caller can also request the teams and matches in
+    # the tournament.
     # On failure, returns an `error` object that describes the error.
-    def get_tournament_info(tournament)
+    def get_tournament_info(tournament, get_teams: true, get_matches: true)
         url = "#{api_url_prefix(tournament.user)}tournaments/" \
-                "#{tournament.challonge_id}.json?" \
-                "include_participants=1&include_matches=1"
+                "#{tournament.challonge_id}.json"
+        params = { include_participants: get_teams ? 1 : 0,
+                   include_matches: get_matches ? 1 : 0 }
 
-        return send_get_request(url)
+        return send_get_request(url, params)
     end
 
     # Sets the scores and optionally the winning team for a match.
@@ -92,8 +92,8 @@ module ApplicationHelper
     # Sends a GET request to `url`, treats the returned data as JSON, and parses
     # it into an object.  On success, the return value is that object.  On
     # failure, the return value is a hash that describes the error.
-    def send_get_request(url)
-        response = RestClient.get(url)
+    def send_get_request(url, params = {})
+        response = RestClient.get(url, params: params)
         return JSON.parse(response.body)
     rescue => e
         return handle_request_error(e, __method__)
