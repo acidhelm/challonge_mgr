@@ -1,7 +1,7 @@
-<% readme_url = "https://github.com/acidhelm/challonge_mgr/blob/master/README.md#create-your-challonge-mgr-account" %>
+<% url = "https://github.com/acidhelm/challonge_mgr/blob/master/INSTALL.md#create-your-challonge-mgr-account" %>
 <% content_for :title, t(".page_title") %>
 <p id="notice"><%= notice %></p>
-<p><%= t ".account_setup_instructions_html", readme_url: readme_url %></p>
+<p><%= t ".account_setup_instructions_html", url: url %></p>
 <%= form_for(:session, url: login_path) do |f| %>
   <div class="field">
     <%= f.label :user_name, t(".user_name_html"), for: :user_name, accesskey: t(".user_name_accesskey") %>
