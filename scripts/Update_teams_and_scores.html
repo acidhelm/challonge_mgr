@@ -100,9 +100,12 @@ var file_name = team_color == "gold" ? gold_team_score_file : blue_team_score_fi
 }
 
 // This is called when the selection changes in one of the team lists.
-function OnSelChanged(team_color, ctrl)
+function OnSelChanged(team_color, ctrl, team_name_ctrl_id)
 {
-    WriteTeamName(team_color, team_names_for_stream[ctrl.selectedIndex]);
+var team_name = team_names_for_stream[ctrl.selectedIndex]
+
+    WriteTeamName(team_color, team_name);
+    document.getElementById(team_name_ctrl_id).value = team_name;
 }
 
 // This is called when a "Set [team] name" button is clicked.
@@ -139,6 +142,18 @@ function ResetScores()
     WriteScore("gold", 0);
     WriteScore("blue", 0);
 }
+
+function OnRotate()
+{
+var gold_name_elt = document.getElementById("gold_name");
+var blue_name_elt = document.getElementById("blue_name");
+
+    gold_name_elt.value = blue_name_elt.value;
+    blue_name_elt.value = "";
+    WriteTeamName("gold", gold_name_elt.value);
+    WriteTeamName("blue", blue_name_elt.value);
+    ResetScores();
+}
 </script>
 </head>
 <body onload="FillLists()">
@@ -149,8 +164,8 @@ function ResetScores()
 </tr>
 
 <tr>
-    <td><select multiple style="height:200px;width:300px" id="gold_list" onchange="OnSelChanged('gold', this)"></select></td>
-    <td><select multiple style="height:200px;width:300px" id="blue_list" onchange="OnSelChanged('blue', this)"></select></td>
+    <td><select multiple style="height:200px;width:300px" id="gold_list" onchange="OnSelChanged('gold', this, 'gold_name')"></select></td>
+    <td><select multiple style="height:200px;width:300px" id="blue_list" onchange="OnSelChanged('blue', this, 'blue_name')"></select></td>
 </tr>
 
 <tr>
@@ -168,10 +183,13 @@ function ResetScores()
 </tr>
 
 <tr>
-    <td><br><br></td>
+     <td colspan='2' align='center'><button onclick="OnRotate()">&larr; Rotate</button></td>
 </tr>
 
 <tr>
+    <td><br>Set scores:</td>
+<tr>
+
     <td><form onsubmit="OnScoreSubmit('gold', 'gold_score');return false;">
           <input id="gold_score" type="text" value="0">
           <input type="submit" value="Set gold score">
