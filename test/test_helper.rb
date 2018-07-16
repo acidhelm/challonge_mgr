@@ -1,8 +1,8 @@
+require "simplecov"
 require "coveralls"
 
-Coveralls.wear!
-
-require "simplecov"
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
+    [ SimpleCov::Formatter::HTMLFormatter, Coveralls::SimpleCov::Formatter ])
 
 SimpleCov.start "rails"
 
