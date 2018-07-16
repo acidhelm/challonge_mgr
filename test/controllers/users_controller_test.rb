@@ -33,6 +33,11 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         assert_not flash.empty?
     end
 
+    test "Try to show a non-existant user" do
+        get user_url(User.ids.max + 1)
+        assert_response :not_found
+    end
+
     test "Get the edit user page" do
         log_in_as(@user)
         assert logged_in?
@@ -78,4 +83,18 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         assert_redirected_to login_url
         assert_not flash.empty?
     end
+
+    test "Try to update a user with invalid params" do
+        log_in_as(@user)
+        assert logged_in?
+
+        params = update_user_params
+        params[:user][:api_key] = ""
+
+        patch user_url(@user), params: params
+
+        assert_response :success
+        assert_template "users/edit"
+    end
+
 end

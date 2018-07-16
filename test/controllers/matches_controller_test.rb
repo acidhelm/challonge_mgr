@@ -60,4 +60,12 @@ class MatchesControllerTest < ActionDispatch::IntegrationTest
         put user_tournament_match_url(@user, @tournament, @match, right_score: 4)
         assert_response :bad_request
     end
+
+    test "Try to start a non-existant match" do
+        log_in_as(@user)
+        assert logged_in?
+
+        post start_user_tournament_match_url(@user, @tournament, Match.ids.max + 1)
+        assert_response :not_found
+    end
 end
