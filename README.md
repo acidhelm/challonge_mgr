@@ -1,4 +1,5 @@
 [![Build status](https://travis-ci.com/acidhelm/challonge_mgr.svg?branch=master)](https://travis-ci.com/acidhelm/challonge_mgr)
+[![Coverage status](https://coveralls.io/repos/github/acidhelm/challonge_mgr/badge.svg?branch=master)](https://coveralls.io/github/acidhelm/challonge_mgr?branch=master)
 
 # Challonge Mgr
 
