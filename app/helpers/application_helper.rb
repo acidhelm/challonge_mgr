@@ -140,7 +140,11 @@ module ApplicationHelper
             # just the string "HTTP Basic: Access denied."
             # This isn't a problem, because `ApplicationController#api_failed?`
             # special-cases 401 responses and shows a custom error message.
-            resp = JSON.parse(exception.response.to_s) rescue JSON::ParserError
+            begin
+                resp = JSON.parse(exception.response.to_s)
+            rescue JSON::ParserError
+                resp = nil
+            end
 
             if resp.is_a?(Hash) && resp.key?("errors")
                 message = [ exception.message, resp["errors"] ].join("; ")
