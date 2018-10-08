@@ -64,8 +64,7 @@ matches" section.
 ## Tournament settings
 
 You can change the order of the cabinets and configure Slack notifications
-by clicking the _Edit this tournament's settings_ link at the bottom of the
-match listing.
+by clicking the _Change settings_ link at the bottom of the match listing.
 
 The order of the cabinets is set by the _The Gold cabinet is on the left side_
 check box.  You can set the default value for this option by changing the
