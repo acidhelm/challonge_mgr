@@ -20,13 +20,13 @@ class TournamentsTest < ApplicationSystemTestCase
 
             edit_settings_link.click
 
-            assert_selector "h1", text: /^Edit settings for/
+            assert_selector "h1", text: /^Change settings for/
             assert_selector "label", exact_text: "The Gold cabinet is on the left side"
             assert_field id: "tournament_gold_on_left", type: "checkbox"
             assert_selector "label", exact_text: "Send Slack notifications when " \
                                                    "matches begin and end"
             assert_field id: "tournament_send_slack_notifications", type: "checkbox"
-            assert_selector "label", exact_text: "Slack channel"
+            assert_selector "label", exact_text: "Slack channel:"
             assert_field name: "tournament[slack_notifications_channel]", type: "text"
 
             page.find_by_id("tournament_gold_on_left").click
@@ -81,7 +81,7 @@ class TournamentsTest < ApplicationSystemTestCase
                         href: refresh_user_tournament_path(@user, tournament),
                         exact: true
 
-            assert_link "Edit this tournament's settings",
+            assert_link "Change settings",
                         href: edit_user_tournament_path(@user, tournament),
                         exact: true
 
