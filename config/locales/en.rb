@@ -37,39 +37,43 @@
                   " of your Challonge Mgr account. If you haven't made an account" \
                   " yet, see <a href='%{url}'>the installation instructions</a>" \
                   " on how to set one up.",
-                user_name_html: "<u>U</u>ser name",
+                user_name_html: "<u>U</u>ser name:",
                 user_name_accesskey: "u",
-                password_html: "<u>P</u>assword",
+                password_html: "<u>P</u>assword:",
                 password_accesskey: "p",
                 log_in_button: "Log in"
             }
         },
         users: {
             show: {
+                page_title: "Account settings for %{user_name}",
+                page_header: "Account settings for %{user_name}",
                 user_name: "User name:",
                 api_key: "API key:",
                 subdomain: "Subdomain:",
                 view_tournaments: "View this user's tournaments"
             },
             edit: {
-                page_title: "Edit settings for %{user_name}",
-                page_header: "Edit settings for %{user_name}"
+                page_title: "Change settings for %{user_name}",
+                page_header: "Change settings for %{user_name}"
             },
             form: {
                 errors_list_header: {
-                    one: "1 error prevented this user from being saved:",
-                    other: "%{count} errors prevented this user from being saved:"
+                    one: "1 error prevented the user from being saved:",
+                    other: "%{count} errors prevented the user from being saved:"
                 },
-                api_key_html: "<u>A</u>PI key",
-                subdomain_html: "<u>S</u>ubdomain (leave this blank if you don't have one)",
-                password_html: "<u>P</u>assword (leave this blank to keep your current password)",
-                password_confirmation_html: "<u>C</u>onfirm the new password",
-                api_key_accesskey: "a",
+                api_key_html: "<u>C</u>hallonge API key: (" \
+                              "<a target='_blank' href='https://challonge.com/settings/developer'>" \
+                              "Find your API key</a>)",
+                subdomain_html: "<u>S</u>ubdomain: (Leave this blank if your account doesn't belong to a subdomain)",
+                password_html: "<u>P</u>assword: (Leave this blank to keep your current password)",
+                password_confirmation_html: "C<u>o</u>nfirm the new password:",
+                api_key_accesskey: "c",
                 subdomain_accesskey: "s",
                 password_accesskey: "p",
-                confirm_password_accesskey: "c"
+                confirm_password_accesskey: "o"
             },
-            edit_user: "Edit this user's settings",
+            edit_user: "Change this user's settings",
             log_out: "Log out"
         },
         tournaments: {
@@ -124,17 +128,17 @@
                 tournament_list: "Back to the tournament list"
             },
             edit: {
-                page_title: "Edit settings for %{name}",
-                page_header: "Edit settings for %{name}"
+                page_title: "Change settings for %{name}",
+                page_header: "Change settings for %{name}"
             },
             form: {
                 errors_list_header: {
-                    one: "1 error prevented this tournament from being saved:",
-                    other: "%{count} errors prevented this tournament from being saved:"
+                    one: "1 error prevented the tournament from being saved:",
+                    other: "%{count} errors prevented the tournament from being saved:"
                 },
                 gold_on_left_html: "The <u>G</u>old cabinet is on the left side",
                 send_slack_notifications_html: "<u>S</u>end Slack notifications when matches begin and end",
-                slack_notifications_channel_html: "Sl<u>a</u>ck channel",
+                slack_notifications_channel_html: "Sl<u>a</u>ck channel:",
                 gold_on_left_accesskey: "g",
                 send_slack_notifications_accesskey: "s",
                 slack_notifications_channel_accesskey: "a"
@@ -165,7 +169,7 @@
                 match_lost: "Lost to %{winner} %{winning_score} - %{losing_score}",
                 match_lost_forfeited: "Lost to %{winner} by forfeit"
             },
-            edit_tournament: "Edit this tournament's settings"
+            edit_tournament: "Change settings"
         },
         matches: {
             round_names: {

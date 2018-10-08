@@ -2,7 +2,9 @@
 <% content_for :refresh_time, @refresh_time %>
 <% tbd = t(".tbd") %>
 <h1 class="kioskname"><%= @tournament.name %></h1>
-<h2><table><tbody>
+
+<table>
+<tbody>
   <% current_match = @tournament.matches.current_match.first %>
     <tr>
       <td class="kioskheader"><%= t(".current_match") %></td>
@@ -35,4 +37,5 @@
       <% end %>
     </td>
   </tr>
-</tbody></table></h2>
+</tbody>
+</table>

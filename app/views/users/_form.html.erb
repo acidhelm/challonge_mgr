@@ -13,25 +13,29 @@
   <div class="field">
     <%= form.label :api_key, t(".api_key_html"), for: :user_api_key,
                    accesskey: t(".api_key_accesskey") %>
-    <%= form.text_field :api_key, id: :user_api_key, autofocus: true %>
+    <br>
+    <%= form.text_field :api_key, id: :user_api_key, autofocus: true, style: "width: 50%" %>
   </div>
 
   <div class="field">
     <%= form.label :subdomain, t(".subdomain_html"), for: :user_subdomain,
                    accesskey: t(".subdomain_accesskey") %>
-    <%= form.text_field :subdomain, id: :user_subdomain %>
+    <br>
+    <%= form.text_field :subdomain, id: :user_subdomain, style: "width: 50%" %>
   </div>
 
   <div class="field">
     <%= form.label :password, t(".password_html"), for: :user_password,
                    accesskey: t(".password_accesskey") %>
-    <%= form.password_field :password, id: :user_password %>
+    <br>
+    <%= form.password_field :password, id: :user_password, style: "width: 50%" %>
   </div>
 
   <div class="field">
     <%= form.label :password_confirmation, t(".password_confirmation_html"),
                    for: :user_password_confirmation, accesskey: t(".confirm_password_accesskey") %>
-    <%= form.password_field :password_confirmation, id: :user_password_confirmation %>
+    <br>
+    <%= form.password_field :password_confirmation, id: :user_password_confirmation, style: "width: 50%" %>
   </div>
 
   <div class="actions">

@@ -86,8 +86,8 @@
     </td>
     <% if show_actions && !(m.complete? || m.teams_are_tbd?) %>
       <td>
-        <%= link_to t(".switch_sides"), [ :switch, @user, @tournament, m ], method: :post %> |
-        <%= link_to t(".start_this_match"), [ :start, @user, @tournament, m ], method: :post %>
+        <%= link_to t(".start_this_match"), [ :start, @user, @tournament, m ], method: :post %> |
+        <%= link_to t(".switch_sides"), [ :switch, @user, @tournament, m ], method: :post %>
       </td>
     <% end %>
   </tr>

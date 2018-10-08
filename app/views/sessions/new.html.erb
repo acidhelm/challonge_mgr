@@ -2,6 +2,8 @@
 <% content_for :title, t(".page_title") %>
 <p id="notice"><%= notice %></p>
 <p><%= t ".account_setup_instructions_html", url: url %></p>
+
+<p>
 <%= form_for(:session, url: login_path) do |f| %>
   <div class="field">
     <%= f.label :user_name, t(".user_name_html"), for: :user_name, accesskey: t(".user_name_accesskey") %>
@@ -15,3 +17,4 @@
     <%= f.submit t(".log_in_button") %>
   </div>
 <% end %>
+</p>
