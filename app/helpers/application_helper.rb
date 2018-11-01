@@ -7,9 +7,8 @@ module ApplicationHelper
     # the array also contains the tournaments that are owned by that organization.
     # On failure, returns an `error` object that describes the error.
     def get_tournament_list(user)
-        url = "#{api_url_prefix(user)}tournaments.json"
-
-        tournaments = send_get_request(url)
+        url = get_api_url("tournaments.json")
+        tournaments = send_get_request(url, user)
 
         # The API returns a different response if the tournament list is empty.
         # It returns `{"tournaments":[]}`, so we need to handle that specially.
@@ -22,7 +21,7 @@ module ApplicationHelper
         return tournaments unless tournaments.is_a?(Array)
 
         if user.subdomain.present?
-            org_tournaments = send_get_request(url, subdomain: user.subdomain)
+            org_tournaments = send_get_request(url, user, subdomain: user.subdomain)
 
             tournaments.concat(org_tournaments) if org_tournaments.is_a?(Array)
         end
@@ -35,12 +34,11 @@ module ApplicationHelper
     # the tournament.
     # On failure, returns an `error` object that describes the error.
     def get_tournament_info(tournament, get_teams: true, get_matches: true)
-        url = "#{api_url_prefix(tournament.user)}tournaments/" \
-                "#{tournament.challonge_id}.json"
+        url = get_api_url("tournaments/#{tournament.challonge_id}.json")
         params = { include_participants: get_teams ? 1 : 0,
                    include_matches: get_matches ? 1 : 0 }
 
-        return send_get_request(url, params)
+        return send_get_request(url, tournament.user, params)
     end
 
     # Sets the scores and optionally the winning team for a match.
@@ -48,13 +46,13 @@ module ApplicationHelper
     # of the match.
     # On failure, returns an `error` object that describes the error.
     def update_match(match, new_scores_csv, winner_id)
-        url = "#{api_url_prefix(match.tournament.user)}tournaments/" \
-                "#{match.tournament.challonge_id}/matches/#{match.challonge_id}.json"
+        url = get_api_url("tournaments/#{match.tournament.challonge_id}/matches/" \
+                            "#{match.challonge_id}.json")
 
         params = { "match[scores_csv]" => new_scores_csv }
         params["match[winner_id]"] = winner_id if winner_id.present?
 
-        return send_put_request(url, params)
+        return send_put_request(url, match.tournament.user, params)
     end
 
     # Sets the scores and optionally the winning team for a match.
@@ -62,10 +60,9 @@ module ApplicationHelper
     # TODO: Finalize a test match and see what it returns.
     # On failure, returns an `error` object that describes the error.
     def finalize_tournament(tournament)
-        url = "#{api_url_prefix(tournament.user)}tournaments/" \
-                "#{tournament.challonge_id}/finalize.json"
+        url = get_api_url("tournaments/#{tournament.challonge_id}/finalize.json")
 
-        return send_post_request(url)
+        return send_post_request(url, tournament.user)
     end
 
     # Checks that `param` is one of the elements in `legal_values`, and if not,
@@ -85,14 +82,17 @@ module ApplicationHelper
 
     protected
 
-    def api_url_prefix(user)
-        return "https://#{user.user_name}:#{user.api_key}@api.challonge.com/v1/"
+    # Returns a string that holds the URL to the Challonge API endpoint, with
+    # `str` appended to it.
+    def get_api_url(str)
+        return "https://api.challonge.com/v1/#{str}"
     end
 
     # Sends a GET request to `url`, treats the returned data as JSON, and parses
     # it into an object.  On success, the return value is that object.  On
     # failure, the return value is a hash that describes the error.
-    def send_get_request(url, params = {})
+    def send_get_request(url, user, params = {})
+        params = params.reverse_merge(api_key: user.api_key)
         response = RestClient.get(url, params: params)
         return JSON.parse(response.body)
     rescue => e
@@ -103,7 +103,8 @@ module ApplicationHelper
     # the returned data as JSON, and parses it into an object.  On success,
     # the return value is that object.  On failure, the return value is a hash
     # that describes the error.
-    def send_put_request(url, params)
+    def send_put_request(url, user, params)
+        params = params.reverse_merge(api_key: user.api_key)
         response = RestClient.put(url, params)
         return JSON.parse(response.body)
     rescue => e
@@ -113,7 +114,8 @@ module ApplicationHelper
     # Sends a POST request to `url`.  It treats the returned data as JSON, and
     # parses it into an object.  On success, the return value is that object.
     # On failure, the return value is a hash that describes the error.
-    def send_post_request(url, post_data = "")
+    def send_post_request(url, user)
+        post_data = URI.encode_www_form(api_key: user.api_key)
         response = RestClient.post(url, post_data)
         return JSON.parse(response.body)
     rescue => e
