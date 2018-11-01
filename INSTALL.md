@@ -63,13 +63,13 @@ $ bin/rails console
 Then run this command to make an account:
 
 ```ruby
-> User.create user_name: "Your Challonge user name",
+> User.create user_name: "A user name",
               api_key: "Your API key",
               password: "A password"
 ```
 
-The password that you set here will be used to log in to Challonge Mgr.  It does
-not have to be the same as your Challonge password.
+The user name and password that you set here are used to log in to Challonge Mgr.
+They do not have to be the same as your Challonge user name and password.
 
 If your user belongs to an organization that has a subdomain on challonge.com,
 add a `subdomain: "your-subdomain"` parameter to the `create` call.  This lets
