@@ -14,7 +14,7 @@
   </h4>
 <% end %>
 
-<% current_match = @tournament.matches.current_match.first %>
+<% current_match = @tournament.current_match_obj %>
 <% if current_match.present? %>
 <hr>
 <%= render partial: "tournaments/current_match", object: current_match %>

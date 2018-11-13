@@ -5,7 +5,7 @@
 
 <table>
 <tbody>
-  <% current_match = @tournament.matches.current_match.first %>
+  <% current_match = @tournament.current_match_obj %>
     <tr>
       <td class="kioskheader"><%= t(".current_match") %></td>
       <td>

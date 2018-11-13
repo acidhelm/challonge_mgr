@@ -58,6 +58,16 @@ class Tournament < ApplicationRecord
         save!
     end
 
+    # If `current_match` is set, returns the `Match` object that corresponds
+    # to that match.  Otherwise, returns `nil`.
+    def current_match_obj
+        if current_match.nil?
+            nil
+        else
+            matches.find_by(id: current_match)
+        end
+    end
+
     # Stores the ID of the given Match in the Tournament table, and sends a
     # Slack notification if they are turned on for this Tournament.
     def set_current_match(match)

@@ -11,6 +11,10 @@ class MatchesController < ApplicationController
         # can remove this line.
         @match.update(underway_at: Time.current)
 
+        # If there is already a match that's marked as the current match, reset its
+        # `underway_at` field to nil, so it gets shown in the upcoming match list.
+        @tournament.current_match_obj&.update(underway_at: nil)
+
         # Tell the tournament that a new match is starting.
         @tournament.set_current_match(@match)
 

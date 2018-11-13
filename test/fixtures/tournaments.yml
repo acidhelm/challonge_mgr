@@ -22,7 +22,7 @@ two:
   state: underway
   challonge_url: https://challonge.com/sunnydalekq1
   tournament_type: single elimination
-  current_match: null
+  current_match: <%= ActiveRecord::FixtureSet.identify(:five) %>
   challonge_alphanumeric_id: sunnydalekq1
   gold_on_left: false
   send_slack_notifications: false
