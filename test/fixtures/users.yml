@@ -1,5 +1,3 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 <% key = ENV['ATTR_ENCRYPTED_KEY']
    iv = SecureRandom.hex(6)
    encoded_iv = Base64.encode64(iv)
