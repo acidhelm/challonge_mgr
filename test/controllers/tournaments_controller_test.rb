@@ -6,6 +6,7 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
         @user = @tournament.user
         @other_tournament = tournaments(:two)
         @other_user = @other_tournament.user
+        @test_user = users(:test_user)
     end
 
     def update_tournament_params(tournament)
@@ -21,6 +22,17 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
 
         get user_tournaments_path(@user)
         assert_response :success
+    end
+
+    test "Refresh the list of tournaments" do
+        log_in_as(@test_user)
+        assert logged_in?
+
+        VCR.use_cassette("refresh_tournament_list") do
+            get user_tournaments_refresh_path(@test_user)
+        end
+
+        assert_redirected_to user_tournaments_path(@test_user)
     end
 
     test "Try to get the tournaments index for a different user" do
@@ -48,6 +60,22 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
 
         get user_tournament_path(@user, @tournament)
         assert_response :success
+    end
+
+    test "Refresh a tournament" do
+        # Add the live tournament to the user's `tournaments` collection so the
+        # controller can redirect to its "show" action.
+        @tournament = tournaments(:live_data_tournament)
+        @test_user.tournaments << @tournament
+
+        log_in_as(@test_user)
+        assert logged_in?
+
+        VCR.use_cassette("refresh_tournament") do
+            get refresh_user_tournament_path(@test_user, @tournament)
+        end
+
+        assert_redirected_to user_tournament_path(@test_user, @tournament)
     end
 
     test "Try to show a tournament for a different user" do
