@@ -4,11 +4,6 @@ class CheckLiveTournamentDataTest < ActionDispatch::IntegrationTest
     def setup
         @user = users(:test_user)
 
-        if @user.user_name.blank?
-            flunk "You must set the \"CHALLONGE_MGR_TEST_USER_NAME\"" \
-                    " environment variable to run tests against live data." \
-        end
-
         if @user.api_key.blank?
             flunk "You must set the \"CHALLONGE_MGR_TEST_USER_API_KEY\"" \
                     " environment variable to run tests against live data." \

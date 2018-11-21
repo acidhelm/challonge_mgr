@@ -9,11 +9,6 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     def setup_log_in
         @user = users(:test_user)
 
-        if @user.user_name.blank?
-            flunk "You must set the \"CHALLONGE_MGR_TEST_USER_NAME\"" \
-                    " environment variable to run system tests." \
-        end
-
         if @user.api_key.blank?
             flunk "You must set the \"CHALLONGE_MGR_TEST_USER_API_KEY\"" \
                     " environment variable to run system tests." \

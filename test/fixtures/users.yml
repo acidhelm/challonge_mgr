@@ -19,7 +19,7 @@ buffy:
   password_digest: <%= password_digest %>
 
 test_user:
-  user_name: <%= ENV["CHALLONGE_MGR_TEST_USER_NAME"] %>
+  user_name: test_user
   encrypted_api_key: "<%= User.encrypt_api_key(ENV['CHALLONGE_MGR_TEST_USER_API_KEY'], key: key, iv: iv) %>"
   encrypted_api_key_iv: "<%= encoded_iv %>"
   password_digest: <%= password_digest %>
