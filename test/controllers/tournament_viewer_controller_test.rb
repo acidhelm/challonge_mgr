@@ -7,12 +7,11 @@ class TournamentViewerControllerTest < ActionDispatch::IntegrationTest
         @bad_slug = @slug.reverse
     end
 
-    def team_names_in_match_test(team_name_url, match, side)
-        # The team name action should return an empty string when no match has
-        # been started yet.
-        get team_name_url
+    def current_match_properties_test(url, match)
+        # The URL should return a default value when no match has been started yet.
+        get url
         assert_response :success
-        assert_empty response.body
+        assert_equal yield(:before), response.body
 
         # Log in so we can start a match.
         log_in_as @tournament.user
@@ -27,9 +26,21 @@ class TournamentViewerControllerTest < ActionDispatch::IntegrationTest
         follow_redirect!
         assert_response :success
 
-        # The team name action should return a name now.
-        get team_name_url
-        assert_equal match.team_name(side), response.body
+        # The URL should return a string now.
+        get url
+        assert_equal yield(:after), response.body
+    end
+
+    def team_names_in_match_test(team_name_url, match, side)
+        current_match_properties_test(team_name_url, match) do |step|
+            (step == :before) ? "" : match.team_name(side)
+        end
+    end
+
+    def team_scores_in_match_test(team_score_url, match, side)
+        current_match_properties_test(team_score_url, match) do |step|
+            (step == :before) ? "0" : match.team_score(side).to_s
+        end
     end
 
     test "View a tournament" do
@@ -52,15 +63,15 @@ class TournamentViewerControllerTest < ActionDispatch::IntegrationTest
     end
 
     test "View a tournament's gold team score" do
-        get view_tournament_gold_score_path(@slug)
-        assert_response :success
-        assert_equal "0", response.body
+        team_scores_in_match_test(
+            view_tournament_gold_score_path(@slug),
+            @tournament.matches.upcoming.first, :gold)
     end
 
     test "View a tournament's blue team score" do
-        get view_tournament_blue_score_path(@slug)
-        assert_response :success
-        assert_equal "0", response.body
+        team_scores_in_match_test(
+            view_tournament_blue_score_path(@slug),
+            @tournament.matches.upcoming.first, :gold)
     end
 
     test "Try to view a non-existant tournament" do
