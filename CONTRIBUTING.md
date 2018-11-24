@@ -7,9 +7,9 @@ If you are in the [KQ Slack team](https://kqchat.slack.com), join the
 
 If you are doing development on Challonge Mgr, you should run the unit tests
 after making significant changes.  The system tests access your Challonge
-account to test with live data, so you need to tell the tests your account
-name and API key.  The tests only do read operations; no data in your account
-will be changed.
+account to test with live data, so you need to tell the tests your Challonge
+API key.  The tests only do read operations; no data in your account will be
+changed.
 
 Add these lines to your `.env` file before running the tests:
 
