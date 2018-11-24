@@ -5,6 +5,33 @@ class TournamentTest < ActiveSupport::TestCase
         @tournament = tournaments(:one)
     end
 
+    test "Mark a match as complete" do
+        @tournament = tournaments(:two)
+        @match = @tournament.current_match_obj
+
+        assert_not_nil @match
+
+        # Manually set the Slack notification properties here.  I could do this
+        # in the fixture, but then other tests might also send Slack messages,
+        # and I want to minimize the number of messages that we send.
+        channel_name = ENV["CHALLONGE_MGR_TEST_SLACK_CHANNEL"]
+
+        @tournament.slack_notifications_channel = channel_name
+        @tournament.send_slack_notifications = channel_name.present?
+
+        # Manually set properties on `@match` to make it complete.  Doing this
+        # the official way, using `MatchesController`, would try to update a
+        # non-existant tournament on Challonge.
+        @match.state = "complete"
+        @match.scores_csv = "2-3"
+        @match.winner_id = @match.team2_id
+        @match.loser_id = @match.team1_id
+
+        @tournament.set_match_complete(@match)
+
+        assert_nil @tournament.current_match_obj
+    end
+
     test "Try to save a tournament with an illegal challonge_id" do
         @tournament.challonge_id = -1
         assert_not @tournament.save
