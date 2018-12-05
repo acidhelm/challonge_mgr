@@ -14,17 +14,15 @@
   </h4>
 <% end %>
 
-<% current_match = @tournament.current_match_obj %>
-<% if current_match.present? %>
-<hr>
-<%= render partial: "tournaments/current_match", object: current_match %>
+<% if @current_match.present? %>
+  <hr>
+  <%= render partial: "tournaments/current_match", object: @current_match %>
 <% end %>
 
-<% matches = @tournament.matches.upcoming %>
-<% if matches.present? %>
+<% if @upcoming_matches.present? %>
   <hr>
   <p><h2><%= t(".upcoming_matches") %></h2>
-  <p><%= render partial: "tournaments/match_list", object: matches, locals: { readonly: readonly } %></p>
+  <p><%= render partial: "tournaments/match_list", object: @upcoming_matches, locals: { readonly: readonly } %></p>
 <% elsif @tournament.finalizable? %>
   <% if !readonly %>
     <hr>
@@ -42,8 +40,7 @@
       <th><%= t(".seed") %></th>
       <th><%= t(".name") %></th>
     </tr>
-    <% @tournament.teams.where.not(final_rank: nil).
-                         order(final_rank: :asc, seed: :asc).each do |t| %>
+    <% @teams_in_final_rank_order.each do |t| %>
       <tr>
         <td><%= t.final_rank %></td>
         <td><%= t.seed %></td>
@@ -62,11 +59,10 @@
   <% end %>
 <% end %>
 
-<% matches = @tournament.matches.completed %>
-<% if matches.present? %>
+<% if @completed_matches.present? %>
   <hr>
   <p><h2><%= t(".completed_matches") %></h2>
-  <p><%= render partial: "tournaments/match_list", object: matches, locals: { readonly: readonly } %></p>
+  <p><%= render partial: "tournaments/match_list", object: @completed_matches, locals: { readonly: readonly } %></p>
 <% end %>
 
 <hr>
@@ -76,7 +72,7 @@
   <th><%= t(".seed") %></th>
   <th><%= t(".record") %></th>
 </tr>
-<% @tournament.teams.order(seed: :asc).each do |t| %>
+<% @teams_in_seed_order.each do |t| %>
   <% num_wins = @tournament.matches.winner_is(t).count
      num_losses = @tournament.matches.loser_is(t).count
   %>

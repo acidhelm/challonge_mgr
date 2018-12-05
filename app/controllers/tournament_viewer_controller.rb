@@ -7,6 +7,16 @@ class TournamentViewerController < ApplicationController
 
     def view
         @user = @tournament.user
+        @current_match = @tournament.current_match_obj
+        @upcoming_matches = @tournament.matches.upcoming
+        @completed_matches = @tournament.matches.completed
+        @teams_in_seed_order = @tournament.teams.order(seed: :asc)
+
+        if @tournament.complete?
+            @teams_in_final_rank_order = @tournament.teams.where.not(final_rank: nil).
+                                         order(final_rank: :asc, seed: :asc)
+        end
+
         render "tournaments/show", layout: "tournament_view"
     end
 
