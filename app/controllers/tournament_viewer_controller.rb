@@ -43,8 +43,8 @@ class TournamentViewerController < ApplicationController
 
         # If a match is in progress, query the team name from that match.
         # Otherwise, use the team name that we stored when the match finished.
-        name = if @tournament.current_match.present?
-                   Match.find_by(id: @tournament.current_match)&.team_name(side)
+        name = if @tournament.current_match_obj.present?
+                   @tournament.current_match_obj.team_name(side)
                else
                    (side == :gold) ? @tournament.view_gold_name :
                                      @tournament.view_blue_name
@@ -63,8 +63,8 @@ class TournamentViewerController < ApplicationController
 
         # If a match is in progress, query the score from that match.
         # Otherwise, use the score that we stored when the match finished.
-        score = if @tournament.current_match.present?
-                    Match.find_by(id: @tournament.current_match)&.team_score(side)
+        score = if @tournament.current_match_obj.present?
+                    @tournament.current_match_obj.team_score(side)
                 else
                     (side == :gold) ? @tournament.view_gold_score :
                                       @tournament.view_blue_score
