@@ -36,6 +36,14 @@ class TournamentViewerController < ApplicationController
         render plain: current_match_team_score(:blue)
     end
 
+    def on_deck_gold
+        render plain: on_deck_match_team_name(:gold)
+    end
+
+    def on_deck_blue
+        render plain: on_deck_match_team_name(:blue)
+    end
+
     protected
 
     def current_match_team_name(side)
@@ -50,12 +58,8 @@ class TournamentViewerController < ApplicationController
                                      @tournament.view_blue_name
                end
 
-        # Remove a parenthesized part from the end of the team name.  This lets
-        # the Challonge bracket have names like "Bert's Bees (PHX)", but the
-        # name on the stream will be just "Bert's Bees".  That saves space on the
-        # stream, which is espcially necessary with multi-scene teams that have
-        # multiple cities in the name.
-        return name&.sub(/\(.*?\)$/, "")&.strip || ""
+
+        return team_name_for_stream(name)
     end
 
     def current_match_team_score(side)
@@ -71,5 +75,30 @@ class TournamentViewerController < ApplicationController
                 end
 
         return score || 0
+    end
+
+    def on_deck_match_team_name(side)
+        ApplicationHelper.validate_param(side, SYMBOLS_GB)
+
+        match = @tournament.matches.upcoming.first
+
+        # If the tournament is at its last match, or it's complete, then
+        # return an empty string since there is no on-deck match.
+        return "" if match.blank?
+
+        # Get the team name, if it's known.  `Match#team_name` returns nil
+        # if the team is TBD, in which case, we return a "TBD" string.
+        name = team_name_for_stream(match.team_name(side))
+
+        return name.presence || I18n.t("kiosk.show.tbd")
+    end
+
+    def team_name_for_stream(name)
+        # Remove a parenthesized part from the end of the team name.  This lets
+        # the Challonge bracket have names like "Bert's Bees (PHX)", but the
+        # name on the stream will be just "Bert's Bees".  That saves space on the
+        # stream, which is espcially necessary with multi-scene teams that have
+        # multiple cities in the name.
+        return name&.sub(/\(.*?\)$/, "")&.strip || ""
     end
 end
