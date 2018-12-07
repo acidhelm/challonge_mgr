@@ -1,8 +1,10 @@
 <% content_for :title, @tournament.name %>
-<% content_for :refresh_time, @refresh_time %>
+<% refresh_tag = (@tournament.complete? || @tournament.finalizable?) ? "" :
+                   "<meta http-equiv='refresh' content='#{@refresh_time}'>".html_safe %>
+<% content_for :refresh_tag, refresh_tag %>
 <% tbd = t(".tbd") %>
-<h1 class="kioskname"><%= @tournament.name %></h1>
 
+<h1 class="kioskname"><%= @tournament.name %></h1>
 <table>
 <tbody>
   <tr>
