@@ -74,6 +74,16 @@ class TournamentViewerControllerTest < ActionDispatch::IntegrationTest
             @tournament.matches.upcoming.first, :gold)
     end
 
+    test "View a tournament's on-deck gold team name" do
+        get view_tournament_on_deck_gold_path(@slug)
+        assert_equal @tournament.matches.upcoming.first.team_name(:gold), response.body
+    end
+
+    test "View a tournament's on-deck blue team name" do
+        get view_tournament_on_deck_blue_path(@slug)
+        assert_equal @tournament.matches.upcoming.first.team_name(:blue), response.body
+    end
+
     test "Try to view a non-existant tournament" do
         get view_tournament_path(@bad_slug)
         assert_response :not_found
@@ -96,6 +106,16 @@ class TournamentViewerControllerTest < ActionDispatch::IntegrationTest
 
     test "Try to view a non-existant tournament's blue team score" do
         get view_tournament_blue_score_path(@bad_slug)
+        assert_response :not_found
+    end
+
+    test "Try to view a non-existant tournament's on-deck gold team name" do
+        get view_tournament_on_deck_gold_path(@bad_slug)
+        assert_response :not_found
+    end
+
+    test "Try to view a non-existant tournament's on-deck blue team name" do
+        get view_tournament_on_deck_blue_path(@bad_slug)
         assert_response :not_found
     end
 end
