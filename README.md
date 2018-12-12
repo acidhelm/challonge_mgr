@@ -114,7 +114,9 @@ that these URLs return.  This lets you have a team name like "The Bee's Knees
 save space on the screen.
 
 Similarly, each team's score can be retrieved from the
-`/view/<tournament_id>/gold_score` and `/view/<tournament_id>/blue_score` URLs.
+`/view/<tournament_id>/gold_score` and `/view/<tournament_id>/blue_score` URLs,
+and the names of the on-deck teams can be retrieved from the
+`/view/<tournament_id>/on_deck_gold` and `/view/<tournament_id>/on_deck_blue` URLs.
 
 After a match finishes, those URLs return the team names and scores from the
 just-completed match, so your stream will continue to show those values until
