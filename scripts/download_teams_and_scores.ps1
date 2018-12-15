@@ -17,10 +17,14 @@ $gold_name_url = "$server/view/$tournament/gold"
 $blue_name_url = "$server/view/$tournament/blue"
 $gold_score_url = "$server/view/$tournament/gold_score"
 $blue_score_url = "$server/view/$tournament/blue_score"
+$on_deck_gold_name_url = "$server/view/$tournament/on_deck_gold"
+$on_deck_blue_name_url = "$server/view/$tournament/on_deck_blue"
 $gold_name_file = Join-Path $desktop "gold.txt"
 $blue_name_file = Join-Path $desktop "blue.txt"
 $gold_score_file = Join-Path $desktop "gold_score.txt"
 $blue_score_file = Join-Path $desktop "blue_score.txt"
+$on_deck_gold_name_file = Join-Path $desktop "on_deck_gold.txt"
+$on_deck_blue_name_file = Join-Path $desktop "on_deck_blue.txt"
 
 if ( ( $server -cmatch "YOUR-" ) -or ( $tournament -cmatch "YOUR-" ) )
 {
@@ -37,5 +41,7 @@ while (1)
     Invoke-WebRequest $blue_name_url -OutFile $blue_name_file
     Invoke-WebRequest $gold_score_url -OutFile $gold_score_file
     Invoke-WebRequest $blue_score_url -OutFile $blue_score_file
+    Invoke-WebRequest $on_deck_gold_name_url -OutFile $on_deck_gold_name_file
+    Invoke-WebRequest $on_deck_blue_name_url -OutFile $on_deck_blue_name_file
     sleep 5
 }
