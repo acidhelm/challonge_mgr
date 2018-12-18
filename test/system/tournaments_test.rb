@@ -14,7 +14,7 @@ class TournamentsTest < ApplicationSystemTestCase
         end
 
         if row_elt
-            edit_settings_link = row_elt.find("a:nth-child(2)")
+            edit_settings_link = row_elt.find("td:nth-child(3) a:nth-child(2)")
             tournament_url = edit_settings_link["href"]
             assert_equal "/edit", tournament_url.slice!(%r{/[^/]+$})
 
@@ -52,7 +52,7 @@ class TournamentsTest < ApplicationSystemTestCase
         end
 
         if row_elt
-            manage_link = row_elt.find("td:nth-child(4) a:nth-child(1)")
+            manage_link = row_elt.find("td:nth-child(3) a:nth-child(1)")
             manage_url = manage_link["href"]
             tournament_id = manage_url.match(%r{/tournaments/(\d+)})[1]
             tournament = @user.tournaments.find(tournament_id)

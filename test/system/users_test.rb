@@ -13,7 +13,7 @@ class UsersTest < ApplicationSystemTestCase
         assert_link "Log out", href: logout_path, exact: true
 
         # Check the column headers in the tournament table.
-        header_text = %w(Name State Challonge\ URL Actions)
+        header_text = %w(Name State Actions Links)
 
         page.all("th").each_with_index do |th, i|
             assert th.text == header_text[i]
@@ -27,13 +27,21 @@ class UsersTest < ApplicationSystemTestCase
                         # The Name and State columns should have text.
                         assert td.text.present?
                     when 2
-                        # Assert that the text is a valid URL.
-                        assert td.text.present?
-                        assert URI.parse(td.text)
-                    when 3
                         # The Actions column should have two links.
                         assert td.has_link? "Manage this tournament", exact: true
                         assert td.has_link? "Change settings", exact: true
+                    when 3
+                        # The Links column should have three links.
+                        assert td.has_link? "Challonge", exact: true
+                        assert td.has_link? "Spectator view", exact: true
+                        assert td.has_link? "Kiosk", exact: true
+
+                        # Check that the "Challonge" link points to a valid
+                        # Challonge URL.
+                        uri = URI.parse(td.find("a:nth-child(1)")[:href])
+
+                        assert uri.host =~ /^([^.]+\.)?challonge\.com$/
+                        assert uri.path =~ /^\/\w+$/
                 end
             end
         end
