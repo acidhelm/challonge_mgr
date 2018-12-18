@@ -10,8 +10,8 @@
     <tr>
       <th><%= t(".name") %></th>
       <th><%= t(".state") %></th>
-      <th><%= t(".challonge_url") %></th>
       <th><%= t(".actions") %></th>
+      <th><%= t(".links") %></th>
     </tr>
   </thead>
 
@@ -20,10 +20,14 @@
       <tr>
         <td><%= tournament.name %></td>
         <td><%= tournament.state.gsub("_", " ") %></td>
-        <td><%= link_to tournament.challonge_url, tournament.challonge_url, target: :_blank %></td>
         <td>
           <%= link_to t(".manage_tournament"), [ :refresh, @user, tournament ] %> |
           <%= link_to t("tournaments.edit_tournament"), [ :edit, @user, tournament ] %>
+        </td>
+        <td>
+          <%= link_to t(".challonge"), tournament.challonge_url, target: :_blank %> |
+          <%= link_to t(".spectator_view"), view_tournament_url(tournament.challonge_alphanumeric_id), target: :_blank %> |
+          <%= link_to t(".kiosk"), tournament_kiosk_url(tournament.challonge_alphanumeric_id), target: :_blank %>
         </td>
       </tr>
     <% end %>

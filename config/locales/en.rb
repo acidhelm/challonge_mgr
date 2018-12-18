@@ -92,9 +92,12 @@
                   " listed here, click the <i>Reload the tournament list" \
                   " from Challonge</i> link below the list.",
                 name: "Name",
-                challonge_url: "Challonge URL",
+                links: "Links",
                 state: "State",
                 actions: "Actions",
+                challonge: "Challonge",
+                spectator_view: "Spectator view",
+                kiosk: "Kiosk",
                 manage_tournament: "Manage this tournament",
                 reload_tournaments: "Reload the tournament list from Challonge",
             },
