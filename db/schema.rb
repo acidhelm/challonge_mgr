@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180605203013) do
+ActiveRecord::Schema.define(version: 2019_01_07_174737) do
 
   create_table "matches", force: :cascade do |t|
     t.integer "tournament_id"
@@ -71,6 +71,8 @@ ActiveRecord::Schema.define(version: 20180605203013) do
     t.string "view_blue_name"
     t.integer "view_gold_score", default: 0, null: false
     t.integer "view_blue_score", default: 0, null: false
+    t.datetime "challonge_created_at", default: "2018-06-21 05:03:51", null: false
+    t.string "subdomain"
     t.index ["user_id"], name: "index_tournaments_on_user_id"
   end
 
