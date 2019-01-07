@@ -112,4 +112,9 @@ class TournamentTest < ActiveSupport::TestCase
         @tournament.started_at = 37.minutes.from_now
         assert_not @tournament.save
     end
+
+    test "Try to save a tournament with an illegal subdomain" do
+        @tournament.subdomain = "domain~!"
+        assert_not @tournament.save
+    end
 end

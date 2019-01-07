@@ -14,4 +14,9 @@ class UserTest < ActiveSupport::TestCase
         @user.api_key = ""
         assert_not @user.save
     end
+
+    test "Try to save a user with an illegal subdomain" do
+        @user.subdomain = "domain~!"
+        assert_not @user.save
+    end
 end

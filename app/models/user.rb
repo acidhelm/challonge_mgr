@@ -5,6 +5,7 @@ class User < ApplicationRecord
 
     validates :user_name, presence: true, uniqueness: { case_sensitive: false }
     validates :api_key, presence: true
+    validates :subdomain, format: { with: /\A[a-zA-Z0-9-]+\z/ }, if: proc { |u| u.subdomain.present? }
     validates :password, presence: true, allow_nil: true
     has_secure_password
 
