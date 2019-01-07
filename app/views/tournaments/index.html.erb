@@ -18,7 +18,7 @@
   <tbody>
     <% @tournaments.each do |tournament| %>
       <tr>
-        <td><%= tournament.name %></td>
+        <td><%= tournament.subdomain.present? ? t(".name_with_subdomain", name: tournament.name, subdomain: tournament.subdomain) : tournament.name %></td>
         <td><%= tournament.state.gsub("_", " ") %></td>
         <td>
           <%= link_to t(".manage_tournament"), [ :refresh, @user, tournament ] %> |

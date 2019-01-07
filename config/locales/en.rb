@@ -95,6 +95,7 @@
                 links: "Links",
                 state: "State",
                 actions: "Actions",
+                name_with_subdomain: "%{name} [%{subdomain}]",
                 challonge: "Challonge",
                 spectator_view: "Spectator view",
                 kiosk: "Kiosk",
