@@ -65,7 +65,7 @@
                 api_key_html: "<u>C</u>hallonge API key: (" \
                               "<a target='_blank' href='https://challonge.com/settings/developer'>" \
                               "Find your API key</a>)",
-                subdomain_html: "<u>S</u>ubdomain: (Leave this blank if your account doesn't belong to a subdomain)",
+                subdomain_html: "<u>S</u>ubdomain: (Leave this blank if your account doesn't belong to an organization)",
                 password_html: "<u>P</u>assword: (Leave this blank to keep your current password)",
                 password_confirmation_html: "C<u>o</u>nfirm the new password:",
                 api_key_accesskey: "c",
