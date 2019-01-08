@@ -8,7 +8,7 @@ class Tournament < ApplicationRecord
     validates :challonge_id, numericality: { only_integer: true, greater_than: 0 },
                              uniqueness: { scope: :user_id }
     validates :name, presence: true
-    validates :challonge_alphanumeric_id, presence: true,
+    validates :challonge_alphanumeric_id, presence: true, format: { with: /\A\w+\z/ },
                                           uniqueness: { scope: :user_id, case_sensitive: false }
     validates :state, presence: true
     validates :challonge_url, presence: true,

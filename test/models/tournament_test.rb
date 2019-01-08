@@ -42,8 +42,13 @@ class TournamentTest < ActiveSupport::TestCase
         assert_not @tournament.save
     end
 
-    test "Try to save a tournament with an illegal challonge_alphanumeric_id" do
+    test "Try to save a tournament with an empty challonge_alphanumeric_id" do
         @tournament.challonge_alphanumeric_id = ""
+        assert_not @tournament.save
+    end
+
+    test "Try to save a tournament with an illegal challonge_alphanumeric_id" do
+        @tournament.challonge_alphanumeric_id = "id~!"
         assert_not @tournament.save
     end
 
