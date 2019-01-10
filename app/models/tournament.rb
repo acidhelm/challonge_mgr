@@ -14,7 +14,7 @@ class Tournament < ApplicationRecord
     validates :challonge_url, presence: true,
                               uniqueness: { scope: :user_id, case_sensitive: false }
     validates :tournament_type, presence: true
-    validates :subdomain, format: { with: /\A[a-zA-Z0-9-]+\z/ }, if: proc { |t| t.subdomain.present? }
+    validates :subdomain, format: { with: /\A[a-zA-Z0-9-]+\z/ }, allow_blank: true
     validates :view_gold_score, numericality: { only_integer: true,
                                                 greater_than_or_equal_to: 0 }
     validates :view_blue_score, numericality: { only_integer: true,

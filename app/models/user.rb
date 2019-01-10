@@ -4,11 +4,13 @@ class User < ApplicationRecord
     has_many :tournaments, dependent: :destroy
 
     validates :user_name, presence: true, uniqueness: { case_sensitive: false }
+    validates :api_key, presence: true
     validates :api_key, format: { with: /\A[a-zA-Z0-9]+\z/,
-                                  message: I18n.t("errors.invalid_api_key") }
+                                  message: I18n.t("errors.invalid_api_key") },
+                        allow_blank: true
     validates :subdomain, format: { with: /\A[a-zA-Z0-9-]+\z/,
                                     message: I18n.t("errors.invalid_subdomain") },
-                          if: proc { |u| u.subdomain.present? }
+                          allow_blank: true
     validates :password, presence: true, allow_nil: true
     has_secure_password
 
