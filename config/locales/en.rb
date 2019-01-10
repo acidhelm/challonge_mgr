@@ -14,7 +14,8 @@
             user_not_found: "That user was not found.",
             login_failed: "The user name or password was incorrect.",
             cant_finalize_tournament: "The tournament still has unplayed matches" \
-                                        " and cannot be finalized yet."
+                                        " and cannot be finalized yet.",
+            invalid_subdomain: "can contain only letters, numbers, and hyphens"
         },
         notices: {
             user_updated: "The user was updated.",
