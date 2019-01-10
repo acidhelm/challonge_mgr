@@ -10,8 +10,13 @@ class UserTest < ActiveSupport::TestCase
         assert_not @user.save
     end
 
-    test "Try to save a user with an illegal api_key" do
+    test "Try to save a user with an empty api_key" do
         @user.api_key = ""
+        assert_not @user.save
+    end
+
+    test "Try to save a user with an illegal api_key" do
+        @user.api_key = "bad-api-key"
         assert_not @user.save
     end
 

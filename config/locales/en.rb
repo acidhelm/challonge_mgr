@@ -15,7 +15,8 @@
             login_failed: "The user name or password was incorrect.",
             cant_finalize_tournament: "The tournament still has unplayed matches" \
                                         " and cannot be finalized yet.",
-            invalid_subdomain: "can contain only letters, numbers, and hyphens"
+            invalid_subdomain: "can contain only letters, numbers, and hyphens",
+            invalid_api_key: "can contain only letters and numbers"
         },
         notices: {
             user_updated: "The user was updated.",
