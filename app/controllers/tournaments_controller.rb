@@ -33,11 +33,18 @@ class TournamentsController < ApplicationController
             if Tournament.states_to_show.include?(s.state) ||
                known_tournaments.include?(s.id)
                 @user.tournaments.find_or_initialize_by(challonge_id: s.id).update!(s)
+                known_tournaments.delete(s.id)
             end
         end
 
         # Delete completed tournaments from the database.
         @user.tournaments.complete.destroy_all
+
+        # If any tournaments are in the database, but were not returned by
+        # get_tournament_list, delete them from the database.  This happens if
+        # the user's subdomain changes; we need to delete the tournaments that
+        # belong to the previous subdomain.
+        @user.tournaments.where(challonge_id: known_tournaments).destroy_all
 
         redirect_to action: "index"
     end
