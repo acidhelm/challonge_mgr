@@ -44,7 +44,9 @@ class TournamentsController < ApplicationController
         # get_tournament_list, delete them from the database.  This happens if
         # the user's subdomain changes; we need to delete the tournaments that
         # belong to the previous subdomain.
-        @user.tournaments.where(challonge_id: known_tournaments).destroy_all
+        if known_tournaments.present?
+            @user.tournaments.where(challonge_id: known_tournaments).destroy_all
+        end
 
         redirect_to action: "index"
     end
