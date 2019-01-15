@@ -97,7 +97,7 @@ class TournamentsController < ApplicationController
                 s = OpenStruct.new(p["participant"])
 
                 @tournament.teams.find_or_initialize_by(challonge_id: s.id).update!(s)
-                old_team_ids.delete s.id
+                old_team_ids.delete(s.id)
             end
 
             # If `old_team_ids` is non-empty, then those matches were deleted from
@@ -121,7 +121,7 @@ class TournamentsController < ApplicationController
                 s = OpenStruct.new(m["match"])
 
                 @tournament.matches.find_or_initialize_by(challonge_id: s.id).update!(s)
-                old_match_ids.delete s.id
+                old_match_ids.delete(s.id)
             end
 
             # If `old_match_ids` is non-empty, then those matches were deleted from
