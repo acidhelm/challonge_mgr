@@ -32,6 +32,10 @@ class Tournament < ApplicationRecord
                   awaiting_review).freeze
     end
 
+    def self.show_state?(state)
+        return states_to_show.include?(state)
+    end
+
     # Tests if this Tournament is complete.
     def complete?
         return state == "complete"

@@ -30,8 +30,7 @@ class TournamentsController < ApplicationController
         tournament_list.each do |t|
             s = OpenStruct.new(t["tournament"])
 
-            if Tournament.states_to_show.include?(s.state) ||
-               known_tournaments.include?(s.id)
+            if Tournament.show_state?(s.state) || known_tournaments.include?(s.id)
                 @user.tournaments.find_or_initialize_by(challonge_id: s.id).update!(s)
                 known_tournaments.delete(s.id)
             end
