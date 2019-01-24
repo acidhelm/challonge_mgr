@@ -151,9 +151,12 @@
             },
             current_match: {
                 header: "Current match: #%{number} in %{round_name}",
-                add_a_win: "Add 1 win",
-                subtract_a_win: "Subtract 1 win",
-                this_team_won: "This team won",
+                add_a_win: "+1",
+                subtract_a_win: "-1",
+                add_a_win_title: "Add a win for this team",
+                subtract_a_win_title: "Subtract a win for this team",
+                match_winner: "Match winner",
+                match_winner_title: "Set this team as the winner of the match",
                 switch_sides: "Switch sides",
             },
             match_list: {

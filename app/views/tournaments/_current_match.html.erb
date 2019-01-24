@@ -30,20 +30,21 @@
                                          @user, @tournament, match,
                                          left_score: left_score + 1,
                                          right_score: right_score),
-                                       method: :put %>
-        <br>
+                                       method: :put, form_class: :add_subtract_win_form,
+                                       title: t(".add_a_win_title") %>
         <%= button_to t(".subtract_a_win"), user_tournament_match_path(
                                               @user, @tournament, match,
                                               left_score: left_score - 1,
                                               right_score: right_score),
-                                            method: :put,
+                                            method: :put, form_class: :add_subtract_win_form,
+                                            title: t(".subtract_a_win_title"),
                                             disabled: left_score == 0 %>
-        <br>
-        <%= button_to t(".this_team_won"), user_tournament_match_path(
-                                             @user, @tournament, match,
-                                             winner_id: match.get_team_id(:left)),
-                                           method: :put,
-                                           disabled: left_score <= right_score %>
+        <p>
+        <%= button_to t(".match_winner"), user_tournament_match_path(
+                                            @user, @tournament, match,
+                                            winner_id: match.get_team_id(:left)),
+                                          method: :put, title: t(".match_winner_title"),
+                                          disabled: left_score <= right_score %>
       </td>
       <td valign="top" align="center">
         <%= button_to t(".switch_sides"), [ :switch, @user, @tournament, match ] %>
@@ -53,20 +54,21 @@
                                          @user, @tournament, match,
                                          left_score: left_score,
                                          right_score: right_score + 1),
-                                       method: :put %>
-        <br>
+                                       method: :put, form_class: :add_subtract_win_form,
+                                       title: t(".add_a_win_title") %>
         <%= button_to t(".subtract_a_win"), user_tournament_match_path(
                                               @user, @tournament, match,
                                               left_score: left_score,
                                               right_score: right_score - 1),
-                                            method: :put,
+                                            method: :put, form_class: :add_subtract_win_form,
+                                            title: t(".subtract_a_win_title"),
                                             disabled: right_score == 0 %>
-        <br>
-        <%= button_to t(".this_team_won"), user_tournament_match_path(
-                                             @user, @tournament, match,
-                                             winner_id: match.get_team_id(:right)),
-                                           method: :put,
-                                           disabled: right_score <= left_score %>
+        <p>
+        <%= button_to t(".match_winner"), user_tournament_match_path(
+                                            @user, @tournament, match,
+                                            winner_id: match.get_team_id(:right)),
+                                          method: :put, title: t(".match_winner_title"),
+                                          disabled: right_score <= left_score %>
       </td>
     </tr>
   <% end %>
