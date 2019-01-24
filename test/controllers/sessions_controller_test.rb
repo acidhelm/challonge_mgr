@@ -7,7 +7,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     end
 
     test "Log in" do
-        log_in_as(users(:willow))
+        log_in_as(users(:user_willow))
     end
 
     test "Access the logout URL" do
@@ -16,7 +16,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     end
 
     test "Try to log in with incorrect credentials" do
-        user = users(:willow)
+        user = users(:user_willow)
 
         post login_path, params: { session: { user_name: user.user_name,
                                               password: "invalidpassword" } }
@@ -27,7 +27,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     end
 
     test "Try to get a user page without logging in" do
-        get user_path(users(:willow).id)
+        get user_path(users(:user_willow).id)
         assert_redirected_to login_path
         assert flash.present?
     end

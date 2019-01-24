@@ -2,7 +2,7 @@ require "test_helper"
 
 class MatchesControllerTest < ActionDispatch::IntegrationTest
     setup do
-        @match = matches(:three)
+        @match = matches(:match_3)
         @tournament = @match.tournament
         @user = @tournament.user
     end

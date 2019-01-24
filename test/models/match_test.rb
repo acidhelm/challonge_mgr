@@ -2,7 +2,7 @@ require "test_helper"
 
 class MatchTest < ActiveSupport::TestCase
     def setup
-        @match = matches(:one)
+        @match = matches(:match_1)
     end
 
     test "Update a match" do
@@ -91,7 +91,7 @@ class MatchTest < ActiveSupport::TestCase
         assert_not @match.save
 
         # Set winner_id and loser_id to non-nil in an uncompleted match.
-        @match = matches(:three)
+        @match = matches(:match_3)
 
         @match.winner_id = @match.team1_id
         assert_not @match.save

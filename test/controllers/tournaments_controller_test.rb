@@ -2,11 +2,11 @@ require "test_helper"
 
 class TournamentsControllerTest < ActionDispatch::IntegrationTest
     setup do
-        @tournament = tournaments(:one)
+        @tournament = tournaments(:tournament_1)
         @user = @tournament.user
-        @other_tournament = tournaments(:two)
+        @other_tournament = tournaments(:tournament_2)
         @other_user = @other_tournament.user
-        @test_user = users(:test_user)
+        @test_user = users(:user_test)
     end
 
     def update_tournament_params(tournament)

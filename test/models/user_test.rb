@@ -2,7 +2,7 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
     def setup
-        @user = users(:willow)
+        @user = users(:user_willow)
     end
 
     test "Try to save a user with an illegal user_name" do

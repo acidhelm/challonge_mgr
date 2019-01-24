@@ -1,4 +1,4 @@
-one:
+match_1:
   challonge_id: 3001
   state: complete
   team1_id: 2001
@@ -16,9 +16,9 @@ one:
   gold_team_id: 2001
   blue_team_id: 2002
   identifier: A
-  tournament: one
+  tournament: tournament_1
 
-two:
+match_2:
   challonge_id: 3002
   state: complete
   team1_id: 2003
@@ -36,9 +36,9 @@ two:
   gold_team_id: 2003
   blue_team_id: 2004
   identifier: B
-  tournament: one
+  tournament: tournament_1
 
-three:
+match_3:
   challonge_id: 3003
   state: open
   team1_id: 2001
@@ -56,9 +56,9 @@ three:
   gold_team_id: 2004
   blue_team_id: 2001
   identifier: C
-  tournament: one
+  tournament: tournament_1
 
-four:
+match_4:
   challonge_id: 3011
   state: complete
   team1_id: 2011
@@ -76,9 +76,9 @@ four:
   gold_team_id: 2012
   blue_team_id: 2011
   identifier: A
-  tournament: two
+  tournament: tournament_2
 
-five:
+match_5:
   challonge_id: 3012
   state: underway
   team1_id: 2013
@@ -96,9 +96,9 @@ five:
   gold_team_id: 2014
   blue_team_id: 2013
   identifier: B
-  tournament: two
+  tournament: tournament_2
 
-six:
+match_6:
   challonge_id: 3013
   state: open
   team1_id: 2011
@@ -116,7 +116,7 @@ six:
   gold_team_id: null
   blue_team_id: null
   identifier: C
-  tournament: two
+  tournament: tournament_2
 
 live_data_match_1:
   challonge_id: 115965807

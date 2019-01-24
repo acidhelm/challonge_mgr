@@ -2,11 +2,11 @@ require "test_helper"
 
 class TournamentTest < ActiveSupport::TestCase
     def setup
-        @tournament = tournaments(:one)
+        @tournament = tournaments(:tournament_1)
     end
 
     test "Mark a match as complete" do
-        @tournament = tournaments(:two)
+        @tournament = tournaments(:tournament_2)
         @match = @tournament.current_match_obj
 
         assert_not_nil @match

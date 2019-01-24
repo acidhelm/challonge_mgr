@@ -2,7 +2,7 @@ require "test_helper"
 
 class TeamTest < ActiveSupport::TestCase
     def setup
-        @team = teams(:one)
+        @team = teams(:team_1)
     end
 
     test "Update a team" do

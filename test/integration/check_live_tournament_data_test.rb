@@ -2,7 +2,7 @@ require "test_helper"
 
 class CheckLiveTournamentDataTest < ActionDispatch::IntegrationTest
     def setup
-        @user = users(:test_user)
+        @user = users(:user_test)
 
         if @user.api_key.blank?
             flunk "You must set the \"CHALLONGE_MGR_TEST_USER_API_KEY\"" \

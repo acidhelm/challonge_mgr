@@ -1,58 +1,58 @@
-one:
+team_1:
   challonge_id: 2001
   name: CGNU Dumples
   seed: 1
   group_team_ids: null
-  tournament: one
+  tournament: tournament_1
 
-two:
+team_2:
   challonge_id: 2002
   name: Homestar's Knees Tech
   seed: 2
   group_team_ids: null
-  tournament: one
+  tournament: tournament_1
 
-three:
+team_3:
   challonge_id: 2003
   name: Pile of Electronics State
   seed: 3
   group_team_ids: null
-  tournament: one
+  tournament: tournament_1
 
-four:
+team_4:
   challonge_id: 2004
   name: Northwise Meeps
   seed: 4
   group_team_ids: null
-  tournament: one
+  tournament: tournament_1
 
-five:
+team_5:
   challonge_id: 2011
   name: Sunnyvale Slayers
   seed: 1
   group_team_ids: null
-  tournament: two
+  tournament: tournament_2
 
-six:
+team_6:
   challonge_id: 2012
   name: Hellmouth Hounds
   seed: 2
   group_team_ids: null
-  tournament: two
+  tournament: tournament_2
 
-seven:
+team_7:
   challonge_id: 2013
   name: UC Sunnydale Wildcats
   seed: 3
   group_team_ids: null
-  tournament: two
+  tournament: tournament_2
 
-eight:
+team_8:
   challonge_id: 2014
   name: The Scoobies
   seed: 4
   group_team_ids: null
-  tournament: two
+  tournament: tournament_2
 
 live_data_team_a:
   challonge_id: 71427631

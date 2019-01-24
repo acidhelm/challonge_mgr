@@ -3,20 +3,20 @@
    encoded_iv = Base64.encode64(iv)
    password_digest = User.digest("password") %>
 
-willow:
+user_willow:
   user_name: willow
   encrypted_api_key: "<%= User.encrypt_api_key('notused', key: key, iv: iv) %>"
   encrypted_api_key_iv: "<%= encoded_iv %>"
   password_digest: <%= password_digest %>
   subdomain: "sub1"
 
-buffy:
+user_buffy:
   user_name: buffy
   encrypted_api_key: "<%= User.encrypt_api_key('notused', key: key, iv: iv) %>"
   encrypted_api_key_iv: "<%= encoded_iv %>"
   password_digest: <%= password_digest %>
 
-test_user:
+user_test:
   user_name: test_user
   encrypted_api_key: "<%= User.encrypt_api_key(ENV['CHALLONGE_MGR_TEST_USER_API_KEY'], key: key, iv: iv) %>"
   encrypted_api_key_iv: "<%= encoded_iv %>"

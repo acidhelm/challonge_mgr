@@ -7,7 +7,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     # setup step.  The simplest way to do that is:
     #   setup :setup_log_in
     def setup_log_in
-        @user = users(:test_user)
+        @user = users(:user_test)
 
         if @user.api_key.blank?
             flunk "You must set the \"CHALLONGE_MGR_TEST_USER_API_KEY\"" \

@@ -2,7 +2,7 @@ require "application_system_test_case"
 
 class TournamentViewerTest < ApplicationSystemTestCase
     test "Check the view-tournament page" do
-        tournament = tournaments(:one)
+        tournament = tournaments(:tournament_1)
 
         visit view_tournament_url(tournament.challonge_alphanumeric_id)
 

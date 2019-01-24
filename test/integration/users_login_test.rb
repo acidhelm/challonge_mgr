@@ -2,7 +2,7 @@ require "test_helper"
 
 class UsersLoginTest < ActionDispatch::IntegrationTest
     def setup
-        @user = users(:willow)
+        @user = users(:user_willow)
     end
 
     test "Try to log in with invalid credentials" do

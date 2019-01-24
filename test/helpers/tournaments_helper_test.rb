@@ -2,7 +2,7 @@ require "test_helper"
 
 class TournamentsHelperTest < ActionView::TestCase
     setup do
-        @tournament = tournaments(:one)
+        @tournament = tournaments(:tournament_1)
     end
 
     test "Test the match-starting Slack message" do

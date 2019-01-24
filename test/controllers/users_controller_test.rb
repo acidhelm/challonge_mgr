@@ -2,8 +2,8 @@ require "test_helper"
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
     setup do
-        @user = users(:willow)
-        @other_user = users(:buffy)
+        @user = users(:user_willow)
+        @other_user = users(:user_buffy)
     end
 
     def update_user_params

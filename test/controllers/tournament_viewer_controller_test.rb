@@ -2,7 +2,7 @@ require "test_helper"
 
 class TournamentViewerControllerTest < ActionDispatch::IntegrationTest
     setup do
-        @tournament = tournaments(:one)
+        @tournament = tournaments(:tournament_1)
         @slug = @tournament.challonge_alphanumeric_id
         @bad_slug = @slug.reverse
     end

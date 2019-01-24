@@ -2,7 +2,7 @@ require "application_system_test_case"
 
 class KioskTest < ApplicationSystemTestCase
     test "Check the kiosk page" do
-        tournament = tournaments(:two)
+        tournament = tournaments(:tournament_2)
 
         visit tournament_kiosk_url(tournament.challonge_alphanumeric_id)
 
