@@ -105,9 +105,9 @@
                 reload_tournaments: "Reload the tournament list from Challonge",
             },
             show: {
-                bracket: "Bracket:",
-                spectator_view: "Spectator view:",
-                kiosk_view: "Kiosk view:",
+                bracket_link: "Challonge bracket",
+                spectator_view_link: "Spectator view",
+                kiosk_link: "Kiosk",
                 upcoming_matches: "Upcoming matches:",
                 completed_matches: "Completed matches:",
                 team_records: "Team records:",

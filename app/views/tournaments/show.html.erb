@@ -1,17 +1,14 @@
 <% content_for :title, @tournament.name %>
 <% readonly = @tournament.readonly? %>
-<p id="notice"><%= notice %></p>
-<h1><%= @tournament.name %></h1>
-<h3><%= t(".bracket") %> <%= link_to nil, @tournament.challonge_url, target: :_blank %></h3>
-
 <% if !readonly %>
-  <h4>
-    <%= t(".spectator_view") %>
-    <%= link_to nil, view_tournament_url(@tournament.challonge_alphanumeric_id), target: :_blank %>
-    <br>
-    <%= t(".kiosk_view") %>
-    <%= link_to nil, tournament_kiosk_url(@tournament.challonge_alphanumeric_id), target: :_blank %>
-  </h4>
+  <p id="notice"><%= notice %></p>
+<% end %>
+<h1><%= @tournament.name %></h1>
+<% if !readonly %>
+  <p>Links: <%= link_to t(".bracket_link"), @tournament.challonge_url, target: :_blank %> |
+     <%= link_to t(".spectator_view_link"), view_tournament_url(@tournament.challonge_alphanumeric_id), target: :_blank %> |
+     <%= link_to t(".kiosk_link"), tournament_kiosk_url(@tournament.challonge_alphanumeric_id), target: :_blank %>
+  </p>
 <% end %>
 
 <% if @current_match.present? %>
