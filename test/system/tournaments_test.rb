@@ -66,7 +66,11 @@ class TournamentsTest < ApplicationSystemTestCase
                 assert_selector "h1", exact_text: tournament.name
             end
 
-            assert_link tournament.challonge_url, href: tournament.challonge_url,
+            assert_link "Challonge bracket", href: tournament.challonge_url,
+                        exact: true
+            assert_link "Spectator view", href: view_tournament_path(tournament.challonge_alphanumeric_id),
+                        exact: true
+            assert_link "Kiosk", href: tournament_kiosk_path(tournament.challonge_alphanumeric_id),
                         exact: true
 
             # Since this is using live data from Challonge, we can't predict
