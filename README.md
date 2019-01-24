@@ -52,13 +52,13 @@ Challonge Mgr will show this match in the "Current match" section of the page.
 
 ![The current match](images/current_match.png)
 
-When a team wins a game, click the _Add 1 win_ button under that team's name.
-If you mistakenly add a win for the wrong team, click the _Subtract 1 win_
-button to correct the score.  Click the _Switch sides_ button if the cabinets
-that the teams are on is opposite of the order in which they are shown on the page.
+When a team wins a game, click the _+1_ button under that team's name.
+If you mistakenly add a win for the wrong team, click the _-1_
+button to correct the score.  Click the _Switch sides_ button to swap the teams
+between cabinets.
 
-When a match is complete, click the _This team won_ button under the winning
-team's name.  The page will refresh and show the match in the "Completed
+When a match is complete, click the _Match winner_ button under the winning
+team's name.  The page will refresh and the match will appear in the "Completed
 matches" section.
 
 ## Tournament settings
