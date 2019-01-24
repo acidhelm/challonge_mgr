@@ -6,8 +6,8 @@
 <h1><%= @tournament.name %></h1>
 <% if !readonly %>
   <p>Links: <%= link_to t(".bracket_link"), @tournament.challonge_url, target: :_blank %> |
-     <%= link_to t(".spectator_view_link"), view_tournament_url(@tournament.challonge_alphanumeric_id), target: :_blank %> |
-     <%= link_to t(".kiosk_link"), tournament_kiosk_url(@tournament.challonge_alphanumeric_id), target: :_blank %>
+     <%= link_to t(".spectator_view_link"), view_tournament_path(@tournament.challonge_alphanumeric_id), target: :_blank %> |
+     <%= link_to t(".kiosk_link"), tournament_kiosk_path(@tournament.challonge_alphanumeric_id), target: :_blank %>
   </p>
 <% end %>
 
