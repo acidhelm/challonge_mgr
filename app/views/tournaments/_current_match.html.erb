@@ -7,21 +7,21 @@
    right_score = match.team_score(:right)
    left_color = @tournament.cabinet_color(:left)
    right_color = @tournament.cabinet_color(:right) %>
-<h1 class="currentmatchheader">
+<h1 class="curr_match_header">
 <%= t(".header", number: match.number, round_name: match.round_name(capitalized: false)) %>
 </h1>
 <p><table>
   <tr>
-    <td colspan='2' align="center"><h2 class="currentmatchcolor"><%= left_color %></h2></td>
+    <td colspan='2' align="center"><h2 class="curr_match_color"><%= left_color %></h2></td>
     <td></td>
-    <td colspan='2' align="center"><h2 class="currentmatchcolor"><%= right_color %></h2></td>
+    <td colspan='2' align="center"><h2 class="curr_match_color"><%= right_color %></h2></td>
   </tr>
   <tr>
-    <td><h1 class="currentmatchname"><%= left_name %></h1></td>
-    <td><h1 class="currentmatchscore"><%= left_score %></h1></td>
-    <td align="center"><h1 class="currentmatchscore">&mdash;</h1></td>
-    <td align="right"><h1 class="currentmatchscore"><%= right_score %></h1></td>
-    <td align="right"><h1 class="currentmatchname"><%= right_name %></h1></td>
+    <td><h1 class="curr_match_name"><%= left_name %></h1></td>
+    <td><h1 class="curr_match_score"><%= left_score %></h1></td>
+    <td align="center"><h1 class="curr_match_score">&mdash;</h1></td>
+    <td align="right"><h1 class="curr_match_score"><%= right_score %></h1></td>
+    <td align="right"><h1 class="curr_match_name"><%= right_name %></h1></td>
   </tr>
   <% if !@tournament.readonly? %>
     <tr>
