@@ -3,6 +3,10 @@ require "application_system_test_case"
 class UsersTest < ApplicationSystemTestCase
     setup :setup_log_in
 
+    test "Check the redirect after logging in" do
+        assert_current_path(user_tournaments_path(@user))
+    end
+
     test "Check the user settings page" do
         new_password = "B055man!69"
 
