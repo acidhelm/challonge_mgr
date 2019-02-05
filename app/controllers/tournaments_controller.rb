@@ -7,7 +7,23 @@ class TournamentsController < ApplicationController
     before_action :correct_user?
 
     def index
-        @tournaments = @user.tournaments.underway.order(started_at: :desc)
+        # Our intention is to show the most-recently-started tournament first,
+        # since the user will probably be looking for the tournament that
+        # they just started on Challonge.  However, in the Brewcade account,
+        # some really old tournaments have `started_at == nil` in the JSON
+        # that Challonge sends, and Postgres sorts them to the beginning of
+        # the results.
+        # To work around that, do two queries.  The tournaments that have their
+        # `started_at` set properly go first, then the ones where `started_at`
+        # is `nil`.
+        good_tournaments = @user.tournaments.underway.where.not(started_at: nil).
+                             order(started_at: :desc)
+        buggy_tournaments = @user.tournaments.underway.where(started_at: nil).
+                              order(updated_at: :desc)
+
+        # `+` returns an `Array`, but that's fine, because we don't do any
+        # further operations on the results.
+        @tournaments = good_tournaments + buggy_tournaments
     end
 
     def refresh_all
