@@ -18,4 +18,18 @@ class KioskTest < ApplicationSystemTestCase
 
         assert_selector "tbody tr:nth-child(3) td:first-child", exact_text: "After that:"
     end
+
+    test "Check for meta refresh tags" do
+        tag = "/html/head/meta[@http-equiv='refresh']"
+
+        visit tournament_kiosk_url(tournaments(:tournament_1).challonge_alphanumeric_id)
+
+        assert page.find(:xpath, tag, visible: false)
+
+        visit tournament_kiosk_url(tournaments(:live_data_tournament).challonge_alphanumeric_id)
+
+        assert_raises(Capybara::ElementNotFound) do
+            page.find(:xpath, tag, visible: false)
+        end
+    end
 end
