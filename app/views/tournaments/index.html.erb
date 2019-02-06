@@ -17,7 +17,7 @@
 
   <tbody>
     <% @tournaments.each do |tournament| %>
-      <tr>
+      <tr id="tournament<%= tournament.id %>">
         <td><%= tournament.subdomain.present? ? t(".name_with_subdomain", name: tournament.name, subdomain: tournament.subdomain) : tournament.name %></td>
         <td><%= ActiveSupport::Inflector.humanize(tournament.state, capitalize: false) %></td>
         <td>
@@ -26,8 +26,8 @@
         </td>
         <td>
           <%= link_to t(".challonge"), tournament.challonge_url, target: :_blank %> |
-          <%= link_to t(".spectator_view"), view_tournament_url(tournament.challonge_alphanumeric_id), target: :_blank %> |
-          <%= link_to t(".kiosk"), tournament_kiosk_url(tournament.challonge_alphanumeric_id), target: :_blank %>
+          <%= link_to t(".spectator_view"), view_tournament_path(tournament.challonge_alphanumeric_id), target: :_blank %> |
+          <%= link_to t(".kiosk"), tournament_kiosk_path(tournament.challonge_alphanumeric_id), target: :_blank %>
         </td>
       </tr>
     <% end %>
