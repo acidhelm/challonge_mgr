@@ -6,7 +6,7 @@ class TournamentsTest < ApplicationSystemTestCase
     test "Check the tournament list" do
         visit user_tournaments_path(@user)
 
-        assert_selector "h1", text: /^Challonge tournaments owned by/
+        assert_selector "h1", exact_text: "Challonge tournaments owned by #{@user.user_name}"
 
         # The footer should have three links.
         assert_link "Reload the tournament list from Challonge",
@@ -23,27 +23,37 @@ class TournamentsTest < ApplicationSystemTestCase
 
         # Check the list of tournaments.
         page.all("tbody tr").each do |tr|
+            tournament = Tournament.find(tr[:id].slice(/\d+\z/))
+
             tr.all("td").each_with_index do |td, i|
                 case i
-                    when 0, 1
-                        # The Name and State columns should have text.
-                        assert td.text.present?
+                    when 0
+                        if tournament.subdomain.present?
+                            assert_equal "#{tournament.name} [#{tournament.subdomain}]",
+                                         td.text
+                        else
+                            assert_equal tournament.name, td.text
+                        end
+                    when 1
+                        assert_equal ActiveSupport::Inflector.humanize(tournament.state, capitalize: false),
+                                     td.text
                     when 2
-                        # The Actions column should have two links.
-                        assert td.has_link? "Manage this tournament", exact: true
-                        assert td.has_link? "Change settings", exact: true
+                        assert td.has_link? "Manage this tournament", exact: true,
+                                            href: refresh_user_tournament_path(@user, tournament)
+
+                        assert td.has_link? "Change settings", exact: true,
+                                            href: edit_user_tournament_path(@user, tournament)
                     when 3
-                        # The Links column should have three links.
-                        assert td.has_link? "Challonge", exact: true
-                        assert td.has_link? "Spectator view", exact: true
-                        assert td.has_link? "Kiosk", exact: true
+                        slug = tournament.challonge_alphanumeric_id
 
-                        # Check that the "Challonge" link points to a valid
-                        # Challonge URL.
-                        uri = URI.parse(td.find("a:nth-child(1)")[:href])
+                        assert td.has_link? "Challonge", exact: true,
+                                            href: tournament.challonge_url
 
-                        assert uri.host =~ /^([^.]+\.)?challonge\.com$/
-                        assert uri.path =~ /^\/\w+$/
+                        assert td.has_link? "Spectator view", exact: true,
+                                            href: view_tournament_path(slug)
+
+                        assert td.has_link? "Kiosk", exact: true,
+                                            href: tournament_kiosk_path(slug)
                 end
             end
         end
@@ -63,12 +73,11 @@ class TournamentsTest < ApplicationSystemTestCase
 
         if row_elt
             edit_settings_link = row_elt.find("td:nth-child(3) a:nth-child(2)")
-            tournament_url = edit_settings_link["href"]
-            assert_equal "/edit", tournament_url.slice!(%r{/[^/]+$})
+            tournament = Tournament.find(row_elt[:id].slice(/\d+\z/))
 
             edit_settings_link.click
 
-            assert_selector "h1", text: /^Change settings for/
+            assert_selector "h1", exact_text: "Change settings for #{tournament.name}"
             assert_selector "label", exact_text: "The Gold cabinet is on the left side"
             assert_field id: "tournament_gold_on_left", type: "checkbox"
             assert_selector "label", exact_text: "Send Slack notifications when " \
@@ -84,7 +93,7 @@ class TournamentsTest < ApplicationSystemTestCase
             VCR.use_cassette("get_tournament_info") do
                 click_on "Update Tournament"
 
-                assert_current_path(tournament_url)
+                assert_current_path(user_tournament_path(@user, tournament))
             end
         end
     end
