@@ -1,5 +1,6 @@
 <% show_actions = !(readonly || match_list.all?(&:complete?) || match_list.all?(&:teams_are_tbd?)) %>
 <table>
+<thead>
   <tr>
     <th><%= t(".match_number") %></th>
     <th><%= t(".round") %></th>
@@ -8,6 +9,8 @@
       <th><%= t(".actions") %></th>
     <% end %>
   </tr>
+</thead>
+<tbody>
   <% match_list.each do |m| %>
   <% if m.get_team_id(:left)
          left_team_name = m.team_name(:left)
@@ -92,4 +95,5 @@
     <% end %>
   </tr>
   <% end %>
+</tbody>
 </table>

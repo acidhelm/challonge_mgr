@@ -10,7 +10,9 @@
 <h1 class="curr_match_header">
 <%= t(".header", number: match.number, round_name: match.round_name(capitalized: false)) %>
 </h1>
-<p><table>
+<p>
+<table>
+<tbody>
   <tr>
     <td colspan='2' align="center"><h2 class="curr_match_color"><%= left_color %></h2></td>
     <td></td>
@@ -88,4 +90,6 @@
       <%= render partial: "tournaments/previous_matches", locals: { team: right_team } %>
     </td>
   </tr>
-</table></p>
+</tbody>
+</table>
+</p>

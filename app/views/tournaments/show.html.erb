@@ -32,18 +32,22 @@
   <hr>
   <h2><%= t(".final_standings") %></h2>
   <table>
-    <tr>
-      <th><%= t(".place") %></th>
-      <th><%= t(".seed") %></th>
-      <th><%= t(".name") %></th>
-    </tr>
-    <% @teams_in_final_rank_order.each do |t| %>
+    <thead>
       <tr>
-        <td><%= t.final_rank %></td>
-        <td><%= t.seed %></td>
-        <td><%= t.name %></td>
+        <th><%= t(".place") %></th>
+        <th><%= t(".seed") %></th>
+        <th><%= t(".name") %></th>
       </tr>
-    <% end %>
+    </thead>
+    <tbody>
+      <% @teams_in_final_rank_order.each do |t| %>
+        <tr>
+          <td><%= t.final_rank %></td>
+          <td><%= t.seed %></td>
+          <td><%= t.name %></td>
+        </tr>
+      <% end %>
+    </tbody>
   </table>
 <% elsif @tournament.in_group_stage? %>
   <hr>
@@ -65,18 +69,22 @@
 <hr>
 <p><h2><%= t(".team_records") %></h2>
 <table>
-<tr>
-  <th><%= t(".seed") %></th>
-  <th><%= t(".record") %></th>
-</tr>
-<% @teams_in_seed_order.each do |t| %>
-  <% num_wins = @tournament.matches.winner_is(t).count
-     num_losses = @tournament.matches.loser_is(t).count
-  %>
-  <tr>
-    <td><%= t.seed %></td>
-    <td><%= t(".team_record", name: t.name, wins: num_wins, losses: num_losses) %></td>
-  </tr>
+  <thead>
+    <tr>
+      <th><%= t(".seed") %></th>
+      <th><%= t(".record") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @teams_in_seed_order.each do |t| %>
+      <% num_wins = @tournament.matches.winner_is(t).count
+         num_losses = @tournament.matches.loser_is(t).count
+      %>
+    <tr>
+      <td><%= t.seed %></td>
+      <td><%= t(".team_record", name: t.name, wins: num_wins, losses: num_losses) %></td>
+    </tr>
+  </tbody>
 <% end %>
 </table>
 </p>
