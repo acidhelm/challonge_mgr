@@ -71,32 +71,32 @@ class TournamentsTest < ApplicationSystemTestCase
                    " running any assertions."
         end
 
-        if row_elt
-            edit_settings_link = row_elt.find("td:nth-child(3) a:nth-child(2)")
-            tournament = Tournament.find(row_elt[:id].slice(/\d+\z/))
+        return unless row_elt
 
-            edit_settings_link.click
+        edit_settings_link = row_elt.find("td:nth-child(3) a:nth-child(2)")
+        tournament = Tournament.find(row_elt[:id].slice(/\d+\z/))
 
-            assert_selector "h1", exact_text: "Change settings for #{tournament.name}"
-            assert_selector "label", exact_text: "The Gold cabinet is on the left side"
-            assert_field id: "tournament_gold_on_left", type: "checkbox"
-            assert_selector "label", exact_text: "Send Slack notifications when " \
-                                                   "matches begin and end"
-            assert_field id: "tournament_send_slack_notifications", type: "checkbox"
-            assert_selector "label", exact_text: "Slack channel:"
-            assert_field name: "tournament[slack_notifications_channel]", type: "text"
-            assert_button "Update Tournament", exact: true
-            assert_link "Cancel", exact: true
+        edit_settings_link.click
 
-            page.find_by_id("tournament_gold_on_left").click
-            page.find_by_id("tournament_send_slack_notifications").click
-            fill_in "tournament[slack_notifications_channel]", with: "ucsunnydale"
+        assert_selector "h1", exact_text: "Change settings for #{tournament.name}"
+        assert_selector "label", exact_text: "The Gold cabinet is on the left side"
+        assert_field id: "tournament_gold_on_left", type: "checkbox"
+        assert_selector "label", exact_text: "Send Slack notifications when " \
+                                               "matches begin and end"
+        assert_field id: "tournament_send_slack_notifications", type: "checkbox"
+        assert_selector "label", exact_text: "Slack channel:"
+        assert_field name: "tournament[slack_notifications_channel]", type: "text"
+        assert_button "Update Tournament", exact: true
+        assert_link "Cancel", exact: true
 
-            VCR.use_cassette("get_tournament_info") do
-                click_on "Update Tournament"
+        page.find_by_id("tournament_gold_on_left").click
+        page.find_by_id("tournament_send_slack_notifications").click
+        fill_in "tournament[slack_notifications_channel]", with: "ucsunnydale"
 
-                assert_current_path(user_tournament_path(@user, tournament))
-            end
+        VCR.use_cassette("get_tournament_info") do
+            click_on "Update Tournament"
+
+            assert_current_path(user_tournament_path(@user, tournament))
         end
     end
 
@@ -112,43 +112,43 @@ class TournamentsTest < ApplicationSystemTestCase
                    " running any assertions."
         end
 
-        if row_elt
-            manage_link = row_elt.find("td:nth-child(3) a:nth-child(1)")
-            tournament = Tournament.find(row_elt[:id].slice(/\d+\z/))
+        return unless row_elt
 
-            VCR.use_cassette("get_tournament_info") do
-                manage_link.click
+        manage_link = row_elt.find("td:nth-child(3) a:nth-child(1)")
+        tournament = Tournament.find(row_elt[:id].slice(/\d+\z/))
 
-                # This call has to be within the `use_cassette` block, because
-                # `click` returns right away.  `assert_selector` spins, looking
-                # for the element, and the HTTP request happens during that loop.
-                assert_selector "h1", exact_text: tournament.name
-            end
+        VCR.use_cassette("get_tournament_info") do
+            manage_link.click
 
-            slug = tournament.challonge_alphanumeric_id
-
-            assert_link "Challonge bracket", href: tournament.challonge_url, exact: true
-            assert_link "Spectator view", href: view_tournament_path(slug), exact: true
-            assert_link "Kiosk", href: tournament_kiosk_path(slug), exact: true
-
-            # Since this is using live data from Challonge, we can't predict
-            # what the Upcoming Matches, Completed Matches, and Team Records
-            # sections will contain.  The Team Records section will always exist,
-            # so we can look for that.
-            assert_selector "h2", exact_text: "Team records:"
-            assert_selector "th", exact_text: "Seed"
-            assert_selector "th", exact_text: "Team (W-L)"
-
-            assert_link "Reload this tournament from Challonge", exact: true,
-                        href: refresh_user_tournament_path(@user, tournament)
-
-            assert_link "Change settings", exact: true,
-                        href: edit_user_tournament_path(@user, tournament)
-
-            assert_link "Back to the tournament list", exact: true,
-                        href: user_tournaments_path(@user)
-
-            assert_link "Log Out", href: logout_path, exact: true
+            # This call has to be within the `use_cassette` block, because
+            # `click` returns right away.  `assert_selector` spins, looking
+            # for the element, and the HTTP request happens during that loop.
+            assert_selector "h1", exact_text: tournament.name
         end
+
+        slug = tournament.challonge_alphanumeric_id
+
+        assert_link "Challonge bracket", href: tournament.challonge_url, exact: true
+        assert_link "Spectator view", href: view_tournament_path(slug), exact: true
+        assert_link "Kiosk", href: tournament_kiosk_path(slug), exact: true
+
+        # Since this is using live data from Challonge, we can't predict
+        # what the Upcoming Matches, Completed Matches, and Team Records
+        # sections will contain.  The Team Records section will always exist,
+        # so we can look for that.
+        assert_selector "h2", exact_text: "Team records:"
+        assert_selector "th", exact_text: "Seed"
+        assert_selector "th", exact_text: "Team (W-L)"
+
+        assert_link "Reload this tournament from Challonge", exact: true,
+                    href: refresh_user_tournament_path(@user, tournament)
+
+        assert_link "Change settings", exact: true,
+                    href: edit_user_tournament_path(@user, tournament)
+
+        assert_link "Back to the tournament list", exact: true,
+                    href: user_tournaments_path(@user)
+
+        assert_link "Log Out", href: logout_path, exact: true
     end
 end
