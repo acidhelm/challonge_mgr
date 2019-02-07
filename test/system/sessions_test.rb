@@ -5,9 +5,9 @@ class SessionsTest < ApplicationSystemTestCase
         visit login_url
 
         assert_selector "label", exact_text: "User name:"
-        assert_field "user_name"
+        assert_field "user_name", type: "text"
         assert_selector "label", exact_text: "Password:"
-        assert_field "password"
+        assert_field "password", type: "password"
 
         assert_button "Log in", exact: true
     end
