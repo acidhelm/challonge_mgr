@@ -85,6 +85,8 @@ class TournamentsTest < ApplicationSystemTestCase
             assert_field id: "tournament_send_slack_notifications", type: "checkbox"
             assert_selector "label", exact_text: "Slack channel:"
             assert_field name: "tournament[slack_notifications_channel]", type: "text"
+            assert_button "Update Tournament", exact: true
+            assert_link "Cancel", exact: true
 
             page.find_by_id("tournament_gold_on_left").click
             page.find_by_id("tournament_send_slack_notifications").click
