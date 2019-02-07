@@ -119,18 +119,17 @@ class TournamentsTest < ApplicationSystemTestCase
             VCR.use_cassette("get_tournament_info") do
                 manage_link.click
 
-                # This call has to be within the use_cassette block, because
+                # This call has to be within the `use_cassette` block, because
                 # `click` returns right away.  `assert_selector` spins, looking
                 # for the element, and the HTTP request happens during that loop.
                 assert_selector "h1", exact_text: tournament.name
             end
 
-            assert_link "Challonge bracket", href: tournament.challonge_url,
-                        exact: true
-            assert_link "Spectator view", href: view_tournament_path(tournament.challonge_alphanumeric_id),
-                        exact: true
-            assert_link "Kiosk", href: tournament_kiosk_path(tournament.challonge_alphanumeric_id),
-                        exact: true
+            slug = tournament.challonge_alphanumeric_id
+
+            assert_link "Challonge bracket", href: tournament.challonge_url, exact: true
+            assert_link "Spectator view", href: view_tournament_path(slug), exact: true
+            assert_link "Kiosk", href: tournament_kiosk_path(slug), exact: true
 
             # Since this is using live data from Challonge, we can't predict
             # what the Upcoming Matches, Completed Matches, and Team Records
@@ -140,16 +139,14 @@ class TournamentsTest < ApplicationSystemTestCase
             assert_selector "th", exact_text: "Seed"
             assert_selector "th", exact_text: "Team (W-L)"
 
-            assert_link "Reload this tournament from Challonge",
-                        href: refresh_user_tournament_path(@user, tournament),
-                        exact: true
+            assert_link "Reload this tournament from Challonge", exact: true,
+                        href: refresh_user_tournament_path(@user, tournament)
 
-            assert_link "Change settings",
-                        href: edit_user_tournament_path(@user, tournament),
-                        exact: true
+            assert_link "Change settings", exact: true,
+                        href: edit_user_tournament_path(@user, tournament)
 
-            assert_link "Back to the tournament list",
-                        href: user_tournaments_path(@user), exact: true
+            assert_link "Back to the tournament list", exact: true,
+                        href: user_tournaments_path(@user)
 
             assert_link "Log Out", href: logout_path, exact: true
         end
