@@ -114,9 +114,7 @@ class TournamentsTest < ApplicationSystemTestCase
 
         if row_elt
             manage_link = row_elt.find("td:nth-child(3) a:nth-child(1)")
-            manage_url = manage_link["href"]
-            tournament_id = manage_url.match(%r{/tournaments/(\d+)})[1]
-            tournament = @user.tournaments.find(tournament_id)
+            tournament = Tournament.find(row_elt[:id].slice(/\d+\z/))
 
             VCR.use_cassette("get_tournament_info") do
                 manage_link.click
