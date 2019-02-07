@@ -8,15 +8,27 @@ class KioskTest < ApplicationSystemTestCase
 
         assert_selector "h1", exact_text: tournament.name
 
-        assert_selector "tbody tr:first-child td:first-child", exact_text: "Current match:"
-        assert_selector "tbody tr:first-child td:nth-child(2)", text: "UC Sunnydale Wildcats"
-        assert_selector "tbody tr:first-child td:nth-child(2)", text: "The Scoobies"
+        within "table tbody" do
+            within "tr:first-child" do
+                assert_selector "td:first-child", exact_text: "Current match:"
 
-        assert_selector "tbody tr:nth-child(2) td:first-child", exact_text: "On deck:"
-        assert_selector "tbody tr:nth-child(2) td:nth-child(2)", text: "Sunnyvale Slayers"
-        assert_selector "tbody tr:nth-child(2) td:nth-child(2)", text: "TBD"
+                within "td:nth-child(2)" do
+                    assert_text "UC Sunnydale Wildcats"
+                    assert_text "The Scoobies"
+                end
+            end
 
-        assert_selector "tbody tr:nth-child(3) td:first-child", exact_text: "After that:"
+            within "tr:nth-child(2)" do
+                assert_selector "td:first-child", exact_text: "On deck:"
+
+                within "td:nth-child(2)" do
+                    assert_text "Sunnyvale Slayers"
+                    assert_text "TBD"
+                end
+            end
+
+            assert_selector "tr:nth-child(3) td:first-child", exact_text: "After that:"
+        end
     end
 
     test "Check for meta refresh tags" do
