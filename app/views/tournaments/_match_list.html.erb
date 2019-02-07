@@ -1,5 +1,5 @@
 <% show_actions = !(readonly || match_list.all?(&:complete?) || match_list.all?(&:teams_are_tbd?)) %>
-<table>
+<table id="<%= table_id %>">
 <thead>
   <tr>
     <th><%= t(".match_number") %></th>

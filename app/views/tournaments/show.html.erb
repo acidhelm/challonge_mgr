@@ -18,8 +18,9 @@
 
 <% if @upcoming_matches.present? %>
   <hr>
-  <p><h2><%= t(".upcoming_matches") %></h2>
-  <p><%= render partial: "tournaments/match_list", object: @upcoming_matches, locals: { readonly: readonly } %></p>
+  <p><h2><%= t(".upcoming_matches") %></h2></p>
+  <p><%= render partial: "tournaments/match_list", object: @upcoming_matches,
+                locals: { table_id: "upcoming", readonly: readonly } %></p>
 <% elsif @tournament.finalizable? %>
   <% if !readonly %>
     <hr>
@@ -63,12 +64,13 @@
 <% if @completed_matches.present? %>
   <hr>
   <p><h2><%= t(".completed_matches") %></h2>
-  <p><%= render partial: "tournaments/match_list", object: @completed_matches, locals: { readonly: readonly } %></p>
+  <p><%= render partial: "tournaments/match_list", object: @completed_matches,
+                locals: { table_id: "completed", readonly: readonly } %></p>
 <% end %>
 
 <hr>
 <p><h2><%= t(".team_records") %></h2>
-<table>
+<table id='team_records'>
   <thead>
     <tr>
       <th><%= t(".seed") %></th>
@@ -80,12 +82,12 @@
       <% num_wins = @tournament.matches.winner_is(t).count
          num_losses = @tournament.matches.loser_is(t).count
       %>
-    <tr>
-      <td><%= t.seed %></td>
-      <td><%= t(".team_record", name: t.name, wins: num_wins, losses: num_losses) %></td>
-    </tr>
+      <tr>
+        <td><%= t.seed %></td>
+        <td><%= t(".team_record", name: t.name, wins: num_wins, losses: num_losses) %></td>
+      </tr>
+    <% end %>
   </tbody>
-<% end %>
 </table>
 </p>
 
