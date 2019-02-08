@@ -8,21 +8,15 @@ class TournamentsTest < ApplicationSystemTestCase
 
         assert_selector "h1", exact_text: "Challonge tournaments owned by #{@user.user_name}"
 
-        # The footer should have three links.
-        assert_link "Reload the tournament list from Challonge",
-                    href: user_tournaments_refresh_path(@user), exact: true
-        assert_link "Change this user's settings", href: edit_user_path(@user), exact: true
-        assert_link "Log out", href: logout_path, exact: true
-
         # Check the column headers in the tournament table.
-        header_text = %w(Name State Actions Links)
-
-        page.all("th").each_with_index do |th, i|
-            assert th.text == header_text[i]
+        within "table thead" do
+            [ "Name", "State", "Actions", "Links" ].each do |text|
+                assert_selector "th", exact_text: text
+            end
         end
 
         # Check the list of tournaments.
-        page.all("tbody tr").each do |tr|
+        page.all("table tbody tr").each do |tr|
             tournament = Tournament.find(tr[:id].slice(/\d+\z/))
 
             tr.all("td").each_with_index do |td, i|
@@ -57,6 +51,12 @@ class TournamentsTest < ApplicationSystemTestCase
                 end
             end
         end
+
+        # The footer should have three links.
+        assert_link "Reload the tournament list from Challonge",
+                    href: user_tournaments_refresh_path(@user), exact: true
+        assert_link "Change this user's settings", href: edit_user_path(@user), exact: true
+        assert_link "Log out", href: logout_path, exact: true
     end
 
     test "Check the tournament settings page" do
