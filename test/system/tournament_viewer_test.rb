@@ -8,8 +8,8 @@ class TournamentViewerTest < ApplicationSystemTestCase
 
     def completed_match_str(match)
         # U+2014 is &mdash;
-        "#{match.team_name :left} #{match.team_score :left} \u2014" \
-          " #{match.team_score :right} #{match.team_name :right}"
+        "#{match.team_name :left}  #{match.team_score :left} \u2014" \
+          " #{match.team_score :right}  #{match.team_name :right}"
     end
 
     def team_record_str(tournament, team)
