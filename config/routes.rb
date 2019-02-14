@@ -19,6 +19,9 @@ Rails.application.routes.draw do
         end
     end
 
+    post "users/:id/demo", to: "users#demo", as: :user_demo
+    post "users/:id/hidedemo", to: "users#hide_demo", as: :user_hide_demo
+
     get "view/:id", to: "tournament_viewer#view", as: :view_tournament
     get "view/:id/gold", to: "tournament_viewer#gold", as: :view_tournament_gold
     get "view/:id/blue", to: "tournament_viewer#blue", as: :view_tournament_blue

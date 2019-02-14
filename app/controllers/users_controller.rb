@@ -19,6 +19,15 @@ class UsersController < ApplicationController
         end
     end
 
+    def demo
+        redirect_to user_tournaments_refresh_path(@user)
+    end
+
+    def hide_demo
+        # @user.update show_quick_start: false
+        redirect_to user_tournaments_path(@user)
+    end
+
     private
     def set_user
         @user = User.find(params[:id])

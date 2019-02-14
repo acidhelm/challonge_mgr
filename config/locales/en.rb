@@ -93,6 +93,13 @@
                 instructions3_html: "If the tournament has been started and isn't" \
                   " listed here, click the <i>Reload the tournament list" \
                   " from Challonge</i> link below the list.",
+                quick_start_header: "Quick start demo",
+                quick_start_body_html: "If you want to dive right in to Challonge Mgr" \
+                  " and you don't have a tournament ready to go, click <i>Create" \
+                  " a demo tournament</i>.  This will create a private tournament" \
+                  " in your Challonge account so you can try out Challonge Mgr.",
+                quick_start_button: "Create a demo tournament",
+                hide_quick_start_button: "Hide this section",
                 name: "Name",
                 links: "Links",
                 state: "State",

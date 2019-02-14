@@ -114,8 +114,9 @@ module ApplicationHelper
     # Sends a POST request to `url`.  It treats the returned data as JSON, and
     # parses it into an object.  On success, the return value is that object.
     # On failure, the return value is a hash that describes the error.
-    def send_post_request(url, user)
-        post_data = URI.encode_www_form(api_key: user.api_key)
+    def send_post_request(url, user, params = {})
+        params = params.reverse_merge(api_key: user.api_key)
+        post_data = URI.encode_www_form(params)
         response = RestClient.post(url, post_data)
         return JSON.parse(response.body)
     rescue => e

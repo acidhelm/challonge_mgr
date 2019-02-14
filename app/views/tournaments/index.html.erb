@@ -4,6 +4,16 @@
 <p><%= t(".instructions1_html") %></p>
 <p><%= t(".instructions2") %></p>
 <p><%= t(".instructions3_html") %></p>
+
+<% if @user.show_quick_start %>
+<hr>
+<h3><%= t(".quick_start_header") %></h3>
+<p><%= t(".quick_start_body_html") %></p>
+<%= button_to t(".quick_start_button"), user_demo_path(@user) %>
+<%= button_to t(".hide_quick_start_button"), user_hide_demo_path(@user) %>
+<hr>
+<% end %>
+
 <% if @tournaments.present? %>
 <table>
   <thead>
