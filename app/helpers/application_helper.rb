@@ -55,9 +55,10 @@ module ApplicationHelper
         return send_put_request(url, match.tournament.user, params)
     end
 
-    # Sets the scores and optionally the winning team for a match.
-    # On success, returns... something.  The API's response isn't documented.
-    # TODO: Finalize a test match and see what it returns.
+    # Finalizes a tournament.  All matches in the tournament must be complete
+    # for this call to succeed.
+    # On success, returns a `tournament` object that contains the properties of
+    # the tournament.
     # On failure, returns an `error` object that describes the error.
     def finalize_tournament(tournament)
         url = get_api_url("tournaments/#{tournament.challonge_id}/finalize.json")
@@ -81,6 +82,9 @@ module ApplicationHelper
     end
 
     # Creates a quick start demo tournament.
+    # On success, returns a `tournament` object that contains the properties of
+    # the new tournament.
+    # On failure, returns an `error` object that describes the error.
     def make_demo_tournament(user, name, desc)
         return send_post_request(
                  get_api_url("tournaments.json"), user,
@@ -95,13 +99,19 @@ module ApplicationHelper
 
     # Adds teams to a tournament, for use with the quick start feature.
     # `team_names` can be a string or an array of strings.
+    # On success, returns an array of `participant` object that contains the
+    # properties of the new participants.
+    # On failure, returns an `error` object that describes the error.
     def add_demo_teams(user, slug, team_names)
         return send_post_request(
-            get_api_url("tournaments/#{slug}/participants/bulk_add.json"), user,
-            "participants[][name]" => team_names)
+                 get_api_url("tournaments/#{slug}/participants/bulk_add.json"), user,
+                 "participants[][name]" => team_names)
     end
 
     # Starts a tournament, for use with the quick start feature.
+    # On success, returns a `tournament` object that contains the properties of
+    # the tournament.
+    # On failure, returns an `error` object that describes the error.
     def start_demo_tournament(user, slug)
         return send_post_request(get_api_url("tournaments/#{slug}/start.json"), user)
     end
