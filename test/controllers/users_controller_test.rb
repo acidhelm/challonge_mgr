@@ -97,4 +97,28 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         assert_template "users/edit"
     end
 
+    test "Update a user's show_quick_start property" do
+        log_in_as(@user)
+        assert logged_in?
+        assert @user.show_quick_start
+
+        post user_hide_demo_path(@user)
+        @user.reload
+        assert_not @user.show_quick_start
+    end
+
+    test "Try to update the show_quick_start property for a different user" do
+        log_in_as(@user)
+        assert logged_in?
+
+        post user_hide_demo_path(@other_user)
+        assert_response :forbidden
+    end
+
+    test "Try to update a user's show_quick_start property without logging in" do
+        post user_hide_demo_path(@user)
+
+        assert_redirected_to login_url
+        assert_not flash.empty?
+    end
 end

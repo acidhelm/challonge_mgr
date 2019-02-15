@@ -9,12 +9,14 @@ user_willow:
   encrypted_api_key_iv: "<%= encoded_iv %>"
   password_digest: <%= password_digest %>
   subdomain: "sub1"
+  show_quick_start: true
 
 user_buffy:
   user_name: buffy
   encrypted_api_key: "<%= User.encrypt_api_key('notused', key: key, iv: iv) %>"
   encrypted_api_key_iv: "<%= encoded_iv %>"
   password_digest: <%= password_digest %>
+  show_quick_start: false
 
 user_test:
   user_name: test_user
@@ -22,3 +24,4 @@ user_test:
   encrypted_api_key_iv: "<%= encoded_iv %>"
   password_digest: <%= password_digest %>
   subdomain: "<%= ENV["CHALLONGE_MGR_TEST_USER_SUBDOMAIN"] %>"
+  show_quick_start: true
