@@ -48,7 +48,7 @@ class UsersController < ApplicationController
     end
 
     def hide_demo
-        # @user.update show_quick_start: false
+        @user.update show_quick_start: false
         redirect_to user_tournaments_path(@user)
     end
 
