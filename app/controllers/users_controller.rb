@@ -20,7 +20,31 @@ class UsersController < ApplicationController
     end
 
     def demo
-        redirect_to user_tournaments_refresh_path(@user)
+        # Create a new tournament.
+        name = I18n.t("quick_start.tournament_name")
+        desc = I18n.t("quick_start.tournament_desc")
+        slug = ""
+
+        resp = ApplicationHelper.make_demo_tournament(@user, name, desc)
+
+        # Add teams to the tournament.
+        if !(resp.is_a?(Hash) && resp.key?(:error))
+            slug = resp["tournament"]["url"]
+            teams = (1..6).each_with_object([]) { |n, obj| obj << I18n.t("quick_start.team#{n}") }
+
+            resp = ApplicationHelper.add_demo_teams(@user, slug, teams)
+        end
+
+        # Start the tournament
+        if !(resp.is_a?(Hash) && resp.key?(:error))
+            resp = ApplicationHelper.start_demo_tournament(@user, slug)
+        end
+
+        if resp.is_a?(Hash) && resp.key?(:error)
+            redirect_to user_tournaments_refresh_path(@user), notice: resp[:error][:message]
+        else
+            redirect_to user_tournaments_refresh_path(@user, autostart: slug)
+        end
     end
 
     def hide_demo

@@ -63,6 +63,16 @@ class TournamentsController < ApplicationController
             @user.tournaments.where(challonge_id: known_tournaments).destroy_all
         end
 
+        # If the user just created a quick start demo tournament, manage it immediately.
+        if params[:autostart]
+            demo = @user.tournaments.find_by(challonge_alphanumeric_id: params[:autostart])
+
+            if demo
+                redirect_to refresh_user_tournament_path(@user, demo)
+                return
+            end
+        end
+
         redirect_to action: "index"
     end
 

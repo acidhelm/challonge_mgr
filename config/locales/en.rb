@@ -206,6 +206,16 @@
                 on_deck: "On deck:",
                 in_the_hole: "After that:"
             }
+        },
+        quick_start: {
+            tournament_name: "Challonge Mgr demo tournament",
+            tournament_desc: "This tournament is a quick start demo created by Challonge Mgr",
+            team1: "Team Red",
+            team2: "Team Orange",
+            team3: "Team Yellow",
+            team4: "Team Green",
+            team5: "Team Blue",
+            team6: "Team Violet"
         }
     }
 }

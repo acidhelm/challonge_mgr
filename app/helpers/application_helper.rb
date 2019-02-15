@@ -80,6 +80,32 @@ module ApplicationHelper
         end
     end
 
+    # Creates a quick start demo tournament.
+    def make_demo_tournament(user, name, desc)
+        return send_post_request(
+                 get_api_url("tournaments.json"), user,
+                 "tournament[name]" => name,
+                 "tournament[tournament_type]" => "double elimination",
+                 "tournament[description]" => desc,
+                 "tournament[hide_forum]" => "true",
+                 "tournament[show_rounds]" => "true",
+                 "tournament[private]" => "true",
+                 "tournament[url]" => SecureRandom.hex(8))
+    end
+
+    # Adds teams to a tournament, for use with the quick start feature.
+    # `team_names` can be a string or an array of strings.
+    def add_demo_teams(user, slug, team_names)
+        return send_post_request(
+            get_api_url("tournaments/#{slug}/participants/bulk_add.json"), user,
+            "participants[][name]" => team_names)
+    end
+
+    # Starts a tournament, for use with the quick start feature.
+    def start_demo_tournament(user, slug)
+        return send_post_request(get_api_url("tournaments/#{slug}/start.json"), user)
+    end
+
     protected
 
     # Returns a string that holds the URL to the Challonge API endpoint, with
