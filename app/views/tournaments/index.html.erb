@@ -10,13 +10,16 @@
 <div id='quick_start'>
 <h3><%= t(".quick_start_header") %></h3>
 <p><%= t(".quick_start_body_html") %></p>
+<p>
 <%= button_to t(".quick_start_button"), user_demo_path(@user), form_class: :quick_start_form %>
 <%= button_to t(".hide_quick_start_button"), user_hide_demo_path(@user), form_class: :quick_start_form %>
+</p>
 </div>
 <hr>
 <% end %>
 
 <% if @tournaments.present? %>
+<p>
 <table>
   <thead>
     <tr>
@@ -45,6 +48,7 @@
     <% end %>
   </tbody>
 </table>
+</p>
 <% end %>
 <p>
 <%= link_to t(".reload_tournaments"), user_tournaments_refresh_path(@user) %> |
