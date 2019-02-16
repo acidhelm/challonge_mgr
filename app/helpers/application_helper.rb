@@ -102,9 +102,9 @@ module ApplicationHelper
     # On success, returns an array of `participant` object that contains the
     # properties of the new participants.
     # On failure, returns an `error` object that describes the error.
-    def add_demo_teams(user, slug, team_names)
+    def add_demo_teams(user, alphanumeric_id, team_names)
         return send_post_request(
-                 get_api_url("tournaments/#{slug}/participants/bulk_add.json"), user,
+                 get_api_url("tournaments/#{alphanumeric_id}/participants/bulk_add.json"), user,
                  "participants[][name]" => team_names)
     end
 
@@ -112,8 +112,8 @@ module ApplicationHelper
     # On success, returns a `tournament` object that contains the properties of
     # the tournament.
     # On failure, returns an `error` object that describes the error.
-    def start_demo_tournament(user, slug)
-        return send_post_request(get_api_url("tournaments/#{slug}/start.json"), user)
+    def start_demo_tournament(user, alphanumeric_id)
+        return send_post_request(get_api_url("tournaments/#{alphanumeric_id}/start.json"), user)
     end
 
     protected
