@@ -7,10 +7,12 @@
 
 <% if @user.show_quick_start %>
 <hr>
+<div id='quick_start'>
 <h3><%= t(".quick_start_header") %></h3>
 <p><%= t(".quick_start_body_html") %></p>
 <%= button_to t(".quick_start_button"), user_demo_path(@user) %>
 <%= button_to t(".hide_quick_start_button"), user_hide_demo_path(@user) %>
+</div>
 <hr>
 <% end %>
 

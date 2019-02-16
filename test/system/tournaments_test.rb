@@ -59,6 +59,22 @@ class TournamentsTest < ApplicationSystemTestCase
         assert_link "Log out", href: logout_path, exact: true
     end
 
+    test "Hide the quick start section" do
+        visit user_tournaments_path(@user)
+
+        # Check that the quick start section is visible.
+        within "#quick_start" do
+            assert_selector "h3", exact_text: "Quick start demo"
+            assert_button "Create a demo tournament", exact: true
+            assert_button "Hide this section", exact: true
+        end
+
+        # Click the button that hides it.
+        click_on "Hide this section"
+
+        assert_no_selector "#quick_start"
+    end
+
     test "Check the tournament settings page" do
         visit user_tournaments_path(@user)
 
