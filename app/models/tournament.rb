@@ -160,7 +160,12 @@ class Tournament < ApplicationRecord
 
     protected
     def validate_datetimes
-        if started_at.present? && started_at > Time.current
+        # We allow `started_at` to be a few seconds into the future because of
+        # the quick start demo feature.  The demo tournament is created and
+        # then started immediately.  If the Challonge server's clock is slightly
+        # ahead of the local clock, this validation will fail unless we allow
+        # for a few seconds of slop.
+        if started_at.present? && started_at > 5.seconds.from_now
             errors.add(:started_at, "cannot be in the future")
         end
     end
