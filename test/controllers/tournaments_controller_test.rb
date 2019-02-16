@@ -35,6 +35,39 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
         assert_redirected_to user_tournaments_path(@test_user)
     end
 
+    test "Automatically manage a tournament" do
+        log_in_as(@test_user)
+        assert logged_in?
+
+        # Refresh the test user's tournament list so we can operate on a tournament.
+        VCR.use_cassette("refresh_tournament_list") do
+            get user_tournaments_refresh_path(@test_user)
+        end
+
+        @tournament = @test_user.tournaments.first
+
+        # If the user has no tournaments, we can't run this test, but we don't
+        # treat that as a test failure.
+        if @tournament.blank?
+            puts "Warning: [#{method_name}] The test user has no tournaments." \
+                   " This test is not running any assertions."
+
+            return
+        end
+
+        # Refresh the tournament list again and pass the `autostart` param.
+        VCR.use_cassette("refresh_tournament_list") do
+            get user_tournaments_refresh_path(@test_user, autostart: @tournament.challonge_alphanumeric_id)
+        end
+
+        # The controller should redirect to the tournament/refresh action, as if
+        # the user clicked the Manage link, and then redirect again to the
+        # tournament/show action.
+        assert_redirected_to refresh_user_tournament_path(@test_user, @tournament)
+        follow_redirect!
+        assert_redirected_to user_tournament_path(@test_user, @tournament)
+    end
+
     test "Try to refresh the list of tournaments with an invalid API key" do
         log_in_as(@test_user)
         assert logged_in?
