@@ -8,15 +8,23 @@ class TournamentsTest < ApplicationSystemTestCase
 
         assert_selector "h1", exact_text: "Challonge tournaments owned by #{@user.user_name}"
 
+        # Bail out if the test user has no tournaments.
+        if !has_selector? "table#tournament_list"
+            puts "Warning: [#{method_name}] The test user has no tournaments." \
+                   " This test is not running any assertions."
+
+            return
+        end
+
         # Check the column headers in the tournament table.
-        within "table thead" do
+        within "table#tournament_list thead" do
             [ "Name", "State", "Actions", "Links" ].each do |text|
                 assert_selector "th", exact_text: text
             end
         end
 
         # Check the list of tournaments.
-        page.all("table tbody tr").each do |tr|
+        page.all("table#tournament_list tbody tr").each do |tr|
             tournament = Tournament.find(tr[:id].slice(/\d+\z/))
 
             tr.all("td").each_with_index do |td, i|
