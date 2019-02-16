@@ -83,8 +83,8 @@ class TournamentsTest < ApplicationSystemTestCase
             # but we don't treat that as a test failure.
             row_elt = page.find("tbody tr:first-child")
         rescue Capybara::ElementNotFound
-            puts "Warning: The test user has no tournaments. This test is not" \
-                   " running any assertions."
+            puts "Warning: [#{method_name}] The test user has no tournaments." \
+                   " This test is not running any assertions."
         end
 
         return unless row_elt
@@ -124,8 +124,8 @@ class TournamentsTest < ApplicationSystemTestCase
             # but we don't treat that as a test failure.
             row_elt = page.find("tbody tr:first-child")
         rescue Capybara::ElementNotFound
-            puts "Warning: The test user has no tournaments. This test is not" \
-                   " running any assertions."
+            puts "Warning: [#{method_name}] The test user has no tournaments." \
+                   " This test is not running any assertions."
         end
 
         return unless row_elt
