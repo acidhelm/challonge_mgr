@@ -37,6 +37,10 @@ Open [the login page](http://localhost:3000/login) in a browser and enter the
 user name and password for your Challonge Mgr account.  After you log in, you
 will see your list of tournaments.
 
+If you don't have a tournament ready to go, Challonge Mgr can create one for
+you so you can try out Challonge Mgr.  Click the _Create a demo tournament_ button,
+and Challonge Mgr will create a private tournament in your Challonge account.
+
 ![The tournament list](images/tournament_list.png)
 
 Click _Reload the tournament list from Challonge_ if your new tournament isn't
