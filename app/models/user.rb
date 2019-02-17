@@ -11,6 +11,7 @@ class User < ApplicationRecord
     validates :subdomain, format: { with: /\A[a-zA-Z0-9-]+\z/,
                                     message: I18n.t("errors.invalid_subdomain") },
                           allow_blank: true
+    validates :show_quick_start, inclusion: { in: [ true, false ] }
     validates :password, presence: true, allow_nil: true
     has_secure_password
 

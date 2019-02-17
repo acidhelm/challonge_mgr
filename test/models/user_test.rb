@@ -24,4 +24,9 @@ class UserTest < ActiveSupport::TestCase
         @user.subdomain = "domain~!"
         assert_not @user.save
     end
+
+    test "Try to save a user with an illegal show_quick_start" do
+        @user.show_quick_start = nil
+        assert_not @user.save
+    end
 end
