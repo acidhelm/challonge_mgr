@@ -185,7 +185,8 @@
                 match_lost: "Lost to %{winner} %{winning_score} - %{losing_score}",
                 match_lost_forfeited: "Lost to %{winner} by forfeit"
             },
-            edit_tournament: "Change settings"
+            edit_tournament: "Change settings",
+            state_underway: "underway (%{progress}% done)"
         },
         matches: {
             round_names: {

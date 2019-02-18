@@ -37,8 +37,12 @@ class TournamentsTest < ApplicationSystemTestCase
                             assert_equal tournament.name, td.text
                         end
                     when 1
-                        assert_equal ActiveSupport::Inflector.humanize(tournament.state, capitalize: false),
-                                     td.text
+                        if tournament.state == "underway"
+                            assert_equal "underway (#{tournament.progress_meter}% done)", td.text
+                        else
+                            assert_equal ActiveSupport::Inflector.humanize(tournament.state, capitalize: false),
+                                         td.text
+                        end
                     when 2
                         assert td.has_link? "Manage this tournament", exact: true,
                                             href: refresh_user_tournament_path(@user, tournament)

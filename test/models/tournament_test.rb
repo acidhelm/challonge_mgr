@@ -69,6 +69,17 @@ class TournamentTest < ActiveSupport::TestCase
         assert_not @tournament.save
     end
 
+    test "Try to save a tournament with an illegal progress_meter" do
+        @tournament.progress_meter = "invalid"
+        assert_not @tournament.save
+
+        @tournament.progress_meter = -1
+        assert_not @tournament.save
+
+        @tournament.progress_meter = 101
+        assert_not @tournament.save
+    end
+
     test "Try to save a tournament with an illegal challonge_url" do
         @tournament.challonge_url = ""
         assert_not @tournament.save

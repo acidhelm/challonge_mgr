@@ -11,6 +11,8 @@ class Tournament < ApplicationRecord
     validates :challonge_alphanumeric_id, presence: true, format: { with: /\A\w+\z/ },
                                           uniqueness: { scope: :user_id, case_sensitive: false }
     validates :state, presence: true
+    validates :progress_meter, numericality: { only_integer: true, greater_than_or_equal_to: 0,
+                                               less_than_or_equal_to: 100 }
     validates :challonge_url, presence: true,
                               uniqueness: { scope: :user_id, case_sensitive: false }
     validates :tournament_type, presence: true
@@ -56,6 +58,7 @@ class Tournament < ApplicationRecord
         self.name = obj.name
         self.challonge_alphanumeric_id = obj.url
         self.state = obj.state
+        self.progress_meter = obj.progress_meter
         self.challonge_url = obj.full_challonge_url
         self.tournament_type = obj.tournament_type
         self.started_at = obj.started_at
@@ -123,6 +126,17 @@ class Tournament < ApplicationRecord
 
         group_names.each do |id, name|
             matches.where(group_id: id).update(group_name: name)
+        end
+    end
+
+    # Returns the Tournament's state as a string that is suitable for use in the UI.
+    # If the state is "underway", the string also shows the percentage of matches
+    # that have been completed.
+    def state_name
+        if state != "underway"
+            ActiveSupport::Inflector.humanize(state, capitalize: false)
+        else
+            I18n.t("tournaments.state_underway", progress: progress_meter)
         end
     end
 

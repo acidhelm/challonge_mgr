@@ -34,7 +34,7 @@
     <% @tournaments.each do |tournament| %>
       <tr id="tournament<%= tournament.id %>">
         <td><%= tournament.subdomain.present? ? t(".name_with_subdomain", name: tournament.name, subdomain: tournament.subdomain) : tournament.name %></td>
-        <td><%= ActiveSupport::Inflector.humanize(tournament.state, capitalize: false) %></td>
+        <td><%= tournament.state_name %></td>
         <td>
           <%= link_to t(".manage_tournament"), [ :refresh, @user, tournament ] %> |
           <%= link_to t("tournaments.edit_tournament"), [ :edit, @user, tournament ] %>
