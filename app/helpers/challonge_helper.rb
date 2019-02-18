@@ -6,7 +6,7 @@ module ChallongeHelper
     # the array also contains the tournaments that are owned by that organization.
     # On failure, returns an `error` object that describes the error.
     def get_tournament_list(user)
-        url = get_api_url("tournaments.json")
+        url = get_api_url
         tournaments = send_get_request(url, user)
 
         # The API returns a different response if the tournament list is empty.
@@ -33,7 +33,7 @@ module ChallongeHelper
     # the tournament.
     # On failure, returns an `error` object that describes the error.
     def get_tournament_info(tournament, get_teams:, get_matches:)
-        url = get_api_url("tournaments/#{tournament.challonge_id}.json")
+        url = get_api_url("#{tournament.challonge_id}.json")
         params = { include_participants: get_teams ? 1 : 0,
                    include_matches: get_matches ? 1 : 0 }
 
@@ -45,7 +45,7 @@ module ChallongeHelper
     # of the match.
     # On failure, returns an `error` object that describes the error.
     def update_match(match, new_scores_csv, winner_id)
-        url = get_api_url("tournaments/#{match.tournament.challonge_id}/matches/" \
+        url = get_api_url("#{match.tournament.challonge_id}/matches/" \
                             "#{match.challonge_id}.json")
 
         params = { "match[scores_csv]" => new_scores_csv }
@@ -60,7 +60,7 @@ module ChallongeHelper
     # the tournament.
     # On failure, returns an `error` object that describes the error.
     def finalize_tournament(tournament)
-        url = get_api_url("tournaments/#{tournament.challonge_id}/finalize.json")
+        url = get_api_url("#{tournament.challonge_id}/finalize.json")
 
         return send_post_request(url, tournament.user)
     end
@@ -72,7 +72,7 @@ module ChallongeHelper
     def make_demo_tournament(user, name, desc)
         # Create the tournament on Challonge.
         resp = send_post_request(
-                 get_api_url("tournaments.json"), user,
+                 get_api_url, user,
                  "tournament[name]" => name,
                  "tournament[tournament_type]" => "double elimination",
                  "tournament[description]" => desc,
@@ -84,20 +84,20 @@ module ChallongeHelper
         # Add teams to the tournament.
         if api_succeeded?(resp)
             alphanumeric_id = resp["tournament"]["url"]
+            url = get_api_url("#{alphanumeric_id}/participants/bulk_add.json")
 
             team_names = (1..6).each_with_object([]) do |n, obj|
                  obj << I18n.t("quick_start.team#{n}")
             end
 
-            resp = send_post_request(
-                     get_api_url("tournaments/#{alphanumeric_id}/participants/bulk_add.json"),
-                     user, "participants[][name]" => team_names)
+            resp = send_post_request(url, user,
+                                     "participants[][name]" => team_names)
         end
 
         # Start the tournament.
         if api_succeeded?(resp)
-            resp = send_post_request(
-                     get_api_url("tournaments/#{alphanumeric_id}/start.json"), user)
+            url = get_api_url("#{alphanumeric_id}/start.json")
+            resp = send_post_request(url, user)
         end
 
         return resp
@@ -106,9 +106,13 @@ module ChallongeHelper
     protected
 
     # Returns a string that holds the URL to the Challonge API endpoint, with
-    # `str` appended to it.
-    def get_api_url(str)
-        return "https://api.challonge.com/v1/#{str}"
+    # `str` appended to it.  Since all API URLs start with "tournaments", the
+    # caller should not include that in `str`.  Omitting `str` will return the
+    # URL for the "tournaments.json" endpoint.
+    def get_api_url(str = nil)
+        base_url = "https://api.challonge.com/v1/tournaments"
+
+        return str ? "#{base_url}/#{str}" : "#{base_url}.json"
     end
 
     # Takes a response object from a Challonge API call, and returns true if
