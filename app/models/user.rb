@@ -24,4 +24,12 @@ class User < ApplicationRecord
 
         return BCrypt::Password.create(str, cost: cost).to_s
     end
+
+    # On success, returns an array of `tournament` objects that represent the
+    # tournaments that are owned by this user.  If this user is in an organization,
+    # the array also contains the tournaments that are owned by that organization.
+    # On failure, returns an `error` object that describes the error.
+    def get_tournaments
+        return ApplicationHelper.get_tournament_list(self)
+    end
 end

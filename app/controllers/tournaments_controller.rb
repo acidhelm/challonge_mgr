@@ -32,7 +32,7 @@ class TournamentsController < ApplicationController
         known_tournaments = @user.tournaments.pluck(:challonge_id)
 
         # Get the user's tournaments from Challonge.
-        tournament_list = ApplicationHelper.get_tournament_list(@user)
+        tournament_list = @user.get_tournaments
 
         return if api_failed?(tournament_list) do |msg|
             redirect_to({ action: "index" }, notice: msg)
@@ -56,7 +56,7 @@ class TournamentsController < ApplicationController
         @user.tournaments.complete.destroy_all
 
         # If any tournaments are in the database, but were not returned by
-        # get_tournament_list, delete them from the database.  This happens if
+        # get_tournaments, delete them from the database.  This happens if
         # the user's subdomain changes; we need to delete the tournaments that
         # belong to the previous subdomain.
         if known_tournaments.present?
@@ -95,9 +95,8 @@ class TournamentsController < ApplicationController
         get_teams = (params[:get_teams] || "1").to_i > 0
         get_matches = (params[:get_matches] || "1").to_i > 0
 
-        tournament_hash = ApplicationHelper.get_tournament_info(
-                            @tournament, get_teams: get_teams,
-                            get_matches: get_matches)
+        tournament_hash = @tournament.get_info(get_teams: get_teams,
+                                               get_matches: get_matches)
 
         return if api_failed?(tournament_hash) do |msg|
             redirect_to({ action: "show" }, notice: msg)
@@ -187,7 +186,7 @@ class TournamentsController < ApplicationController
             return
         end
 
-        response = ApplicationHelper.finalize_tournament(@tournament)
+        response = @tournament.finalize!
 
         return if api_failed?(response) do |msg|
             redirect_to({ action: "show" }, notice: msg)

@@ -14,7 +14,7 @@ class CheckLiveTournamentDataTest < ActionDispatch::IntegrationTest
         tournament_list = nil
 
         VCR.use_cassette("get_tournament_list") do
-            tournament_list = ApplicationHelper.get_tournament_list(@user)
+            tournament_list = @user.get_tournaments
         end
 
         assert_instance_of Array, tournaments
@@ -38,7 +38,7 @@ class CheckLiveTournamentDataTest < ActionDispatch::IntegrationTest
             tournament = Tournament.new(challonge_id: id)
             tournament.user = @user
 
-            info = ApplicationHelper.get_tournament_info(tournament)
+            info = tournament.get_info(get_teams: true, get_matches: true)
         end
 
         assert_instance_of Hash, info

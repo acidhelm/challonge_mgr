@@ -33,7 +33,7 @@ module ApplicationHelper
     # the given tournament. The caller can also request the teams and matches in
     # the tournament.
     # On failure, returns an `error` object that describes the error.
-    def get_tournament_info(tournament, get_teams: true, get_matches: true)
+    def get_tournament_info(tournament, get_teams:, get_matches:)
         url = get_api_url("tournaments/#{tournament.challonge_id}.json")
         params = { include_participants: get_teams ? 1 : 0,
                    include_matches: get_matches ? 1 : 0 }

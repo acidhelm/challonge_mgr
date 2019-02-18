@@ -67,6 +67,24 @@ class Tournament < ApplicationRecord
         save!
     end
 
+    # On success, returns a `tournament` object that contains the properties of
+    # this tournament. The caller can also request the teams and matches in
+    # the tournament.
+    # On failure, returns an `error` object that describes the error.
+    def get_info(get_teams:, get_matches:)
+        return ApplicationHelper.get_tournament_info(
+                   self, get_teams: get_teams, get_matches: get_matches)
+    end
+
+    # Finalizes this tournament.  All matches in the tournament must be complete
+    # for this call to succeed.
+    # On success, returns a `tournament` object that contains the properties of
+    # the tournament.
+    # On failure, returns an `error` object that describes the error.
+    def finalize!
+        return ApplicationHelper.finalize_tournament(self)
+    end
+
     # If `current_match` is set, returns the `Match` object that corresponds
     # to that match.  Otherwise, returns `nil`.
     def current_match_obj
