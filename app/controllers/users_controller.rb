@@ -28,7 +28,7 @@ class UsersController < ApplicationController
         resp = ApplicationHelper.make_demo_tournament(@user, name, desc)
 
         # Add teams to the tournament.
-        if !(resp.is_a?(Hash) && resp.key?(:error))
+        if !api_failed?(resp)
             slug = resp["tournament"]["url"]
             teams = (1..6).each_with_object([]) { |n, obj| obj << I18n.t("quick_start.team#{n}") }
 
@@ -36,15 +36,15 @@ class UsersController < ApplicationController
         end
 
         # Start the tournament
-        if !(resp.is_a?(Hash) && resp.key?(:error))
+        if !api_failed?(resp)
             resp = ApplicationHelper.start_demo_tournament(@user, slug)
         end
 
-        if resp.is_a?(Hash) && resp.key?(:error)
-            redirect_to user_tournaments_refresh_path(@user), notice: resp[:error][:message]
-        else
-            redirect_to user_tournaments_refresh_path(@user, autostart: slug)
+        return if api_failed?(resp) do |msg|
+            redirect_to user_tournaments_refresh_path(@user), notice: msg
         end
+
+        redirect_to user_tournaments_refresh_path(@user, autostart: slug)
     end
 
     def hide_demo
