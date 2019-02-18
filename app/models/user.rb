@@ -34,4 +34,16 @@ class User < ApplicationRecord
     def get_tournaments
         return get_tournament_list(self)
     end
+
+    # Creates and starts a demo tournament on Challonge.  The tournament is not
+    # added to the database; the caller must do that.
+    # On success, returns a `tournament` object that holds the properties of
+    # the new tournament.
+    # On failure, returns an `error` object that describes the error.
+    def create_demo_tournament
+        name = I18n.t("quick_start.tournament_name")
+        desc = I18n.t("quick_start.tournament_desc")
+
+        make_demo_tournament(self, name, desc)
+    end
 end

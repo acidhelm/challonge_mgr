@@ -65,12 +65,56 @@ module ChallongeHelper
         return send_post_request(url, tournament.user)
     end
 
+    # Creates a quick start demo tournament on Challonge.
+    # On success, returns a `tournament` object that contains the properties of
+    # the new tournament.
+    # On failure, returns an `error` object that describes the error.
+    def make_demo_tournament(user, name, desc)
+        # Create the tournament on Challonge.
+        resp = send_post_request(
+                 get_api_url("tournaments.json"), user,
+                 "tournament[name]" => name,
+                 "tournament[tournament_type]" => "double elimination",
+                 "tournament[description]" => desc,
+                 "tournament[hide_forum]" => "true",
+                 "tournament[show_rounds]" => "true",
+                 "tournament[private]" => "true",
+                 "tournament[url]" => SecureRandom.hex(8))
+
+        # Add teams to the tournament.
+        if api_succeeded?(resp)
+            alphanumeric_id = resp["tournament"]["url"]
+
+            team_names = (1..6).each_with_object([]) do |n, obj|
+                 obj << I18n.t("quick_start.team#{n}")
+            end
+
+            resp = send_post_request(
+                     get_api_url("tournaments/#{alphanumeric_id}/participants/bulk_add.json"),
+                     user, "participants[][name]" => team_names)
+        end
+
+        # Start the tournament.
+        if api_succeeded?(resp)
+            resp = send_post_request(
+                     get_api_url("tournaments/#{alphanumeric_id}/start.json"), user)
+        end
+
+        return resp
+    end
+
     protected
 
     # Returns a string that holds the URL to the Challonge API endpoint, with
     # `str` appended to it.
     def get_api_url(str)
         return "https://api.challonge.com/v1/#{str}"
+    end
+
+    # Takes a response object from a Challonge API call, and returns true if
+    # the response indicates that the call succeeded.
+    def api_succeeded?(response)
+        return !(response.is_a?(Hash) && response.key?(:error))
     end
 
     # Sends a GET request to `url`, treats the returned data as JSON, and parses
@@ -124,8 +168,8 @@ module ChallongeHelper
             Rails.logger.error "Response body: #{exception.response}"
 
             # Swallow exceptions if the response isn't JSON.  This happens when
-            # the user name or API key is wrong, because the server returns
-            # just the string "HTTP Basic: Access denied."
+            # the API key is wrong, because the server returns just the string
+            # "HTTP Basic: Access denied."
             # This isn't a problem, because `ApplicationController#api_failed?`
             # special-cases 401 responses and shows a custom error message.
             begin

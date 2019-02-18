@@ -20,31 +20,14 @@ class UsersController < ApplicationController
     end
 
     def demo
-        # Create a new tournament.
-        name = I18n.t("quick_start.tournament_name")
-        desc = I18n.t("quick_start.tournament_desc")
-        slug = ""
-
-        resp = ApplicationHelper.make_demo_tournament(@user, name, desc)
-
-        # Add teams to the tournament.
-        if !api_failed?(resp)
-            slug = resp["tournament"]["url"]
-            teams = (1..6).each_with_object([]) { |n, obj| obj << I18n.t("quick_start.team#{n}") }
-
-            resp = ApplicationHelper.add_demo_teams(@user, slug, teams)
-        end
-
-        # Start the tournament
-        if !api_failed?(resp)
-            resp = ApplicationHelper.start_demo_tournament(@user, slug)
-        end
+        resp = @user.create_demo_tournament
 
         return if api_failed?(resp) do |msg|
-            redirect_to user_tournaments_refresh_path(@user), notice: msg
+            redirect_to user_tournaments_path(@user), notice: msg
         end
 
-        redirect_to user_tournaments_refresh_path(@user, autostart: slug)
+        redirect_to user_tournaments_refresh_path(
+                      @user, autostart: resp["tournament"]["url"])
     end
 
     def hide_demo
