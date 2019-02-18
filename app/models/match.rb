@@ -269,6 +269,22 @@ class Match < ApplicationRecord
         save!
     end
 
+    # Sets the scores or the winning team for this match.
+    # On success, returns a `match` object that contains the updated properties
+    # of the match.
+    # On failure, returns an `error` object that describes the error.
+    def update_scores(left_score, right_score, winner_id)
+        new_scores_csv = if winner_id.present?
+                             scores_csv
+                         else
+                             make_scores_csv(left_score, right_score)
+                         end
+
+        return ApplicationHelper.update_match(self, new_scores_csv, winner_id)
+    end
+
+    protected
+
     def make_scores_csv(left_score, right_score)
         if get_team_id(:left) == team1_id
             return "#{left_score}-#{right_score}"
@@ -276,8 +292,6 @@ class Match < ApplicationRecord
             return "#{right_score}-#{left_score}"
         end
     end
-
-    protected
 
     # Tests whether teams have been assigned to both cabinets for this Match.
     def cabinets_assigned?

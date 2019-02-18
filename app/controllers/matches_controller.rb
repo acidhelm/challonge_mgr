@@ -36,20 +36,16 @@ class MatchesController < ApplicationController
                 head :bad_request
                 return
             end
-
-            new_scores_csv = @match.scores_csv
         else
             # Check that the caller passed scores for both sides.
             if left_score.blank? || right_score.blank?
                 head :bad_request
                 return
             end
-
-            new_scores_csv = @match.make_scores_csv(left_score, right_score)
         end
 
         # Send the new scores or the winner to Challonge.
-        match_hash = ApplicationHelper.update_match(@match, new_scores_csv, winner_id)
+        match_hash = @match.update_scores(left_score, right_score, winner_id)
 
         return if api_failed?(match_hash) do |msg|
             redirect_to user_tournament_path(@user, @tournament), notice: msg
@@ -65,7 +61,7 @@ class MatchesController < ApplicationController
         @tournament.set_match_complete(@match) if winner_id.present?
 
         # If we are finishing a match, then we need to refresh the tournament,
-        # because the result of this match may have changed the teams that are
+        # because the result of this match may change the teams that are
         # in future matches.  If we're just updating the score of the current
         # match, there's no need to refresh the tournament.
         if winner_id.present?
