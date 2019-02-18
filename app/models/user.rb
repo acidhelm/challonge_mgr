@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+    include ChallongeHelper
+
     has_many :tournaments, dependent: :destroy
 
     validates :user_name, presence: true, uniqueness: { case_sensitive: false }
@@ -30,6 +32,6 @@ class User < ApplicationRecord
     # the array also contains the tournaments that are owned by that organization.
     # On failure, returns an `error` object that describes the error.
     def get_tournaments
-        return ApplicationHelper.get_tournament_list(self)
+        return get_tournament_list(self)
     end
 end

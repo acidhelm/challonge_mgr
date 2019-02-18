@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Tournament < ApplicationRecord
+    include ChallongeHelper
+
     belongs_to :user
     has_many :teams, dependent: :destroy
     has_many :matches, dependent: :destroy
@@ -72,8 +74,7 @@ class Tournament < ApplicationRecord
     # the tournament.
     # On failure, returns an `error` object that describes the error.
     def get_info(get_teams:, get_matches:)
-        return ApplicationHelper.get_tournament_info(
-                   self, get_teams: get_teams, get_matches: get_matches)
+        return get_tournament_info(self, get_teams: get_teams, get_matches: get_matches)
     end
 
     # Finalizes this tournament.  All matches in the tournament must be complete
@@ -82,7 +83,7 @@ class Tournament < ApplicationRecord
     # the tournament.
     # On failure, returns an `error` object that describes the error.
     def finalize!
-        return ApplicationHelper.finalize_tournament(self)
+        return finalize_tournament(self)
     end
 
     # If `current_match` is set, returns the `Match` object that corresponds

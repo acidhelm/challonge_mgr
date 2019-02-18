@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Match < ApplicationRecord
+    include ChallongeHelper
+
     belongs_to :tournament
 
     validates :challonge_id, numericality: { only_integer: true, greater_than: 0 }
@@ -280,7 +282,7 @@ class Match < ApplicationRecord
                              make_scores_csv(left_score, right_score)
                          end
 
-        return ApplicationHelper.update_match(self, new_scores_csv, winner_id)
+        return update_match(self, new_scores_csv, winner_id)
     end
 
     protected
