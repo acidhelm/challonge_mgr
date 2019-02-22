@@ -118,6 +118,66 @@ match_6:
   identifier: C
   tournament: tournament_2
 
+match_7:
+  challonge_id: 3021
+  state: complete
+  team1_id: 2021
+  team2_id: 2022
+  winner_id: 2022
+  loser_id: 2021
+  round: 1
+  suggested_play_order: 1
+  scores_csv: 0-3
+  underway_at: <%= 15.minutes.ago %>
+  team1_prereq_match_id: null
+  team2_prereq_match_id: null
+  team1_is_prereq_match_loser: false
+  team2_is_prereq_match_loser: false
+  gold_team_id: 2022
+  blue_team_id: 2021
+  identifier: A
+  tournament: tournament_3
+
+match_8:
+  challonge_id: 3022
+  state: complete
+  team1_id: 2023
+  team2_id: 2024
+  winner_id: 2023
+  loser_id: 2024
+  round: 1
+  suggested_play_order: 2
+  scores_csv: 3-1
+  underway_at: <%= 10.minutes.ago %>
+  team1_prereq_match_id: null
+  team2_prereq_match_id: null
+  team1_is_prereq_match_loser: false
+  team2_is_prereq_match_loser: false
+  gold_team_id: 2024
+  blue_team_id: 2023
+  identifier: B
+  tournament: tournament_3
+
+match_9:
+  challonge_id: 3023
+  state: complete
+  team1_id: 2022
+  team2_id: 2023
+  winner_id: 2022
+  loser_id: 2023
+  round: 2
+  suggested_play_order: 3
+  scores_csv: 4-1
+  underway_at: <%= 5.minutes.ago %>
+  team1_prereq_match_id: 3021
+  team2_prereq_match_id: 3022
+  team1_is_prereq_match_loser: false
+  team2_is_prereq_match_loser: false
+  gold_team_id: 2022
+  blue_team_id: 2023
+  identifier: C
+  tournament: tournament_3
+
 live_data_match_1:
   challonge_id: 115965807
   state: complete

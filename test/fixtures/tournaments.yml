@@ -28,6 +28,21 @@ tournament_2:
   started_at: <%= 37.minutes.ago %>
   user: user_buffy
 
+tournament_3:
+  description: A test tournament that is completed
+  challonge_id: 1003
+  name: Test completed tourney
+  state: complete
+  challonge_url: https://challonge.com/testcompletedtourney
+  tournament_type: single elimination
+  current_match: null
+  challonge_alphanumeric_id: testcompletedtourney
+  gold_on_left: false
+  send_slack_notifications: false
+  slack_notifications_channel: null
+  started_at: <%= 20.minutes.ago %>
+  user: user_buffy
+
 live_data_tournament:
   challonge_id: 4424522
   name: "Test #5 double-elim tourney"

@@ -54,6 +54,38 @@ team_8:
   group_team_ids: null
   tournament: tournament_2
 
+team_9:
+  challonge_id: 2021
+  name: Team Red
+  seed: 1
+  group_team_ids: null
+  final_rank: 3
+  tournament: tournament_3
+
+team_10:
+  challonge_id: 2022
+  name: Team Orange
+  seed: 2
+  group_team_ids: null
+  final_rank: 1
+  tournament: tournament_3
+
+team_11:
+  challonge_id: 2023
+  name: Team Green
+  seed: 3
+  group_team_ids: null
+  final_rank: 2
+  tournament: tournament_3
+
+team_12:
+  challonge_id: 2024
+  name: Team Blue
+  seed: 4
+  group_team_ids: null
+  final_rank: 3
+  tournament: tournament_3
+
 live_data_team_a:
   challonge_id: 71427631
   name: Team A

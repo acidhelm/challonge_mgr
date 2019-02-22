@@ -107,6 +107,23 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
 
         get user_tournament_path(@user, @tournament)
         assert_response :success
+
+        assert assigns(:teams_in_seed_order)
+        assert_not assigns(:teams_in_final_rank_order)
+    end
+
+    test "Show a completed tournament" do
+        @tournament = tournaments(:tournament_3)
+        @user = @tournament.user
+
+        log_in_as(@user)
+        assert logged_in?
+
+        get user_tournament_path(@user, @tournament)
+        assert_response :success
+
+        assert assigns(:teams_in_seed_order)
+        assert assigns(:teams_in_final_rank_order)
     end
 
     test "Refresh a tournament" do

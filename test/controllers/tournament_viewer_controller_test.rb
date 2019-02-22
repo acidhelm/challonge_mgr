@@ -47,7 +47,23 @@ class TournamentViewerControllerTest < ActionDispatch::IntegrationTest
         [ @slug, @slug.upcase ].each do |id|
             get view_tournament_path(id)
             assert_response :success
+
+            assert assigns(:teams_in_seed_order)
+            assert_not assigns(:teams_in_final_rank_order)
+            assert_template "show", layout: "tournament_view"
         end
+    end
+
+    test "View a completed tournament" do
+        @tournament = tournaments(:tournament_3)
+        @slug = @tournament.challonge_alphanumeric_id
+
+        get view_tournament_path(@slug)
+        assert_response :success
+
+        assert assigns(:teams_in_seed_order)
+        assert assigns(:teams_in_final_rank_order)
+        assert_template "show", layout: "tournament_view"
     end
 
     test "View a tournament's gold team name" do
@@ -71,7 +87,7 @@ class TournamentViewerControllerTest < ActionDispatch::IntegrationTest
     test "View a tournament's blue team score" do
         team_scores_in_match_test(
             view_tournament_blue_score_path(@slug),
-            @tournament.matches.upcoming.first, :gold)
+            @tournament.matches.upcoming.first, :blue)
     end
 
     test "View a tournament's on-deck gold team name" do
