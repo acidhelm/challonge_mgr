@@ -114,7 +114,6 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
 
     test "Show a completed tournament" do
         @tournament = tournaments(:tournament_3)
-        @user = @tournament.user
 
         log_in_as(@user)
         assert logged_in?
@@ -241,6 +240,37 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
               params: update_tournament_params(@tournament)
 
         assert_redirected_to login_url
+        assert_not flash.empty?
+    end
+
+    test "Finalize a tournament" do
+        @tournament = tournaments(:tournament_4)
+
+        # The API returns the tournament's updated attributes, but the
+        # controller doesn't read the response, so we can just return the
+        # existing attributes.
+        resp = @tournament.attributes.to_json
+
+        log_in_as(@user)
+        assert logged_in?
+
+        stub_request(:post, /api\.challonge\.com/).to_return(body: resp)
+
+        post finalize_user_tournament_path(@user, @tournament)
+        assert_redirected_to refresh_user_tournament_path(@user, @tournament)
+    end
+
+    test "Finalize a tournament with a simulated API failure" do
+        @tournament = tournaments(:tournament_4)
+        resp = { errors: [ "File not found" ] }.to_json
+
+        log_in_as(@user)
+        assert logged_in?
+
+        stub_request(:post, /api\.challonge\.com/).to_return(status: 404, body: resp)
+
+        post finalize_user_tournament_path(@user, @tournament)
+        assert_redirected_to user_tournament_path(@user, @tournament)
         assert_not flash.empty?
     end
 

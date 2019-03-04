@@ -86,6 +86,34 @@ team_12:
   final_rank: 3
   tournament: tournament_3
 
+team_13:
+  challonge_id: 2031
+  name: Team Red
+  seed: 1
+  group_team_ids: null
+  tournament: tournament_4
+
+team_14:
+  challonge_id: 2032
+  name: Team Orange
+  seed: 2
+  group_team_ids: null
+  tournament: tournament_4
+
+team_15:
+  challonge_id: 2033
+  name: Team Green
+  seed: 3
+  group_team_ids: null
+  tournament: tournament_4
+
+team_16:
+  challonge_id: 2034
+  name: Team Blue
+  seed: 4
+  group_team_ids: null
+  tournament: tournament_4
+
 live_data_team_a:
   challonge_id: 71427631
   name: Team A

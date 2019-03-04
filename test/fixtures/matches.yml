@@ -178,6 +178,66 @@ match_9:
   identifier: C
   tournament: tournament_3
 
+match_10:
+  challonge_id: 3031
+  state: complete
+  team1_id: 2031
+  team2_id: 2032
+  winner_id: 2032
+  loser_id: 2031
+  round: 1
+  suggested_play_order: 1
+  scores_csv: 0-3
+  underway_at: <%= 15.minutes.ago %>
+  team1_prereq_match_id: null
+  team2_prereq_match_id: null
+  team1_is_prereq_match_loser: false
+  team2_is_prereq_match_loser: false
+  gold_team_id: 2032
+  blue_team_id: 2031
+  identifier: A
+  tournament: tournament_4
+
+match_11:
+  challonge_id: 3032
+  state: complete
+  team1_id: 2033
+  team2_id: 2034
+  winner_id: 2033
+  loser_id: 2034
+  round: 1
+  suggested_play_order: 2
+  scores_csv: 3-1
+  underway_at: <%= 10.minutes.ago %>
+  team1_prereq_match_id: null
+  team2_prereq_match_id: null
+  team1_is_prereq_match_loser: false
+  team2_is_prereq_match_loser: false
+  gold_team_id: 2034
+  blue_team_id: 2033
+  identifier: B
+  tournament: tournament_4
+
+match_12:
+  challonge_id: 3033
+  state: complete
+  team1_id: 2032
+  team2_id: 2033
+  winner_id: 2032
+  loser_id: 2033
+  round: 2
+  suggested_play_order: 3
+  scores_csv: 4-1
+  underway_at: <%= 5.minutes.ago %>
+  team1_prereq_match_id: 3031
+  team2_prereq_match_id: 3032
+  team1_is_prereq_match_loser: false
+  team2_is_prereq_match_loser: false
+  gold_team_id: 2032
+  blue_team_id: 2033
+  identifier: C
+  tournament: tournament_4
+
 live_data_match_1:
   challonge_id: 115965807
   state: complete

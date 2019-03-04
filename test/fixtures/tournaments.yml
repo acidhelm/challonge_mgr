@@ -41,7 +41,22 @@ tournament_3:
   send_slack_notifications: false
   slack_notifications_channel: null
   started_at: <%= 20.minutes.ago %>
-  user: user_buffy
+  user: user_willow
+
+tournament_4:
+  description: A test tournament that is finalizable
+  challonge_id: 1004
+  name: Test finalizable tourney
+  state: awaiting_review
+  challonge_url: https://challonge.com/testfinalizabletourney
+  tournament_type: single elimination
+  current_match: null
+  challonge_alphanumeric_id: testfinalizabletourney
+  gold_on_left: false
+  send_slack_notifications: false
+  slack_notifications_channel: null
+  started_at: <%= 20.minutes.ago %>
+  user: user_willow
 
 live_data_tournament:
   challonge_id: 4424522

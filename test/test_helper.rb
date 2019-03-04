@@ -1,5 +1,6 @@
 require "simplecov"
 require "coveralls"
+require 'webmock/minitest'
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
     [ SimpleCov::Formatter::HTMLFormatter, Coveralls::SimpleCov::Formatter ])
