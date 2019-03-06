@@ -107,4 +107,40 @@ class MatchTest < ActiveSupport::TestCase
         @match.winner_id, @match.loser_id = @match.loser_id, @match.winner_id
         assert_not @match.save
     end
+
+    test "Check is_prereq_match_loser values" do
+        # TODO: Create a fixture that's a double-elim tournament so we can test
+        # cases where `team_is_prereq_match_loser?` returns `true`.
+
+        match1 = matches(:match_1)
+        match3 = matches(:match_3)
+        match6 = matches(:match_6)
+
+        assert_not match1.team_is_prereq_match_loser?(:left)
+        assert_not match1.team_is_prereq_match_loser?(:right)
+
+        assert_not match3.team_is_prereq_match_loser?(:left)
+        assert_not match3.team_is_prereq_match_loser?(:right)
+
+        assert_not match6.team_is_prereq_match_loser?(:right)
+    end
+
+    test "Check team_prereq_match_id values" do
+        match1 = matches(:match_1)
+        match2 = matches(:match_2)
+        match3 = matches(:match_3)
+        match5 = matches(:match_5)
+        match6 = matches(:match_6)
+
+        assert_nil match1.team_prereq_match_id(:left)
+        assert_nil match1.team_prereq_match_id(:right)
+
+        assert_nil match2.team_prereq_match_id(:left)
+        assert_nil match2.team_prereq_match_id(:right)
+
+        assert_equal match2.challonge_id, match3.team_prereq_match_id(:left)
+        assert_equal match1.challonge_id, match3.team_prereq_match_id(:right)
+
+        assert_equal match5.challonge_id, match6.team_prereq_match_id(:right)
+    end
 end
