@@ -35,6 +35,26 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
         assert_redirected_to user_tournaments_path(@test_user)
     end
 
+    test "Refresh the list of tournaments, simulating that tournaments have been removed" do
+        log_in_as(@user)
+        assert logged_in?
+
+        # Our simulated response is an empty list, so all of the user's
+        # tournaments should be deleted from the database.
+        resp = { tournaments: [] }
+
+        stub_request(:get, get_api_url).
+            with(query: hash_including(api_key: @user.api_key)).
+            to_return(body: resp.to_json)
+
+        assert_changes(-> { @user.tournaments.count },
+                       from: @user.tournaments.count, to: 0) do
+            get user_tournaments_refresh_path(@user)
+        end
+
+        assert_redirected_to user_tournaments_path(@user)
+    end
+
     test "Automatically manage a tournament" do
         log_in_as(@test_user)
         assert logged_in?
