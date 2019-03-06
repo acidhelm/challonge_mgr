@@ -64,6 +64,27 @@ class MatchesControllerTest < ActionDispatch::IntegrationTest
         assert_response :bad_request
     end
 
+    test "Try to update the score of a match, with an API failure" do
+        log_in_as(@user)
+        assert logged_in?
+
+        url = get_api_url("#{@match.tournament.challonge_id}/matches/" \
+                            "#{@match.challonge_id}.json")
+
+        # The API key and other params are in the body of the request, not the
+        # query string.
+        stub_request(:put, url).to_return(make_api_error_response)
+
+        assert_no_difference [ -> { @match.reload.team_score(:left) },
+                               -> { @match.reload.team_score(:right) } ] do
+            put user_tournament_match_url(@user, @tournament, @match,
+                                          left_score: 2, right_score: 1)
+        end
+
+        assert_redirected_to user_tournament_path(@user, @tournament)
+        assert_not flash.empty?
+    end
+
     test "Try to start a non-existant match" do
         log_in_as(@user)
         assert logged_in?
