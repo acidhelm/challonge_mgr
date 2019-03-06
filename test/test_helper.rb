@@ -29,6 +29,25 @@ class ActiveSupport::TestCase
     def logged_in?
         return session[:user_id].present?
     end
+
+    # Returns a string that holds the URL to the Challonge API endpoint, with
+    # `str` appended to it.  Since all API URLs start with "tournaments", the
+    # caller should not include that in `str`.  Omitting `str` will return the
+    # URL for the "tournaments.json" endpoint.
+    # TODO: Figure out if we can share this code with `ChallongeHelper`.
+    def get_api_url(str = nil)
+        base_url = "https://api.challonge.com/v1/tournaments"
+
+        return str ? "#{base_url}/#{str}" : "#{base_url}.json"
+    end
+
+    # Returns a hash that indicates a Challonge API failure.  This can be
+    # passed to WebMock's `to_return` method.
+    def make_api_error_response(status: 500, message: "Server error")
+        body = { errors: [ message ] }.to_json
+
+        return { status: status, body: body }
+    end
 end
 
 class ActionDispatch::IntegrationTest
