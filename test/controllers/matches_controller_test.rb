@@ -11,7 +11,10 @@ class MatchesControllerTest < ActionDispatch::IntegrationTest
         log_in_as(@user)
         assert logged_in?
 
-        post start_user_tournament_match_url(@user, @tournament, @match)
+        assert_changes -> { Match.find(@match.id).underway_at } do
+            post start_user_tournament_match_url(@user, @tournament, @match)
+        end
+
         assert_redirected_to user_tournament_path(@user, @tournament)
 
         # We need to re-read the `Tournament` object from the database to
