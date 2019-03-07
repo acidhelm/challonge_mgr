@@ -7,6 +7,18 @@ class MatchesControllerTest < ActionDispatch::IntegrationTest
         @user = @tournament.user
     end
 
+    def make_challonge_attrs(match)
+        attrs = match.attributes
+
+        # These attributes use "team" in their names, but Challonge uses "player".
+        %w(team1_id team2_id team1_prereq_match_id team2_prereq_match_id
+           team1_is_prereq_match_loser team2_is_prereq_match_loser).each do |attr|
+            attrs[attr.sub("team", "player")] = attrs.delete(attr)
+        end
+
+        return { match: attrs }.with_indifferent_access
+    end
+
     test "Start a match" do
         log_in_as(@user)
         assert logged_in?
@@ -47,6 +59,67 @@ class MatchesControllerTest < ActionDispatch::IntegrationTest
         post switch_user_tournament_match_url(@user, @tournament, @match)
         assert_redirected_to login_url
         assert_not flash.empty?
+    end
+
+    test "Update the score and winner of a match" do
+        log_in_as(@user)
+        assert logged_in?
+
+        post start_user_tournament_match_url(@user, @tournament, @match)
+
+        url = get_api_url("#{@match.tournament.challonge_id}/matches/" \
+                            "#{@match.challonge_id}.json")
+
+        # The controller uses the JSON that Challonge returns from the update
+        # call, so we need to build some JSON in that format.
+        left_score = 3
+        right_score = 1
+        attrs = make_challonge_attrs(@match)
+
+        # Since we're setting `scores_csv` manually, we have to do the same
+        # test that `Match#make_scores_csv` does to check if the teams have
+        # switched sides.
+        if @match.get_team_id(:left) == @match.team1_id
+            attrs[:match][:scores_csv] = "#{left_score}-#{right_score}"
+        else
+            attrs[:match][:scores_csv] = "#{right_score}-#{left_score}"
+        end
+
+        # The API key and other params are in the body of the request, not the
+        # query string.
+        stub_request(:put, url).to_return(body: attrs.to_json)
+
+        put user_tournament_match_url(@user, @tournament, @match,
+                                      left_score: left_score, right_score: right_score)
+
+        @match.reload
+
+        assert_equal left_score, @match.team_score(:left)
+        assert_equal right_score, @match.team_score(:right)
+
+        assert_redirected_to user_tournament_path(@user, @tournament)
+        assert flash.empty?
+
+        # Set the winning team.
+        attrs = make_challonge_attrs(@match)
+
+        attrs[:match][:state] = "complete"
+        attrs[:match][:winner_id] = @match.get_team_id(:left)
+        attrs[:match][:loser_id] = @match.get_team_id(:right)
+
+        stub_request(:put, url).to_return(body: attrs.to_json)
+
+        put user_tournament_match_url(@user, @tournament, @match,
+                                      winner_id: @match.get_team_id(:left))
+
+        @match.reload
+
+        assert @match.team_won?(:left)
+        assert_not @match.team_won?(:right)
+        assert_equal left_score, @match.team_score(:winner)
+        assert_equal right_score, @match.team_score(:loser)
+
+        assert_redirected_to refresh_user_tournament_path(@user, @tournament, get_teams: 0)
     end
 
     test "Try to update the winner and scores of a match, passing invalid params" do
