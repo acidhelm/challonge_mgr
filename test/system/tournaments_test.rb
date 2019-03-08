@@ -18,7 +18,7 @@ class TournamentsTest < ApplicationSystemTestCase
 
         # Check the column headers in the tournament table.
         within "table#tournament_list thead" do
-            [ "Name", "State", "Actions", "Links" ].each do |text|
+            %w(Name State Actions Links).each do |text|
                 assert_selector "th", exact_text: text
             end
         end

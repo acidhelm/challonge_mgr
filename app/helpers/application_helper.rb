@@ -8,11 +8,12 @@ module ApplicationHelper
     # passes a block, `legal_values` is not used.
     def self.validate_param(param, legal_values = nil)
         if block_given?
-            raise ArgumentError, "Invalid parameter: #{param}" unless yield param
-        else
+            if !yield param
+                raise ArgumentError, "Invalid parameter: #{param}"
+            end
+        elsif !legal_values.include?(param)
             raise ArgumentError,
-                  "Invalid parameter: #{param}. " \
-                    "Legal values are: #{legal_values}" unless legal_values.include?(param)
+                  "Invalid parameter: #{param}. Legal values are: #{legal_values}"
         end
     end
 end

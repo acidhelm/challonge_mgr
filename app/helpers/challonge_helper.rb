@@ -87,7 +87,7 @@ module ChallongeHelper
             url = get_api_url("#{alphanumeric_id}/participants/bulk_add.json")
 
             team_names = (1..6).each_with_object([]) do |n, obj|
-                 obj << I18n.t("quick_start.team#{n}")
+                obj << I18n.t("quick_start.team#{n}")
             end
 
             resp = send_post_request(url, user,

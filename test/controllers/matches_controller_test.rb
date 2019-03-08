@@ -79,11 +79,11 @@ class MatchesControllerTest < ActionDispatch::IntegrationTest
         # Since we're setting `scores_csv` manually, we have to do the same
         # test that `Match#make_scores_csv` does to check if the teams have
         # switched sides.
-        if @match.get_team_id(:left) == @match.team1_id
-            attrs[:match][:scores_csv] = "#{left_score}-#{right_score}"
-        else
-            attrs[:match][:scores_csv] = "#{right_score}-#{left_score}"
-        end
+        attrs[:match][:scores_csv] = if @match.get_team_id(:left) == @match.team1_id
+                                         "#{left_score}-#{right_score}"
+                                     else
+                                         "#{right_score}-#{left_score}"
+                                     end
 
         # The API key and other params are in the body of the request, not the
         # query string.

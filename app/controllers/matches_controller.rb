@@ -30,18 +30,17 @@ class MatchesController < ApplicationController
         # changing the score.  Challonge requires us to send the `scores_csv`
         # param, even if we're just setting the winner, so use the match's
         # current scores.
+        # If the winner is not being set, check that the caller passed scores
+        # for both sides.
         if winner_id.present?
             # We consider it an error if the caller passed scores and a `winner_id`.
             if left_score.present? || right_score.present?
                 head :bad_request
                 return
             end
-        else
-            # Check that the caller passed scores for both sides.
-            if left_score.blank? || right_score.blank?
-                head :bad_request
-                return
-            end
+        elsif left_score.blank? || right_score.blank?
+            head :bad_request
+            return
         end
 
         # Send the new scores or the winner to Challonge.

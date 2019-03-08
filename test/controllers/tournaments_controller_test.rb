@@ -77,7 +77,8 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
 
         # Refresh the tournament list again and pass the `autostart` param.
         VCR.use_cassette("refresh_tournament_list") do
-            get user_tournaments_refresh_path(@test_user, autostart: @tournament.challonge_alphanumeric_id)
+            get user_tournaments_refresh_path(
+                  @test_user, autostart: @tournament.challonge_alphanumeric_id)
         end
 
         # The controller should redirect to the tournament/refresh action, as if

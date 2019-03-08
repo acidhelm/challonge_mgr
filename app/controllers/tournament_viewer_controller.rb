@@ -58,7 +58,6 @@ class TournamentViewerController < ApplicationController
                                      @tournament.view_blue_name
                end
 
-
         return team_name_for_stream(name)
     end
 
