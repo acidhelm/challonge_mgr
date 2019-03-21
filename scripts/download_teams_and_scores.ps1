@@ -5,7 +5,8 @@
 # but that has security implications, because _all_ scripts can run,
 # including malicious ones.
 
-# TODO: Change this to your server's URL
+# TODO: Change this to your server's URL.  Include the port if it's different
+#       than the default.
 $server = "http://YOUR-SERVER-NAME.example.com"
 
 # TODO: Change this to your tournament's name.  This is the part of your
@@ -13,12 +14,13 @@ $server = "http://YOUR-SERVER-NAME.example.com"
 $tournament = "YOUR-TOURNAMENT-NAME"
 
 $desktop = [Environment]::GetFolderPath("desktop")
-$gold_name_url = "$server/view/$tournament/gold"
-$blue_name_url = "$server/view/$tournament/blue"
-$gold_score_url = "$server/view/$tournament/gold_score"
-$blue_score_url = "$server/view/$tournament/blue_score"
-$on_deck_gold_name_url = "$server/view/$tournament/on_deck_gold"
-$on_deck_blue_name_url = "$server/view/$tournament/on_deck_blue"
+$view_url = "$server/view/$tournament"
+$gold_name_url = "$view_url/gold"
+$blue_name_url = "$view_url/blue"
+$gold_score_url = "$view_url/gold_score"
+$blue_score_url = "$view_url/blue_score"
+$on_deck_gold_name_url = "$view_url/on_deck_gold"
+$on_deck_blue_name_url = "$view_url/on_deck_blue"
 $gold_name_file = Join-Path $desktop "gold.txt"
 $blue_name_file = Join-Path $desktop "blue.txt"
 $gold_score_file = Join-Path $desktop "gold_score.txt"
@@ -33,7 +35,7 @@ if ( ( $server -cmatch "YOUR-" ) -or ( $tournament -cmatch "YOUR-" ) )
     exit
 }
 
-"Downloading team names from $server/view/$tournament. Press Ctrl+C to stop."
+"Downloading team names from $view_url. Press Ctrl+C to stop."
 
 while (1)
 {
