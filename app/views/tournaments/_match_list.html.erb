@@ -26,7 +26,11 @@
              left_team_class << " forfeited_team"
          end
      else
-         match_num = m.tournament.matches.find_by_challonge_id(m.team_prereq_match_id(:left)).number
+         # In Swiss tournaments, future rounds have matches without any teams or
+         # prereqs.  Skip those matches.
+         match_num = m.tournament.matches.find_by_challonge_id(m.team_prereq_match_id(:left))&.number
+         next unless match_num
+
          left_team_class = "tbd_team"
 
          if m.team_is_prereq_match_loser?(:left)
