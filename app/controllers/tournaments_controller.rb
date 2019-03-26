@@ -164,7 +164,21 @@ class TournamentsController < ApplicationController
     end
 
     def update
-        if @tournament.update(tournament_params)
+        names = params[:team_alt_names] || []
+        ids = (params[:team_ids] || []).map(&:to_i)
+
+        # The arrays must be the same size, the IDs must be different, and all
+        # IDs must refer to teams in this tournament.
+        team_ids = @tournament.teams.ids
+
+        if names.size != ids.size || ids.size != ids.uniq.size ||
+           !ids.all? { |tid| team_ids.include? tid }
+            head :bad_request
+            return
+        end
+
+        if @tournament.set_team_alt_names(ids.zip(names).to_h) &&
+           @tournament.update(tournament_params)
             # If the user creates a tournament and clicks the "Edit settings"
             # link in the tournaments/index view, before they ever click the
             # "Manage this tournament" link, then we need to redirect to the

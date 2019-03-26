@@ -148,6 +148,27 @@ class Tournament < ApplicationRecord
         end
     end
 
+    # Sets alternate names for teams in this tournament.
+    # `alt_names` is a hash where the keys are database IDs of teams, and the
+    # values are the teams' alt names.
+    def set_team_alt_names(alt_names)
+        # Bail out if no names were passed.  This will usually happen only
+        # during tests.
+        return true if alt_names.blank?
+
+        # Store each team's alternate name.  Any validation errors are copied
+        # to our `errors` object.
+        alt_names.each do |tid, alt_name|
+            team = teams.find(tid)
+
+            if !team.set_alt_name(alt_name)
+                team.errors.each { |field, msg| errors[field] << msg }
+            end
+        end
+
+        return errors.empty?
+    end
+
     # Returns the Tournament's state as a string that is suitable for use in the UI.
     # If the state is "underway", the string also shows the percentage of matches
     # that have been completed.

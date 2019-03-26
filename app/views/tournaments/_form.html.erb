@@ -31,6 +31,14 @@
                         id: :tournament_slack_notifications_channel %>
   </div>
 
+  <% tournament.teams.sort_by(&:name).each do |team| %>
+    <p>
+      <%= team.id %> = <%= team.name %>
+      <%= text_field_tag "team_alt_names[]", team.name, id: "alt_name_#{team.id}" %>
+      <%= hidden_field_tag "team_ids[]", team.id %>
+    </p>
+  <% end %>
+
   <div class="actions">
     <%= form.submit %>
   </div>

@@ -25,6 +25,10 @@ class Team < ApplicationRecord
         save!
     end
 
+    def set_alt_name(alt_name)
+        return update(alt_name: alt_name)
+    end
+
     def all_challonge_ids
         return [ challonge_id, group_team_ids ].flatten
     end
