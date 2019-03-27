@@ -154,7 +154,14 @@
                 slack_notifications_channel_html: "Sl<u>a</u>ck channel:",
                 gold_on_left_accesskey: "g",
                 send_slack_notifications_accesskey: "s",
-                slack_notifications_channel_accesskey: "a"
+                slack_notifications_channel_accesskey: "a",
+                alt_names_header: "Alternate team names",
+                alt_names_instructions_html: "If some team names are too long for" \
+                  " your stream overlay, you can enter alternate names here, which" \
+                  " will be returned from the <code>/view/[id]/blue</code>" \
+                  " and <code>/view/[id]/gold</code> URLs.",
+                alt_names_th_name: "Name",
+                alt_names_th_alt_name: "Alternate name"
             },
             current_match: {
                 header: "Current match: #%{number} in %{round_name}",
