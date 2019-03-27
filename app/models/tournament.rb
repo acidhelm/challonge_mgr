@@ -150,7 +150,8 @@ class Tournament < ApplicationRecord
 
     # Sets alternate names for teams in this tournament.
     # `alt_names` is a hash where the keys are database IDs of teams, and the
-    # values are the teams' alt names.
+    # values are the teams' alt names.  A value may be `nil` or an empty string
+    # to mean that no alt name should be used for that team.
     def set_team_alt_names(alt_names)
         # Bail out if no names were passed.  This will usually happen only
         # during tests.
@@ -161,7 +162,7 @@ class Tournament < ApplicationRecord
         alt_names.each do |tid, alt_name|
             team = teams.find(tid)
 
-            if !team.set_alt_name(alt_name)
+            if !team.set_alt_name(alt_name.blank? ? nil : alt_name)
                 team.errors.each { |field, msg| errors[field] << msg }
             end
         end
