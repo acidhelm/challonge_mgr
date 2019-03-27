@@ -52,7 +52,7 @@ class TournamentViewerController < ApplicationController
         # If a match is in progress, query the team name from that match.
         # Otherwise, use the team name that we stored when the match finished.
         name = if @tournament.current_match_obj.present?
-                   @tournament.current_match_obj.team_name(side)
+                   @tournament.current_match_obj.team_name(side, use_alt: true)
                else
                    (side == :gold) ? @tournament.view_gold_name :
                                      @tournament.view_blue_name
@@ -87,7 +87,7 @@ class TournamentViewerController < ApplicationController
 
         # Get the team name, if it's known.  `Match#team_name` returns nil
         # if the team is TBD, in which case, we return a "TBD" string.
-        name = team_name_for_stream(match.team_name(side))
+        name = team_name_for_stream(match.team_name(side, use_alt: true))
 
         return name.presence || I18n.t("kiosk.show.tbd")
     end

@@ -119,22 +119,34 @@ class Match < ApplicationRecord
     # Returns the name of the team in a given location, or nil if no team
     # has been assigned there yet.
     # `location` can be `:left`, `:right`, `:gold`, `:blue`, `:winner`, or `:loser`.
-    def team_name(location)
+    # If `use_alt` is true, and the team has had an alternate name set, the
+    # alternate name is returned.
+    def team_name(location, use_alt: false)
         ApplicationHelper.validate_param(location, SYMBOLS_LRGBWL)
 
         case location
             when :left, :right
-                return get_team(location)&.name
+                team = get_team(location)
+
+                if use_alt
+                    return team&.alt_name || team&.name
+                else
+                    return team&.name
+                end
             when :gold
-                return tournament.gold_on_left ? team_name(:left) : team_name(:right)
+                return tournament.gold_on_left ? team_name(:left, use_alt: use_alt) :
+                                                 team_name(:right, use_alt: use_alt)
             when :blue
-                return tournament.gold_on_left ? team_name(:right) : team_name(:left)
+                return tournament.gold_on_left ? team_name(:right, use_alt: use_alt) :
+                                                  team_name(:left, use_alt: use_alt)
             when :winner
                 return nil if !complete?
-                return team_won?(:left) ? team_name(:left) : team_name(:right)
+                return team_won?(:left) ? team_name(:left, use_alt: use_alt) :
+                                          team_name(:right, use_alt: use_alt)
             when :loser
                 return nil if !complete?
-                return team_won?(:left) ? team_name(:right) : team_name(:left)
+                return team_won?(:left) ? team_name(:right, use_alt: use_alt) :
+                                          team_name(:left, use_alt: use_alt)
         end
     end
 

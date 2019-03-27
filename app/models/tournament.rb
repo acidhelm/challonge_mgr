@@ -109,11 +109,11 @@ class Tournament < ApplicationRecord
 
     # Stores the names and scores of the given Match in the Tournament table, so
     # the TournamentViewer actions can return them until the next match begins.
-    # Also sends a Slack  notification if they are turned on for this Tournament.
+    # Also sends a Slack notification if they are turned on for this Tournament.
     def set_match_complete(match)
         update(current_match: nil,
-               view_gold_name: match.team_name(:gold),
-               view_blue_name: match.team_name(:blue),
+               view_gold_name: match.team_name(:gold, use_alt: true),
+               view_blue_name: match.team_name(:blue, use_alt: true),
                view_gold_score: match.team_score(:gold),
                view_blue_score: match.team_score(:blue))
 
@@ -162,7 +162,7 @@ class Tournament < ApplicationRecord
         alt_names.each do |tid, alt_name|
             team = teams.find(tid)
 
-            if !team.set_alt_name(alt_name.blank? ? nil : alt_name)
+            if !team.set_alt_name(alt_name.presence)
                 team.errors.each { |field, msg| errors[field] << msg }
             end
         end
