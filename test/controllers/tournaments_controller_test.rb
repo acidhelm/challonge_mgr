@@ -260,6 +260,40 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
         assert_template "tournaments/edit"
     end
 
+    test "Try to update teams' alt names with invalid params" do
+        log_in_as(@user)
+        assert logged_in?
+
+        params = update_tournament_params(@tournament)
+        names = @tournament.teams.map(&:name)
+        ids = @tournament.teams.ids
+
+        # Test with arrays of different sizes.
+        params[:team_alt_names] = names
+        params[:team_ids] = ids
+        params[:team_ids] << 42
+
+        patch user_tournament_path(@user, @tournament), params: params
+
+        assert_response :bad_request
+
+        # Test with duplicate IDs.
+        params[:team_ids] = ids
+        params[:team_ids][1] = params[:team_ids][0]
+
+        patch user_tournament_path(@user, @tournament), params: params
+
+        assert_response :bad_request
+
+        # Test with an invalid ID.
+        params[:team_ids] = ids
+        params[:team_ids][0] = params[:team_ids].max + 1
+
+        patch user_tournament_path(@user, @tournament), params: params
+
+        assert_response :bad_request
+    end
+
     test "Try to update a tournament for a different user" do
         log_in_as(@user)
         assert logged_in?
