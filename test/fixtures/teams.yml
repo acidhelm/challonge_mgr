@@ -1,6 +1,7 @@
 team_1:
   challonge_id: 2001
   name: CGNU Dumples
+  alt_name: CGNU
   seed: 1
   group_team_ids: null
   tournament: tournament_1
@@ -8,6 +9,7 @@ team_1:
 team_2:
   challonge_id: 2002
   name: Homestar's Knees Tech
+  alt_name: HNT
   seed: 2
   group_team_ids: null
   tournament: tournament_1
@@ -15,6 +17,7 @@ team_2:
 team_3:
   challonge_id: 2003
   name: Pile of Electronics State
+  alt_name: PoES
   seed: 3
   group_team_ids: null
   tournament: tournament_1

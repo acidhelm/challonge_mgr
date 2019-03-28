@@ -33,7 +33,7 @@ class TournamentViewerControllerTest < ActionDispatch::IntegrationTest
 
     def team_names_in_match_test(team_name_url, match, side)
         current_match_properties_test(team_name_url, match) do |step|
-            (step == :before) ? "" : match.team_name(side)
+            (step == :before) ? "" : match.team_name(side, use_alt: true)
         end
     end
 
@@ -92,12 +92,14 @@ class TournamentViewerControllerTest < ActionDispatch::IntegrationTest
 
     test "View a tournament's on-deck gold team name" do
         get view_tournament_on_deck_gold_path(@slug)
-        assert_equal @tournament.matches.upcoming.first.team_name(:gold), response.body
+        assert_equal @tournament.matches.upcoming.first.team_name(:gold, use_alt: true),
+                     response.body
     end
 
     test "View a tournament's on-deck blue team name" do
         get view_tournament_on_deck_blue_path(@slug)
-        assert_equal @tournament.matches.upcoming.first.team_name(:blue), response.body
+        assert_equal @tournament.matches.upcoming.first.team_name(:blue, use_alt: true),
+                     response.body
     end
 
     test "Try to view a non-existant tournament" do

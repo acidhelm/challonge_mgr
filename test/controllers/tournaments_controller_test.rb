@@ -232,6 +232,20 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
         assert_redirected_to user_tournament_path(@user, @tournament)
     end
 
+    test "Set teams' alt names" do
+        log_in_as(@user)
+        assert logged_in?
+
+        params = update_tournament_params(@tournament)
+
+        params[:team_alt_names] = @tournament.teams.map(&:name)
+        params[:team_ids] = @tournament.teams.map(&:id)
+
+        patch user_tournament_path(@user, @tournament), params: params
+
+        assert_redirected_to user_tournament_path(@user, @tournament)
+    end
+
     test "Try to update a tournament with invalid params" do
         log_in_as(@user)
         assert logged_in?
