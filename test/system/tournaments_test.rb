@@ -151,7 +151,9 @@ class TournamentsTest < ApplicationSystemTestCase
             # This call has to be within the `use_cassette` block, because
             # `click` returns right away.  `assert_selector` spins, looking
             # for the element, and the HTTP request happens during that loop.
-            assert_selector "h1", exact_text: tournament.name
+            # We need a long wait time in case the tournament is large; the
+            # refresh will take a while if it has to do a lot of database operations.
+            assert_selector "h1", exact_text: tournament.name, wait: 10.seconds
         end
 
         slug = tournament.challonge_alphanumeric_id
