@@ -33,7 +33,7 @@
   <hr>
   <h3><%= t(".alt_names_header") %></h3>
   <p><%= t(".alt_names_instructions_html") %></p>
-  <table>
+  <table id="alt_team_names_table">
     <thead>
       <tr>
         <th><%= t(".alt_names_th_name") %></th>
@@ -43,10 +43,10 @@
     <tbody>
       <% tournament.teams.sort_by(&:name).each do |team| %>
         <tr>
-          <td><%= team.name %></td>
+          <td id='<%= "team_name_#{team.id}" %>'><%= team.name %></td>
           <td>
             <%= text_field_tag "team_alt_names[]", team.alt_name, id: "alt_name_#{team.id}" %>
-            <%= hidden_field_tag "team_ids[]", team.id %>
+            <%= hidden_field_tag "team_ids[]", team.id, id: "team_id_#{team.id}" %>
           </td>
         </tr>
       <% end %>

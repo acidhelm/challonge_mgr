@@ -128,6 +128,63 @@ class TournamentsTest < ApplicationSystemTestCase
         end
     end
 
+    test "Check the alternate team name settings" do
+        visit user_tournaments_path(@user)
+
+        begin
+            # If the user has no tournaments, this call will throw an exception,
+            # but we don't treat that as a test failure.
+            row_elt = page.find("tbody tr:first-child")
+        rescue Capybara::ElementNotFound
+            puts "Warning: [#{method_name}] The test user has no tournaments." \
+                   " This test is not running any assertions."
+        end
+
+        return unless row_elt
+
+        manage_link = row_elt.find("td:nth-child(3) a:nth-child(1)")
+        tournament = Tournament.find(row_elt[:id].slice(/\d+\z/))
+
+        # We click the Manage link first so that the list of teams will be read
+        # from Challonge.
+        VCR.use_cassette("get_tournament_info") do
+            manage_link.click
+
+            # This call has to be within the `use_cassette` block, because
+            # `click` returns right away.  `assert_selector` spins, looking
+            # for the element, and the HTTP request happens during that loop.
+            # We need a long wait time in case the tournament is large; the
+            # refresh will take a while if it has to do a lot of database operations.
+            assert_selector "h1", exact_text: tournament.name, wait: 10.seconds
+        end
+
+        click_on "Change settings"
+
+        assert_selector "h3", exact_text: "Alternate team names"
+
+        within "table#alt_team_names_table thead tr" do
+            assert_selector "th", exact_text: "Name"
+            assert_selector "th", exact_text: "Alternate name"
+        end
+
+        teams = tournament.teams
+
+        page.all("table#alt_team_names_table tbody tr").each do |tr|
+            team_id = tr.find("td:first-child")[:id].slice(/\d+\z/)
+            team = teams.find(team_id)
+
+            within tr do
+                assert_selector "td", exact_text: team.name
+
+                assert_field name: "team_alt_names[]", id: "alt_name_#{team_id}",
+                             type: "text"
+
+                assert_field name: "team_ids[]", id: "team_id_#{team_id}",
+                             with: team_id.to_s, type: "hidden"
+            end
+        end
+    end
+
     test "Check the show-tournament page" do
         visit user_tournaments_path(@user)
 
