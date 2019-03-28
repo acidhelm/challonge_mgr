@@ -118,7 +118,7 @@ module ChallongeHelper
     # Takes a response object from a Challonge API call, and returns true if
     # the response indicates that the call succeeded.
     def api_succeeded?(response)
-        return !(response.is_a?(Hash) && response.key?(:error))
+        return !response.try(:key?, :error)
     end
 
     # Sends a GET request to `url`, treats the returned data as JSON, and parses
@@ -182,7 +182,7 @@ module ChallongeHelper
                 resp = nil
             end
 
-            if resp.is_a?(Hash) && resp.key?("errors")
+            if resp.try(:key?, "errors")
                 message = [ exception.message, resp["errors"] ].join("; ")
             end
         end

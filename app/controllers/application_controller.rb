@@ -58,11 +58,11 @@ class ApplicationController < ActionController::Base
     # For example:
     #     resp = call_a_challonge_api
     #
-    #     return true if api_failed?(resp) do |msg|
+    #     return if api_failed?(resp) do |msg|
     #         render plain: msg, status: 400
     #     end
     def api_failed?(response)
-        return false unless response.is_a?(Hash) && response.key?(:error)
+        return false unless response.try(:key?, :error)
 
         if block_given?
             msg = if response.dig(:error, :http_code) == 401
