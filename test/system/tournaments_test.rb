@@ -181,7 +181,15 @@ class TournamentsTest < ApplicationSystemTestCase
 
                 assert_field name: "team_ids[]", id: "team_id_#{team_id}",
                              with: team_id.to_s, type: "hidden"
+
+                fill_in "alt_name_#{team_id}", with: team.name.upcase
             end
+        end
+
+        VCR.use_cassette("get_tournament_info") do
+            click_on "Update Tournament"
+
+            assert_current_path(user_tournament_path(@user, tournament))
         end
     end
 
