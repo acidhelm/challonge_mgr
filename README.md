@@ -129,6 +129,10 @@ the next match begins.  You can see this feature in action in
 Notice how both team names switch at the same time to show the teams in the next
 match, and that the scores reset to 0.
 
+If a team's name is too long to fit in your stream overlay, you can set an alternate
+name for that team in the tournament settings.  The alternate name will be returned
+by the URLs listed above.
+
 If your streaming software can't poll a URL, you can run a script on the streaming
 computer that downloads the team names to text files, then set your streaming
 software to read those files.  The `scripts` directory contains scripts for doing
