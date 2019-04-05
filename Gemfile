@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.6.0"
+ruby "~> 2.6.0"
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -39,6 +39,7 @@ gem 'jbuilder', '~> 2.5'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem "dotenv-rails"
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara'
   gem 'selenium-webdriver'
@@ -56,13 +57,12 @@ end
 group :test do
   gem "simplecov", require: false
   gem "coveralls", require: false
+  gem "rails-controller-testing"
   gem "vcr"
   gem "webmock"
 end
 
 gem "attr_encrypted"
 gem "bcrypt"
-gem "dotenv-rails"
-gem "rails-controller-testing"
 gem "rest-client"
 
