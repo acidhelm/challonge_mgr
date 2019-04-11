@@ -297,6 +297,26 @@ class Match < ApplicationRecord
         return update_match(self, new_scores_csv, winner_id)
     end
 
+    # Sets this match as started.
+    # We manually set `underway_at` because the Challonge API doesn't have
+    # a way to mark a match as being underway.
+    def start
+        update(underway_at: Time.current)
+    end
+
+    # Sets this match as no longer being played.
+    def stop
+        update(underway_at: nil)
+    end
+
+    def set_group_name(name)
+        update(group_name: name)
+    end
+
+    def set_not_in_group
+        update(group_name: nil)
+    end
+
     protected
 
     def make_scores_csv(left_score, right_score)

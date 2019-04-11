@@ -89,16 +89,14 @@ class Tournament < ApplicationRecord
     # If `current_match` is set, returns the `Match` object that corresponds
     # to that match.  Otherwise, returns `nil`.
     def current_match_obj
-        if current_match.nil?
-            nil
-        else
-            matches.find_by(id: current_match)
-        end
+        return matches.find_by(id: current_match) if current_match.present?
     end
 
     # Stores the ID of the given Match in the Tournament table, and sends a
     # Slack notification if they are turned on for this Tournament.
     def set_current_match(match)
+        match.start
+        current_match_obj&.stop
         update(current_match: match.id)
 
         if send_slack_notifications && slack_notifications_channel.present?
@@ -127,8 +125,8 @@ class Tournament < ApplicationRecord
     # This should be called every time the Tournament's properties are re-read
     # from Challonge.
     def update_group_names
-        # Set `group_name` to nil for matches that aren't in a group.
-        matches.where(group_id: nil).update(group_name: nil)
+        # Clear the group names of matches that aren't in a group.
+        matches.where(group_id: nil).each(&:set_not_in_group)
 
         # Group names aren't exposed through the API, so we have to determine
         # the names ourselves.  Challonge appears to assign IDs that are consecutive
@@ -144,7 +142,7 @@ class Tournament < ApplicationRecord
         end
 
         group_names.each do |id, name|
-            matches.where(group_id: id).update(group_name: name)
+            matches.where(group_id: id).each { |m| m.set_group_name(name) }
         end
     end
 
