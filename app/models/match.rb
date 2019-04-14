@@ -41,6 +41,8 @@ class Match < ApplicationRecord
                                       ids: team.all_challonge_ids) }
     scope :winner_is, ->(team) { complete.where(winner_id: team.all_challonge_ids) }
     scope :loser_is, ->(team) { complete.where(loser_id: team.all_challonge_ids) }
+    scope :group_is, ->(gid) { where(group_id: gid) }
+    scope :not_in_group, -> { where(group_id: nil) }
     scope :upcoming, -> { where.not(state: "complete").where(underway_at: nil).play_order }
     scope :completed, -> { complete.play_order }
     scope :play_order, -> { order(group_id: :asc, suggested_play_order: :asc, identifier: :asc) }

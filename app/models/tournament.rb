@@ -126,7 +126,7 @@ class Tournament < ApplicationRecord
     # from Challonge.
     def update_group_names
         # Clear the group names of matches that aren't in a group.
-        matches.where(group_id: nil).each(&:set_not_in_group)
+        matches.not_in_group.each(&:set_not_in_group)
 
         # Group names aren't exposed through the API, so we have to determine
         # the names ourselves.  Challonge appears to assign IDs that are consecutive
@@ -142,7 +142,7 @@ class Tournament < ApplicationRecord
         end
 
         group_names.each do |id, name|
-            matches.where(group_id: id).each { |m| m.set_group_name(name) }
+            matches.group_is(id).each { |m| m.set_group_name(name) }
         end
     end
 
