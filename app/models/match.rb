@@ -315,7 +315,7 @@ class Match < ApplicationRecord
         update(group_name: name)
     end
 
-    def set_not_in_group
+    def set_no_group_name
         update(group_name: nil)
     end
 

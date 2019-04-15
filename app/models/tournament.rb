@@ -126,7 +126,7 @@ class Tournament < ApplicationRecord
     # from Challonge.
     def update_group_names
         # Clear the group names of matches that aren't in a group.
-        matches.not_in_group.each(&:set_not_in_group)
+        matches.not_in_group.each(&:set_no_group_name)
 
         # Group names aren't exposed through the API, so we have to determine
         # the names ourselves.  Challonge appears to assign IDs that are consecutive
