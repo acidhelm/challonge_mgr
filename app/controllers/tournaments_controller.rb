@@ -57,8 +57,9 @@ class TournamentsController < ApplicationController
 
         # If any tournaments are in the database, but were not returned by
         # get_tournaments, delete them from the database.  This happens if
-        # the user's subdomain changes; we need to delete the tournaments that
-        # belong to the previous subdomain.
+        # tournaments are deleted from Challonge, or if the user's subdomain
+        # changes; we need to delete the tournaments that belong to the previous
+        # subdomain.
         if known_tournaments.present?
             @user.tournaments.where(challonge_id: known_tournaments).destroy_all
         end
