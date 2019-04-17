@@ -9,12 +9,6 @@ module ChallongeHelper
         url = get_api_url
         tournaments = send_get_request(url, user)
 
-        # The API returns a different response if the tournament list is empty.
-        # It returns `{"tournaments":[]}`, so we need to handle that specially.
-        if tournaments.is_a?(Hash) && tournaments["tournaments"] == []
-            tournaments = []
-        end
-
         # If an error occured, `send_get_request` will return a hash instead of
         # an array.
         return tournaments unless tournaments.is_a?(Array)
