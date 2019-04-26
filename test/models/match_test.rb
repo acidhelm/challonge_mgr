@@ -143,4 +143,14 @@ class MatchTest < ActiveSupport::TestCase
 
         assert_equal match5.challonge_id, match6.team_prereq_match_id(:right)
     end
+
+    test "Start and stop a match" do
+        match = matches(:match_3)
+
+        match.start
+        assert_not_nil match.underway_at
+
+        match.stop
+        assert_nil match.underway_at
+    end
 end
