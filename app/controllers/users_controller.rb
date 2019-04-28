@@ -30,14 +30,15 @@ class UsersController < ApplicationController
                       @user, autostart: resp["tournament"]["url"])
     end
 
-    def hide_demo
+    def hidedemo
         @user.update show_quick_start: false
         redirect_to user_tournaments_path(@user)
     end
 
     private
     def set_user
-        @user = User.find(params[:id])
+        # The `demo` and `hidedemo` actions pass the ID in the `user_id` param.
+        @user = User.find(params[:id] || params[:user_id])
     rescue ActiveRecord::RecordNotFound
         render_not_found_error(:user)
     end

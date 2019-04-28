@@ -7,20 +7,19 @@ Rails.application.routes.draw do
 
     resources :users, only: %i(show edit update) do
         get "tournaments/refresh", to: "tournaments#refresh_all"
+        post "demo"
+        post "hidedemo"
 
         resources :tournaments, only: %i(index show edit update) do
             get "refresh", on: :member
             post "finalize", on: :member
 
-            resources :matches , only: %i(update) do
+            resources :matches, only: :update do
                 post "switch", on: :member
                 post "start", on: :member
             end
         end
     end
-
-    post "users/:id/demo", to: "users#demo", as: :user_demo
-    post "users/:id/hidedemo", to: "users#hide_demo", as: :user_hide_demo
 
     get "view/:id", to: "tournament_viewer#view", as: :view_tournament
     get "view/:id/gold", to: "tournament_viewer#gold", as: :view_tournament_gold

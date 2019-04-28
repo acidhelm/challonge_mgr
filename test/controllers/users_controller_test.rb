@@ -132,7 +132,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         assert logged_in?
         assert @user.show_quick_start
 
-        post user_hide_demo_path(@user)
+        post user_hidedemo_path(@user)
         @user.reload
         assert_not @user.show_quick_start
     end
@@ -141,12 +141,12 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         log_in_as(@user)
         assert logged_in?
 
-        post user_hide_demo_path(@other_user)
+        post user_hidedemo_path(@other_user)
         assert_response :forbidden
     end
 
     test "Try to update a user's show_quick_start property without logging in" do
-        post user_hide_demo_path(@user)
+        post user_hidedemo_path(@user)
 
         assert_redirected_to login_url
         assert_not flash.empty?
