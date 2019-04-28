@@ -55,6 +55,6 @@ class ActionDispatch::IntegrationTest
         post login_path, params: { session: { user_name: user.user_name,
                                               password: password } }
 
-        assert_redirected_to user_tournaments_refresh_path(user)
+        assert_redirected_to refresh_user_tournaments_path(user)
     end
 end

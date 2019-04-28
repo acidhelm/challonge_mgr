@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
 
         if user&.authenticate(params.dig(:session, :password))
             log_in(user)
-            redirect_back_or user_tournaments_refresh_path(user)
+            redirect_back_or refresh_user_tournaments_path(user)
         else
             flash.now[:notice] = I18n.t("errors.login_failed")
             render :new

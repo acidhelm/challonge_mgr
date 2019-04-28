@@ -29,7 +29,7 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
         assert logged_in?
 
         VCR.use_cassette("refresh_tournament_list") do
-            get user_tournaments_refresh_path(@test_user)
+            get refresh_user_tournaments_path(@test_user)
         end
 
         assert_redirected_to user_tournaments_path(@test_user)
@@ -47,7 +47,7 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
 
         assert_changes(-> { @user.tournaments.count },
                        from: @user.tournaments.count, to: 0) do
-            get user_tournaments_refresh_path(@user)
+            get refresh_user_tournaments_path(@user)
         end
 
         assert_redirected_to user_tournaments_path(@user)
@@ -59,7 +59,7 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
 
         # Refresh the test user's tournament list so we can operate on a tournament.
         VCR.use_cassette("refresh_tournament_list") do
-            get user_tournaments_refresh_path(@test_user)
+            get refresh_user_tournaments_path(@test_user)
         end
 
         @tournament = @test_user.tournaments.first
@@ -75,7 +75,7 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
 
         # Refresh the tournament list again and pass the `autostart` param.
         VCR.use_cassette("refresh_tournament_list") do
-            get user_tournaments_refresh_path(
+            get refresh_user_tournaments_path(
                   @test_user, autostart: @tournament.challonge_alphanumeric_id)
         end
 
@@ -94,7 +94,7 @@ class TournamentsControllerTest < ActionDispatch::IntegrationTest
         @test_user.update(api_key: @test_user.api_key.succ)
 
         VCR.use_cassette("refresh_tournament_list_fail") do
-            get user_tournaments_refresh_path(@test_user)
+            get refresh_user_tournaments_path(@test_user)
         end
 
         assert_redirected_to user_tournaments_path(@test_user)

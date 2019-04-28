@@ -66,7 +66,7 @@ class TournamentsTest < ApplicationSystemTestCase
 
         # The footer should have three links.
         assert_link "Reload the tournament list from Challonge",
-                    href: user_tournaments_refresh_path(@user), exact: true
+                    href: refresh_user_tournaments_path(@user), exact: true
         assert_link "Change this user's settings", href: edit_user_path(@user), exact: true
         assert_link "Log out", href: logout_path, exact: true
     end

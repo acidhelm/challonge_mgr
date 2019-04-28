@@ -161,7 +161,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         stub_demo_tournament_call(alphanumeric_id, :create, :add, :start)
 
         post user_demo_path(@user)
-        assert_redirected_to user_tournaments_refresh_path(@user, autostart: alphanumeric_id)
+        assert_redirected_to refresh_user_tournaments_path(@user, autostart: alphanumeric_id)
         assert flash.empty?
     end
 

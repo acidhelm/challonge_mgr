@@ -30,7 +30,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
         # We don't follow this redirect, because it will contact Challonge,
         # and we're not using a real Challonge account in this test.
-        assert_redirected_to user_tournaments_refresh_path(@user)
+        assert_redirected_to refresh_user_tournaments_path(@user)
         assert logged_in?
 
         delete logout_path

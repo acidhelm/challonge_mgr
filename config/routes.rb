@@ -6,11 +6,11 @@ Rails.application.routes.draw do
     delete "/logout",  to: "sessions#destroy"
 
     resources :users, only: %i(show edit update) do
-        get "tournaments/refresh", to: "tournaments#refresh_all"
         post "demo"
         post "hidedemo"
 
         resources :tournaments, only: %i(index show edit update) do
+            get "refresh", to: "tournaments#refresh_all", on: :collection
             get "refresh", on: :member
             post "finalize", on: :member
 

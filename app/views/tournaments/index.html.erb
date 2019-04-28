@@ -51,7 +51,7 @@
 </p>
 <% end %>
 <p>
-<%= link_to t(".reload_tournaments"), user_tournaments_refresh_path(@user) %> |
+<%= link_to t(".reload_tournaments"), refresh_user_tournaments_path(@user) %> |
 <%= link_to t("users.edit_user"), edit_user_path(@user) %> |
 <%= link_to t("users.log_out"), logout_path, method: :delete %>
 </p>

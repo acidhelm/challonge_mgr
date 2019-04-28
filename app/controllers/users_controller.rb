@@ -26,7 +26,7 @@ class UsersController < ApplicationController
             redirect_to user_tournaments_path(@user), notice: msg
         end
 
-        redirect_to user_tournaments_refresh_path(
+        redirect_to refresh_user_tournaments_path(
                       @user, autostart: resp["tournament"]["url"])
     end
 
