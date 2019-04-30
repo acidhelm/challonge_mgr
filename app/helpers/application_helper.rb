@@ -6,7 +6,7 @@ module ApplicationHelper
     # If a more-complex test is required, the caller can pass a block.  An
     # exception will be thrown if the block returns false.  When the caller
     # passes a block, `legal_values` is not used.
-    def self.validate_param(param, legal_values = nil)
+    def validate_param(param, legal_values = nil)
         if block_given?
             if !yield param
                 raise ArgumentError, "Invalid parameter: #{param}"

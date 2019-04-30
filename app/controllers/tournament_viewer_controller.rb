@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class TournamentViewerController < ApplicationController
+    include ApplicationHelper
+
     before_action :set_tournament_from_slug
 
     SYMBOLS_GB = %i(gold blue).freeze
@@ -47,7 +49,7 @@ class TournamentViewerController < ApplicationController
     protected
 
     def current_match_team_name(side)
-        ApplicationHelper.validate_param(side, SYMBOLS_GB)
+        validate_param(side, SYMBOLS_GB)
 
         # If a match is in progress, query the team name from that match.
         # Otherwise, use the team name that we stored when the match finished.
@@ -62,7 +64,7 @@ class TournamentViewerController < ApplicationController
     end
 
     def current_match_team_score(side)
-        ApplicationHelper.validate_param(side, SYMBOLS_GB)
+        validate_param(side, SYMBOLS_GB)
 
         # If a match is in progress, query the score from that match.
         # Otherwise, use the score that we stored when the match finished.
@@ -77,7 +79,7 @@ class TournamentViewerController < ApplicationController
     end
 
     def on_deck_match_team_name(side)
-        ApplicationHelper.validate_param(side, SYMBOLS_GB)
+        validate_param(side, SYMBOLS_GB)
 
         match = @tournament.matches.upcoming.first
 

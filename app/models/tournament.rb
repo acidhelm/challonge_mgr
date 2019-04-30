@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Tournament < ApplicationRecord
+    include ApplicationHelper
     include ChallongeHelper
 
     belongs_to :user
@@ -183,7 +184,7 @@ class Tournament < ApplicationRecord
     # for use in the UI.
     # `side` can be `:left` or `:right`.
     def cabinet_color(side)
-        ApplicationHelper.validate_param(side, SYMBOLS_LR)
+        validate_param(side, SYMBOLS_LR)
 
         string_id = case side
                         when :left
@@ -201,7 +202,7 @@ class Tournament < ApplicationRecord
     # translated.  It should be used only for internal identifiers.
     # `side` can be `:left` or `:right`.
     def cabinet_color_invariant(side, prefix = "")
-        ApplicationHelper.validate_param(side, SYMBOLS_LR)
+        validate_param(side, SYMBOLS_LR)
 
         return prefix + case side
                             when :left
