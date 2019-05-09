@@ -46,8 +46,21 @@ class ApplicationController < ActionController::Base
     def set_tournament_from_slug
         # Challonge treats tournament slugs as case-insensitive, so we use a
         # case-insensitive search, too.
+        #
+        # FIXME: This breaks down if the same tournament is present in multiple
+        # users' accounts.  For now, pick the tournament that was modified most
+        # recently, under the assumption that that one is being used by the stream
+        # tech.
+        # The real fix might be to replace the slug param with the `Tournament`
+        # ID.  I liked using the slug for the spectator view because people can
+        # remember a string like "GDC4" more easily than a number.  Using a string
+        # also doesn't expose database IDs.  But that feature isn't getting used
+        # AFAIK, so it prolly doesn't matter.
+        # It certainly doesn't matter for the kiosk, because someone in the
+        # venue will set it up once and forget it.
         @tournament = Tournament.readonly.where("lower(challonge_alphanumeric_id) = ?",
-                                                params[:id].downcase).first
+                                                params[:id].downcase).
+                                          order(updated_at: :desc).first
 
         render_not_found_error(:tournament) if @tournament.blank?
     end
