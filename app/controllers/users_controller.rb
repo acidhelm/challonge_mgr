@@ -36,6 +36,7 @@ class UsersController < ApplicationController
     end
 
     private
+
     def set_user
         # The `demo` and `hidedemo` actions pass the ID in the `user_id` param.
         @user = User.find(params[:id] || params[:user_id])

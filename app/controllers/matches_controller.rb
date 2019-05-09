@@ -67,6 +67,7 @@ class MatchesController < ApplicationController
     end
 
     protected
+
     def set_match
         @user = User.find(params[:user_id])
         @tournament = @user.tournaments.find(params[:tournament_id])

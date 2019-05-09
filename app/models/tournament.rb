@@ -213,6 +213,7 @@ class Tournament < ApplicationRecord
     end
 
     protected
+
     def validate_datetimes
         # We allow `started_at` to be a few seconds into the future because of
         # the quick start demo feature.  The demo tournament is created and
