@@ -33,7 +33,7 @@ class Team < ApplicationRecord
         return [ challonge_id, group_team_ids ].flatten
     end
 
-    protected
+    private
 
     # This method checks that there are no other Teams in this Tournament with
     # this Team's `challonge_id`.  We can't use the built-in `uniqueness`

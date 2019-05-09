@@ -46,7 +46,7 @@ class TournamentViewerController < ApplicationController
         render plain: on_deck_match_team_name(:blue)
     end
 
-    protected
+    private
 
     def current_match_team_name(side)
         validate_param(side, SYMBOLS_GB)

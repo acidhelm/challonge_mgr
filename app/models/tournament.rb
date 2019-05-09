@@ -212,7 +212,7 @@ class Tournament < ApplicationRecord
                         end
     end
 
-    protected
+    private
 
     def validate_datetimes
         # We allow `started_at` to be a few seconds into the future because of

@@ -97,7 +97,7 @@ module ChallongeHelper
         return resp
     end
 
-    protected
+    private
 
     # Returns a string that holds the URL to the Challonge API endpoint, with
     # `str` appended to it.  Since all API URLs start with "tournaments", the

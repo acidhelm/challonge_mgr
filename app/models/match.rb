@@ -320,7 +320,7 @@ class Match < ApplicationRecord
         update(group_name: nil)
     end
 
-    protected
+    private
 
     def make_scores_csv(left_score, right_score)
         if get_team_id(:left) == team1_id

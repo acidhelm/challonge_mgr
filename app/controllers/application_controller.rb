@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
         render plain: I18n.t(string_id), status: :not_found
     end
 
-    protected
+    private
 
     def set_tournament_from_slug
         # Challonge treats tournament slugs as case-insensitive, so we use a

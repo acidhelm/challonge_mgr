@@ -213,7 +213,7 @@ class TournamentsController < ApplicationController
         redirect_to action: "refresh"
     end
 
-    protected
+    private
 
     def set_user
         @user = User.find(params[:user_id])

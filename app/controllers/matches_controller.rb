@@ -66,7 +66,7 @@ class MatchesController < ApplicationController
         redirect_to user_tournament_path(@user, @tournament)
     end
 
-    protected
+    private
 
     def set_match
         @user = User.find(params[:user_id])
