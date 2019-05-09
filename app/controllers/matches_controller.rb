@@ -68,9 +68,9 @@ class MatchesController < ApplicationController
 
     protected
     def set_match
-        @match = Match.find(params[:id])
-        @tournament = @match.tournament
-        @user = @tournament.user
+        @user = User.find(params[:user_id])
+        @tournament = @user.tournaments.find(params[:tournament_id])
+        @match = @tournament.matches.find(params[:id])
     rescue ActiveRecord::RecordNotFound
         render_not_found_error(:match)
     end
