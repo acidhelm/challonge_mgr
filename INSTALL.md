@@ -21,7 +21,7 @@ There are two configuration keys that you will need to set, but you'll only have
 to do this once.  In the `challonge_mgr` directory, run:
 
 ```sh
-$ ruby -e 'require "securerandom"; puts "ATTR_ENCRYPTED_KEY=#{SecureRandom.hex 16}"' > .env
+$ ruby -e 'require "securerandom"; puts "ATTR_ENCRYPTED_KEY=#{SecureRandom.hex 16}"' >> .env
 ```
 
 That creates an encryption key that only works on your computer.  You should not
